@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="id_activityScreenTitles">
+        <item></item>
+        <item>Dashboard</item>
+        <item>My Profile</item>
+        <item>Available Donors</item>
+        <item>Make Appointments</item>
+        <item>Blood Requests</item>
+        <item>Notice</item>
+        <item>Settings</item>
+        <item/>
+        <item>Log Out</item>
+    </string-array>
+
+    <string-array name="id_activityScreenIcons">
+
+        <item>@drawable/ic_search</item>
+        <item>@drawable/ic_search</item>
+        <item>@drawable/ic_search</item>
+        <item>@drawable/ic_search</item>
+        <item>@drawable/ic_search</item>
+        <item>@drawable/ic_search</item>
+        <item>@drawable/ic_search</item>
+        <item>@drawable/ic_search</item>
+        <item>0</item>
+        <item>@drawable/ic_search</item>
+    </string-array>
+</resources>

@@ -1,0 +1,85 @@
+<resources>
+    <string name="app_name">One Blood</string>
+    <string-array name="hospital">
+        <item>Pantai Hospital</item>
+        <item>Loh Guan Lye Hospital</item>
+        <item>Island Hospital</item>
+    </string-array>
+
+    <string-array name="bloodType">
+        <item>Unknown</item>
+        <item>A+</item>
+        <item>A-</item>
+        <item>B+</item>
+        <item>B-</item>
+        <item>O+</item>
+        <item>O-</item>
+        <item>AB+</item>
+        <item>AB-</item>
+    </string-array>
+
+    <string-array name="requiredBloodType">
+        <item>A+</item>
+        <item>A-</item>
+        <item>B+</item>
+        <item>B-</item>
+        <item>O+</item>
+        <item>O-</item>
+        <item>AB+</item>
+        <item>AB-</item>
+    </string-array>
+
+    <!-- Navigation Drawer -->
+    <string name='navigation_drawer_open'>Open Navigation Drawer</string>
+    <string name='navigation_drawer_close'>Close Navigation Drawer</string>
+    <string name='enter_full_name'>Full Name</string>
+    <string name='enter_email'>Email</string>
+    <string name='enter_phone'>Phone No</string>
+    <string name='enter_password'>Password</string>
+    <string name='select_bloodType'>Blood Type</string>
+    <string name='enter_race'>Race</string>
+    <string name='next_btn'>NEXT</string>
+    <string name='login_btn'>LOGIN</string>
+
+    <!-- Dashboard Buttons -->
+    <string name='make_appointments'>Make appointments</string>
+    <string name='available_donors'>Available Donors</string>
+    <string name='blood_request'>Blood Requests</string>
+    <string name='upcoming_events'>Upcoming Events</string>
+
+    <!-- Dashboard Stats -->
+    <string name='lives_saved'>Lives Saved</string>
+    <string name='next_donation'>Next Donation</string>
+    <string name='blood_type'>Blood Type</string>
+
+    <!-- Blood Request -->
+    <string name='recipient_name'>Name of Recipient</string>
+    <string name='recipient_contact'>Contact</string>
+    <string name='recipient_email'>Email</string>
+    <string name='request_location'>Location/ Address</string>
+    <string name='request_description'>Reason (Optional)</string>
+    <string name='request_title'>Title of Request</string>
+    <string name='requested_blood_type'>Required Blood Type</string>
+    <string name='request_date'>Date of Request</string>
+
+    <!-- Location Info -->
+    <string name='location_name'>Location</string>
+    <string name='location_contact'>Contact</string>
+    <string name='location_address'>Address</string>
+    <string name='location_operation_hours'>Operation Hours</string>
+
+
+    <string name='user_name'>Name</string>
+    <string name='user_email'>Email</string>
+    <string name='user_phone'>Phone</string>
+    <string name='user_race'>Race</string>
+    <string name='user_password'>Password</string>
+
+    <string name='donor_name'>Name</string>
+    <string name='donor_blood_type'>Blood Type</string>
+    <string name='donor_contact'>Phone Number</string>
+    <string name='donor_email'>Email</string>
+
+
+
+</resources>

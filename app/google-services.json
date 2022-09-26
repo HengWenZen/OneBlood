@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "898059697316",
+    "project_id": "onebloodapplicatio",
+    "storage_bucket": "onebloodapplicatio.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:898059697316:android:6519ac0cb3a96fd3ac7a31",
+        "android_client_info": {
+          "package_name": "com.example.OneBlood"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "898059697316-c70hfpv77l7aps6agq5eqh319jlismnk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhCx2D2g76Yd9kumV4jTfHk5wp3tihfeY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "898059697316-c70hfpv77l7aps6agq5eqh319jlismnk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

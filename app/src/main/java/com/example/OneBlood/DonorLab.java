@@ -1,0 +1,72 @@
+package com.example.OneBlood;
+
+import android.content.Context;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+public class DonorLab {
+
+    private static DonorLab sDonorLab;
+    private List<Donor> mDonorList;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    public static DonorLab get(Context context){
+        sDonorLab = new DonorLab(context);
+        return sDonorLab;
+    }
+
+    private DonorLab(Context context){
+        mDonorList = new ArrayList<>();
+        mDonorList.clear();
+
+        db.collection("users")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if(task.isSuccessful()){
+                        QuerySnapshot result = task.getResult();
+
+                        if(!result.isEmpty()){
+                            for(QueryDocumentSnapshot documentSnapshot : result){
+                                Donor donor = new Donor();
+                                donor.setId(documentSnapshot.getId());
+                                donor.setName(documentSnapshot.get("FullName").toString());
+                                donor.setBloodType(documentSnapshot.get("blood type").toString());
+                                donor.setContact(documentSnapshot.get("phone number").toString());
+                                donor.setEmail(documentSnapshot.get("Email").toString());
+                                mDonorList.add(donor);
+                            }
+                        }
+                    }
+
+            }
+        });
+    }
+
+    public List<Donor> getDonorList(){
+        return  mDonorList;
+    }
+
+    public Donor getDonorID(UUID uuid){
+        for (Donor donor : mDonorList){
+            if(donor.getId().equals(uuid)){
+                return donor;
+            }
+        }
+        return null;
+    }
+
+
+
+}

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="peach_palette">#F6A192</color>
+    <color name="purple_200">#EE89FF</color>
+    <color name="peach_palette2">#F6B092</color>
+    <color name="peach_palette3">#F6C492</color>
+    <color name="peach_palette4">#F6d992</color>
+    <color name="peach_palette5">#FFCBC4</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="peach">#FFF0D3</color>
+    <color name="red">#FF7373</color>
+    <color name="white">#FFFFFF</color>
+    <color name="gray">#D5D4D4</color>
+    <color name="darkerGray">#9E9E9E</color>
+
+
+</resources>
