@@ -1,6 +1,7 @@
 package com.example.OneBlood;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -13,6 +14,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.OneBlood.Activity.HospitalMenu;
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -24,7 +27,9 @@ public class HospitalLogin extends AppCompatActivity {
     TextView tvAdminLogin;
     Firebase db = new Firebase();
     boolean loginSuccess = false;
-    String _FULLNAME, _EMAIL, _PHONE, _PASSWORD;
+    public static SharedPreferences hospitalPreferences;
+    private final String SHARED_PREFERENCE = "hospitalPreferences";
+    private final String KEY_HOSPITAL_NAME = "hospitalName";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,6 +40,8 @@ public class HospitalLogin extends AppCompatActivity {
         spHospital = findViewById(R.id.spHospital);
         etPassword = findViewById(R.id.etHospitalPassword);
         tvAdminLogin = (TextView) findViewById(R.id.tvAdminLogin);
+
+        hospitalPreferences = getSharedPreferences(SHARED_PREFERENCE, MODE_PRIVATE);
 
 
         ArrayAdapter<String> hospitalAdapter = new ArrayAdapter<>(HospitalLogin.this,
@@ -48,6 +55,7 @@ public class HospitalLogin extends AppCompatActivity {
     }
 
     private void Login() {
+
             db.getData("hospitals",null, new com.example.OneBlood.MyCallback(){
                 @Override
                 public void returnData(ArrayList<Map<String, Object>> docList) {
@@ -61,6 +69,10 @@ public class HospitalLogin extends AppCompatActivity {
                             startActivity(i);
                             finish();
                             loginSuccess = true;
+
+                            SharedPreferences.Editor editor = hospitalPreferences.edit();
+                            editor.putString(KEY_HOSPITAL_NAME, spHospital.getSelectedItem().toString());
+                            editor.apply();
                         }
                     }
                     if(loginSuccess == false){

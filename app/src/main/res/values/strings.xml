@@ -80,6 +80,30 @@
     <string name='donor_contact'>Phone Number</string>
     <string name='donor_email'>Email</string>
 
+    <!-- Hospital Add Event Info -->
+    <string name='event_startDate'>Start Date</string>
+    <string name='event_endDate'>End Date</string>
+    <string name='event_title'>Title</string>
+    <string name='event_location'>Location</string>
+    <string name='event_description'>Description</string>
+    <string name='event_startTime'> Start Time</string>
+    <string name='event_endTime'>End Time</string>
 
+    <!-- Self Evaluation -->
+    <string name='quiz_title'>  Do Self Evaluation Test to Check If You Are Eligible To Donate Blood!</string>
+
+
+    <!-- Test Question -->
+    <string name="true_button">True</string>
+    <string name="false_button">False</string>
+    <string name="correctToast">Correct</string>
+    <string name="incorrectToast">Incorrect</string>
+    <string name="question_age">Are you under age 16 or over age 65?</string>
+    <string name="question_donate_permanent">Have you been informed not to donate blood PERMANENTLY?</string>
+    <string name="question_uk">Have you been in the United Kingdom or Republic of Ireland for more than three months from year 1980 until 1996?</string>
+    <string name="question_ireland">Have you been in the Europe for a period of 5 years from year 1980 until 2001?</string>
+    <string name="question_treatment">Are you currently under a doctor\'s treatment, taking any medication or awaiting test result?</string>
+    <string name="question_vaccine">Did you have any vaccination in the last 4 weeks?</string>
+    <string name="question_sexual_activity">Have you ever engaged in unsafe sexual activity?</string>
 
 </resources>

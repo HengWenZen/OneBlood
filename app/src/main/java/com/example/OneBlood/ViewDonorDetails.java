@@ -5,8 +5,15 @@ import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
+import com.example.OneBlood.Labs.DonorLab;
+import com.example.OneBlood.Models.Donor;
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ViewDonorDetails extends AppCompatActivity {
 
@@ -15,18 +22,25 @@ public class ViewDonorDetails extends AppCompatActivity {
     public static final String EXTRA_DONOR_BLOOD_TYPE = "donor_blood_type";
     public static final String EXTRA_DONOR_ID = "donor_id";
     public static final String EXTRA_DONOR_EMAIL = "donor_email";
+    private List<Donor> mDonorList = new ArrayList<>();
 
     TextInputLayout etNameOfDonor, etDonorContact, etDonorEmail, etDonorBloodType;
+    String userName, userId;
+    Button btnChat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_donor_details);
 
+        DonorLab donorLab = DonorLab.get(ViewDonorDetails.this);
+        mDonorList = donorLab.getDonorList();
+
         etNameOfDonor = findViewById(R.id.etNameOfDonor);
         etDonorBloodType = findViewById(R.id.etDonorBloodType);
         etDonorContact = findViewById(R.id.etDonorContact);
         etDonorEmail = findViewById(R.id.etDonorEmail);
+        btnChat = findViewById(R.id.btnMessage);
 
         Intent intent = getIntent();
         Bundle b = intent.getExtras();
@@ -39,5 +53,17 @@ public class ViewDonorDetails extends AppCompatActivity {
         etDonorEmail.getEditText().setTextColor(ContextCompat.getColor(this, R.color.black));
         etDonorBloodType.getEditText().setText((String)b.get(EXTRA_DONOR_BLOOD_TYPE));
         etDonorBloodType.getEditText().setTextColor(ContextCompat.getColor(this, R.color.black));
+
+        btnChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(ViewDonorDetails.this, UserChatBox.class);
+                userName = (String)b.get(EXTRA_DONOR_NAME);
+                userId = (String)b.get(EXTRA_DONOR_ID);
+                i.putExtra(EXTRA_DONOR_NAME, userName);
+                i.putExtra(EXTRA_DONOR_ID, userId);
+                startActivity(i);
+            }
+        });
     }
 }

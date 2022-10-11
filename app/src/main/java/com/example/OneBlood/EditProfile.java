@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -63,37 +64,44 @@ public class EditProfile extends AppCompatActivity {
         etRace = findViewById(R.id.etEditRace);
         btnUpdate = findViewById(R.id.btnUpdate);
         tvName = findViewById(R.id.tvName);
-        SharedPreferences prefs = getSharedPreferences(SHARED_PREF, MODE_PRIVATE);
-        String user = prefs.getString(KEY_USER_NAME,"");
-        String email = prefs.getString(KEY_USER_EMAIL,"");
 
-        if(user != null) {
+        SharedPreferences prefs = getSharedPreferences(SHARED_PREF, MODE_PRIVATE);
+        String user = prefs.getString(KEY_USER_NAME, "");
+        String email = prefs.getString(KEY_USER_EMAIL, "");
+
+        if (user != null) {
             tvName.setText(user);
         }
 
-        mFirebase.getData("users", null, new MyCallback() {
-            @Override
-            public void returnData(ArrayList<Map<String, Object>> docList) {
-                Log.d("firebase example", docList.toString());
-                ArrayList<String> list = new ArrayList<>();
-                for (Map<String, Object> map : docList) {
-                    if(map.get("FullName").toString().equals(user)) {
-                        Map<String, Object> userDetail = new HashMap<>();
-                        etFullName.getEditText().setText(user);
-                        etEmail.getEditText().setText(email);
-                        etPhone.getEditText().setText(map.get("phone number").toString());
-                        etPassword.getEditText().setText(map.get("Password").toString());
+        db.collection("users")
+                .whereEqualTo("FullName", user)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            QuerySnapshot result = task.getResult();
+                            if (!result.isEmpty()) {
+                                Log.d("Data Retrieved", result.toString());
+                                for (QueryDocumentSnapshot document : result) {
+                                    Log.d("Document ID:", document.getId() + " => " + document.getData());
+                                    if (document.get("FullName").toString().equals(user)) {
+                                        Map<String, Object> userDetail = new HashMap<>();
+                                        etFullName.getEditText().setText(user);
+                                        etEmail.getEditText().setText(email);
+                                        etPhone.getEditText().setText(document.get("phone number").toString());
+                                        etPassword.getEditText().setText(document.get("Password").toString());
 
-                        ExistingName = (map.get("FullName").toString());
-                        ExistingPassword = (map.get("Password").toString());
-                        ExistingEmail = (map.get("Email").toString());
-                        ExistingPhone = (map.get("phone number").toString());
-
-                        mFirebase.updData("users", userDetail, map.get("id").toString());
+                                        ExistingName = (document.get("FullName").toString());
+                                        ExistingPassword = (document.get("Password").toString());
+                                        ExistingEmail = (document.get("Email").toString());
+                                        ExistingPhone = (document.get("phone number").toString());
+                                    }
+                                }
+                            }
+                        }
                     }
-                }
-            }
-        });
+                });
     }
 
     public void update(View view){

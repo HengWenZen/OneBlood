@@ -32,6 +32,13 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.OneBlood.Activity.Appointments;
+import com.example.OneBlood.Activity.AvailableDonorMainMenu;
+import com.example.OneBlood.Activity.BloodDonationInfo;
+import com.example.OneBlood.Activity.BloodRequestMainMenu;
+import com.example.OneBlood.Activity.UserEvent;
+import com.example.OneBlood.Labs.LocationLab;
+import com.example.OneBlood.Models.DonateLocation;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -67,10 +74,10 @@ public class UserMainMenu extends AppCompatActivity implements OnMapReadyCallbac
 
     public static SharedPreferences mPreferences;
     private final String SHARED_PREF = "myPreferences";
-    private final String KEY_USER = "user";
-    private final String KEY_EMAIL = "userEmail";
+    private final String KEY_USER_ID = "userID";
     private final String KEY_USER_NAME = "userName";
     private final String KEY_PASSWORD = "password";
+    private final String KEY_USER_EMAIL = "userEmail";
 
     boolean isPermissionGranted;
     GoogleMap mGoogleMap;
@@ -98,6 +105,8 @@ public class UserMainMenu extends AppCompatActivity implements OnMapReadyCallbac
         mDrawerLayout = findViewById(R.id.drawer_layout);
         mNavigationView = findViewById(R.id.navigation_view);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        mPreferences = getSharedPreferences("myPreferences", MODE_PRIVATE);
 
         setSupportActionBar(mToolbar);
 
@@ -341,11 +350,31 @@ public class UserMainMenu extends AppCompatActivity implements OnMapReadyCallbac
                 startActivity(a);
                 finish();
                 break;
+
+            case R.id.nav_events:
+                Intent w = new Intent(UserMainMenu.this, UserEvent.class);
+                startActivity(w);
+                finish();
+                break;
+
+            case R.id.nav_notice:
+                Intent e = new Intent(UserMainMenu.this, UserNoticeMenu.class);
+                startActivity(e);
+                finish();
+                break;
+
+            case R.id.nav_info:
+                Intent f = new Intent(UserMainMenu.this, BloodDonationInfo.class);
+                startActivity(f);
+                finish();
+                break;
+
             case R.id.nav_logout:
                 SharedPreferences myPreferences = getSharedPreferences("myPreferences", MODE_PRIVATE);
-                SharedPreferences.Editor spEditor = UserLogin.mPreferences.edit();
+                SharedPreferences.Editor spEditor = myPreferences.edit();
                 spEditor.clear();
                 spEditor.apply();
+                spEditor.commit();
                 Intent q = new Intent(UserMainMenu.this, UserLogin.class);
                 startActivity(q);
                 finish();

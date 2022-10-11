@@ -25,6 +25,16 @@
             android:id="@+id/nav_request"
             android:title="Blood Request"
             android:icon="@drawable/ic_menu"/>
+
+        <item
+            android:id="@+id/nav_events"
+            android:title="Events"
+            android:icon="@drawable/ic_menu"/>
+
+        <item
+            android:id="@+id/nav_notice"
+            android:title="Notice"
+            android:icon="@drawable/ic_menu"/>
     </group>
 
 
@@ -36,6 +46,11 @@
                     android:id="@+id/nav_profile"
                     android:title="Edit Profile"
                     android:icon="@drawable/ic_menu"/>
+
+                <item
+                        android:id="@+id/nav_info"
+                        android:title="Info"
+                        android:icon="@drawable/ic_menu"/>
 
                 <item
                     android:id="@+id/nav_logout"

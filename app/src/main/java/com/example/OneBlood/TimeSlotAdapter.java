@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.OneBlood.Models.TimeSlot;
+
 import java.util.ArrayList;
 import java.util.List;
 

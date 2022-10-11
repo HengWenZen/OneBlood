@@ -32,14 +32,14 @@ public class UserLogin extends AppCompatActivity {
     Button btnRegister;
     TextView tvAdminLogin;
     TextView tvHospitalLogin;
-    String userName, userEmail, userPhone, userPassword;
+    String userName, userEmail, userPhone, userPassword, userId;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     Firebase firebase = new Firebase();
     FirebaseAuth mAuth;
 
     public static SharedPreferences mPreferences;
     private final String SHARED_PREF = "myPreferences";
-    private final String KEY_USER = "user";
+    private final String KEY_USER_ID = "userID";
     private final String KEY_USER_NAME = "userName";
     private final String KEY_PASSWORD = "password";
     private final String KEY_USER_EMAIL = "userEmail";
@@ -113,28 +113,30 @@ public class UserLogin extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        firebase.getData("users",null, new com.example.OneBlood.MyCallback(){
+                        firebase.getData("users",null, new com.example.OneBlood.MyCallback() {
                             @Override
                             public void returnData(ArrayList<Map<String, Object>> docList) {
                                 Log.d("Documents Retrieved", docList.toString());
                                 ArrayList<String> list = new ArrayList<>();
 
-                                for(Map<String, Object> map : docList){
-                                    userName =  map.get("FullName").toString();
+                                for (Map<String, Object> map : docList) {
+                                    if (map.get("Email").toString().equals(userEmail)) {
+                                        userName = map.get("FullName").toString();
+                                        userId = map.get("id").toString();
 
-                                    Toast.makeText(UserLogin.this, "Logged in Successfully!", Toast.LENGTH_SHORT).show();
-                                    Intent i = new Intent(UserLogin.this, UserDashBoard.class);
-                                    i.putExtra(KEY_USER_NAME, userName);
-                                    i.putExtra(KEY_USER_EMAIL, etEmail.getText().toString());
-                                    i.putExtra(KEY_PASSWORD, etPassword.getText().toString());
-                                    startActivity(i);
-                                    finish();
+                                        Toast.makeText(UserLogin.this, "Logged in Successfully!" + userName, Toast.LENGTH_SHORT).show();
+                                        Intent i = new Intent(UserLogin.this, UserDashBoard.class);
+                                        startActivity(i);
+                                        finish();
 
-                                    SharedPreferences.Editor editor = mPreferences.edit();
-                                    editor.putString(KEY_USER_EMAIL, etEmail.getText().toString());
-                                    editor.putString(KEY_PASSWORD, etPassword.getText().toString());
-                                    editor.putString(KEY_USER_NAME, userName);
-                                    editor.apply();
+                                        SharedPreferences.Editor editor = mPreferences.edit();
+                                        editor.putString(KEY_USER_EMAIL, etEmail.getText().toString());
+                                        editor.putString(KEY_PASSWORD, etPassword.getText().toString());
+                                        editor.putString(KEY_USER_ID, userId);
+                                        editor.putString(KEY_USER_NAME, userName);
+                                        editor.apply();
+                                        editor.commit();
+                                    }
                                 }
                             }
                         });

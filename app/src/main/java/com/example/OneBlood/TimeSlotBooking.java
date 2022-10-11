@@ -5,13 +5,13 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +22,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.OneBlood.Models.TimeSlot;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -54,6 +55,7 @@ public class TimeSlotBooking extends AppCompatActivity implements DatePickerDial
     private List<TimeSlot> mTimeSlots;
     private TimeSlotAdapter mTimeSlotAdapter;
     Button btnBook;
+    ImageView ivBackToLocation;
     TextInputLayout etLocationTitle, etLocationAddress, etLocationContact, etLocationOperationHours;
     String dateSelected, LocationContact, LocationOperationHours;
     TextView tvDateViewed,tvShowLocation;
@@ -81,6 +83,7 @@ public class TimeSlotBooking extends AppCompatActivity implements DatePickerDial
         etLocationTitle = findViewById(R.id.etHospitalTitle);
         etLocationContact = findViewById(R.id.etHospitalContact);
         etLocationOperationHours = findViewById(R.id.etOperationHours);
+        ivBackToLocation = findViewById(R.id.ivBackToLocation);
         String locationName = getIntent().getStringExtra(EXTRA_LOCATION_TITLE);
         String LocationAddress = getIntent().getStringExtra(EXTRA_LOCATION_ADDRESS);
         String locationContact = getIntent().getStringExtra(EXTRA_LOCATION_CONTACT);
@@ -91,11 +94,16 @@ public class TimeSlotBooking extends AppCompatActivity implements DatePickerDial
         int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
         tvDateViewed.setText(year + "\n " + day + " " + new DateFormatSymbols().getMonths()[month]);
 
+        setListener();
+
         if(day<10) {
-            dateSelected = ("0" + day + (month + 1) + "-" + year);
+            dateSelected = ("0" + day + "-" + (month + 1) + "-" + year);
         }
         else if( month<10){
             dateSelected = (day + "-0" + (month + 1) + "-" + year);
+        }
+        else if(day<10 && month<10 ){
+            dateSelected = ("0" + day + "-0" + (month + 1) + "-" + year);
         }
         else{
             dateSelected = day + "-" + (month + 1) + "-" + year;
@@ -140,7 +148,7 @@ public class TimeSlotBooking extends AppCompatActivity implements DatePickerDial
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             SharedPreferences prefs = getSharedPreferences("myPreferences", MODE_PRIVATE);
-                            String user = prefs.getString("userName",null);
+                            String user = prefs.getString(KEY_USER_NAME,null);
 
                             Map<String, Object> data = new HashMap<>();
                             data.put("slot", slot);
@@ -179,13 +187,8 @@ public class TimeSlotBooking extends AppCompatActivity implements DatePickerDial
         int month = Calendar.getInstance().get(Calendar.MONTH);
         int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                this,
-                this,
-                year,
-                month,
-                day
-        );
+        DatePickerDialog datePickerDialog = new DatePickerDialog(TimeSlotBooking.this ,
+                this, year, month, day);
 
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_YEAR, +14);
@@ -206,8 +209,10 @@ public class TimeSlotBooking extends AppCompatActivity implements DatePickerDial
         tvDateViewed.setText(year + "\n " + dayOfMonth + " " + new DateFormatSymbols().getMonths()[month]);
 //        Toast.makeText(TimeSlotBooking.this, String.valueOf(month+1), Toast.LENGTH_SHORT).show();
         if(dayOfMonth<10) {
-            dateSelected = ("0" + dayOfMonth + (month + 1) + "-" + year);
+            dateSelected = ("0" + dayOfMonth + "-" + (month + 1) + "-" + year);
+
         }else if( month<10){
+
             dateSelected = (dayOfMonth + "-0" + (month + 1) + "-" + year);
         }
         else{
@@ -248,5 +253,9 @@ public class TimeSlotBooking extends AppCompatActivity implements DatePickerDial
                             rv.setLayoutManager(new GridLayoutManager(TimeSlotBooking.this, 3));
                     }
                 });
+    }
+
+    private void setListener(){
+        ivBackToLocation.setOnClickListener(v -> onBackPressed());
     }
 }

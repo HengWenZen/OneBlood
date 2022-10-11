@@ -17,12 +17,20 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.OneBlood.Activity.Appointments;
+import com.example.OneBlood.Activity.AvailableDonorMainMenu;
+import com.example.OneBlood.Activity.BloodDonationInfo;
+import com.example.OneBlood.Activity.BloodRequestMainMenu;
+import com.example.OneBlood.Activity.UserEvent;
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.HashMap;
 
 public class UserDashBoard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public static SharedPreferences mPreferences;
     private final String SHARED_PREF = "myPreferences";
+    private final String KEY_USER_ID = "userID";
     private final String KEY_USER_NAME = "userName";
     private final String KEY_PASSWORD = "password";
     private final String KEY_USER_EMAIL = "userEmail";
@@ -43,8 +51,9 @@ public class UserDashBoard extends AppCompatActivity implements NavigationView.O
         mToolbar = findViewById(R.id.toolbar);
         ivLogout = findViewById(R.id.ivLogout);
         tvSearch = findViewById(R.id.tvSearch);
-        SharedPreferences prefs = getSharedPreferences("myPreferences", MODE_PRIVATE);
-        String user = prefs.getString("userName",null);
+
+        SharedPreferences prefs = getSharedPreferences(SHARED_PREF, MODE_PRIVATE);
+        String user = prefs.getString(KEY_USER_ID,"");
         tvSearch.setText(user);
 
         setSupportActionBar(mToolbar);
@@ -107,12 +116,28 @@ public class UserDashBoard extends AppCompatActivity implements NavigationView.O
                 startActivity(a);
                 finish();
                 break;
+
+            case R.id.nav_events:
+                Intent w = new Intent(UserDashBoard.this, UserEvent.class);
+                startActivity(w);
+                finish();
+                break;
+
+            case R.id.nav_notice:
+                Intent e = new Intent(UserDashBoard.this, UserNoticeMenu.class);
+                startActivity(e);
+                finish();
+                break;
+
+            case R.id.nav_info:
+                Intent f = new Intent(UserDashBoard.this, BloodDonationInfo.class);
+                startActivity(f);
+                finish();
+                break;
+
             case R.id.nav_logout:
-                SharedPreferences myPreferences = getSharedPreferences("myPreferences", MODE_PRIVATE);
                 SharedPreferences.Editor spEditor = UserLogin.mPreferences.edit();
-                spEditor.remove(KEY_USER_NAME);
-                spEditor.clear();
-                spEditor.apply();
+                spEditor.clear().commit();
                 Intent q = new Intent(UserDashBoard.this, UserLogin.class);
                 startActivity(q);
                 finish();

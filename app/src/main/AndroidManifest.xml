@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.OneBlood">
 
@@ -15,18 +14,38 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MainActivity">
+        <activity android:name=".Activity.PassTest"></activity>
+        <activity android:name=".Activity.FailTest" />
+        <activity android:name=".Activity.TestQuestion" />
+        <activity android:name=".Activity.SelfEvaluation" />
+        <activity android:name=".UserNoticeMenu" />
+        <activity
+            android:name=".ViewNoticeDetails"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+        <activity
+            android:name=".HospitalNewNotice"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+        <activity android:name=".Activity.HospitalNoticeMenu" />
+        <activity
+            android:name=".UserEventTimeSlot"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+        <activity android:name=".Activity.UserEvent" />
+        <activity
+            android:name=".HospitalEvents"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+        <activity android:name=".UserChatBox" />
         <activity
             android:name=".ViewDonorDetails"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"/>
-        <activity android:name=".BloodDonationInfo" />
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+        <activity android:name=".Activity.BloodDonationInfo" />
         <activity
             android:name=".ViewBloodRequestDetails"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity
-            android:name=".NewBloodRequest"
+            android:name=".Activity.NewBloodRequest"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
-        <activity android:name=".BloodRequestMainMenu" />
-        <activity android:name=".AdminMenu" />
+        <activity android:name=".Activity.BloodRequestMainMenu" />
+        <activity android:name=".Activity.AdminMenu" />
         <activity
             android:name=".UserRegister3"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
@@ -55,19 +74,18 @@
             android:value="barcode" />
 
         <activity android:name=".HospitalLogin" />
-        <activity android:name=".HospitalMenu" />
+        <activity android:name=".Activity.HospitalMenu" />
         <activity android:name=".UserType" />
         <activity android:name=".AdminLogin" />
         <activity
             android:name=".EditProfile"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
-        <activity android:name=".Appointments" />
+        <activity android:name=".Activity.Appointments" />
         <activity
             android:name=".TimeSlotBooking"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity android:name=".UserDashBoard" />
-        <activity android:name=".AvailableDonorMainMenu" />
-
+        <activity android:name=".Activity.AvailableDonorMainMenu" />
 
         <meta-data
             android:name="com.google.android.gms.version"
