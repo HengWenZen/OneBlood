@@ -78,14 +78,14 @@ public class UserEventTimeSlot extends AppCompatActivity implements DatePickerDi
         tvShowEventDate = findViewById(R.id.tvShowEventDate);
         btnBookEventTimeSlot = findViewById(R.id.btnBookEventTimeSlot);
         ivBackToList = findViewById(R.id.ivBackToEventList);
-        ivChooseDate = findViewById(R.id.img_btn_chooseDate);
         ivViewEventPic = findViewById(R.id.ivViewEventPic);
         rv = findViewById(R.id.rvEventTimeSlot);
 
         eventEndDate = getIntent().getStringExtra(EXTRA_EVENT_END_DATE);
         eventStartDate = getIntent().getStringExtra(EXTRA_EVENT_START_DATE);
         eventTitle = getIntent().getStringExtra(EXTRA_EVENT_TITLE);
-        tvShowEventDate.setText(eventStartDate);
+        tvShowEventDate.setText("Select Date");
+
 
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         try {
@@ -97,7 +97,7 @@ public class UserEventTimeSlot extends AppCompatActivity implements DatePickerDi
             e.printStackTrace();
         }
 
-        ivChooseDate.setOnClickListener(new View.OnClickListener() {
+        tvShowEventDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDatePickerDialog();
@@ -107,49 +107,52 @@ public class UserEventTimeSlot extends AppCompatActivity implements DatePickerDi
         btnBookEventTimeSlot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String slot = String.valueOf(mEventTimeSlotAdapter.selectedSlot);
+                if (dateSelected == null) {
+                    Toast.makeText(UserEventTimeSlot.this, "Please select date...", Toast.LENGTH_SHORT).show();
+                } else {
+                    String slot = String.valueOf(mEventTimeSlotAdapter.selectedSlot);
+                    if (slot == "") {
+                        Toast.makeText(UserEventTimeSlot.this, "Please select available slots...", Toast.LENGTH_SHORT).show();
+                    } else {
+                        String message = "Confirm Booking at  " + eventLocation + " on " + dateSelected + " " + mEventTimeSlotAdapter.timeSlot(Integer.valueOf(slot));
+                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(UserEventTimeSlot.this);
+                        alertDialog.setTitle("Confirm Booking ");
+                        alertDialog.setMessage(message);
+                        alertDialog.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                SharedPreferences prefs = getSharedPreferences("myPreferences", MODE_PRIVATE);
+                                String user = prefs.getString("userName", null);
 
-                if(slot == ""){
-                    Toast.makeText(UserEventTimeSlot.this, "Please select available slots...", Toast.LENGTH_SHORT).show();
-                }else{
-                    String message = "Confirm Booking at  " + eventLocation + " on " + dateSelected + " " + mEventTimeSlotAdapter.timeSlot(Integer.valueOf(slot));
-                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(UserEventTimeSlot.this);
-                    alertDialog.setTitle("Confirm Booking ");
-                    alertDialog.setMessage(message);
-                    alertDialog.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            SharedPreferences prefs = getSharedPreferences("myPreferences", MODE_PRIVATE);
-                            String user = prefs.getString("userName", null);
+                                Map<String, Object> data = new HashMap<>();
+                                data.put("slot", slot);
+                                data.put("user", user);
+                                data.put("date", dateSelected);
+                                data.put("location", eventLocation);
 
-                            Map<String, Object> data = new HashMap<>();
-                            data.put("slot", slot);
-                            data.put("user", user);
-                            data.put("date" ,dateSelected);
-                            data.put("location" , eventLocation);
+                                db.collection("userEventBooking").add(data)
+                                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                            @Override
+                                            public void onSuccess(DocumentReference documentReference) {
+                                                Toast.makeText(UserEventTimeSlot.this, "Slot booked successfully !", Toast.LENGTH_SHORT).show();
+                                                finish();
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(UserEventTimeSlot.this, "Error, Please Try Again..", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        });
+                        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
 
-                            db.collection("userEventBooking").add(data)
-                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                        @Override
-                                        public void onSuccess(DocumentReference documentReference) {
-                                            Toast.makeText(UserEventTimeSlot.this, "Slot booked successfully !", Toast.LENGTH_SHORT).show();
-                                            finish();
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(UserEventTimeSlot.this, "Error, Please Try Again..", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
-                    });
-                    alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                        }
-                    });
-                    alertDialog.show();
+                            }
+                        });
+                        alertDialog.show();
+                    }
                 }
             }
         });
@@ -212,8 +215,6 @@ public class UserEventTimeSlot extends AppCompatActivity implements DatePickerDi
         else{
             dateSelected = dayOfMonth + "-" + (month + 1) + "-" + year;
         }
-        Toast.makeText(this, dateSelected, Toast.LENGTH_SHORT).show();
-
     }
 
     private void availableSlot(String date) {

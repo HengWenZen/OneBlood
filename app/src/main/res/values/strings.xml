@@ -91,6 +91,8 @@
 
     <!-- Self Evaluation -->
     <string name='quiz_title'>  Do Self Evaluation Test to Check If You Are Eligible To Donate Blood!</string>
+    <string name='quiz_fail'>  Sorry you might not be eligible to donate blood. In order to further assess your eligibility, you are advised to consult a doctor or medical staff.</string>
+    <string name='quiz_pass'>  You have pass the self evaluation test and are preliminary eligible to donate blood.</string>
 
 
     <!-- Test Question -->
@@ -105,5 +107,8 @@
     <string name="question_treatment">Are you currently under a doctor\'s treatment, taking any medication or awaiting test result?</string>
     <string name="question_vaccine">Did you have any vaccination in the last 4 weeks?</string>
     <string name="question_sexual_activity">Have you ever engaged in unsafe sexual activity?</string>
+    <string name="question_health">In the past 2 weeks, did you have symptoms of cold, flu, sore throat, cold sore, stomach bug or any other infection?</string>
+    <string name="question_tattoo">Have you done any tattoo or body piercing for the past 6 months?</string>
+
 
 </resources>

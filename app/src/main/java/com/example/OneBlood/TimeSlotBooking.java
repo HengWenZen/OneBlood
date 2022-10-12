@@ -57,7 +57,8 @@ public class TimeSlotBooking extends AppCompatActivity implements DatePickerDial
     Button btnBook;
     ImageView ivBackToLocation;
     TextInputLayout etLocationTitle, etLocationAddress, etLocationContact, etLocationOperationHours;
-    String dateSelected, LocationContact, LocationOperationHours;
+    String LocationContact, LocationOperationHours;
+    String dateSelected;
     TextView tvDateViewed,tvShowLocation;
     ImageButton mDatePicker;
     private RecyclerView rv;
@@ -76,7 +77,6 @@ public class TimeSlotBooking extends AppCompatActivity implements DatePickerDial
         setContentView(R.layout.activity_time_slot_booking);
 
         rv = (RecyclerView) findViewById(R.id.rvTimeSlot);
-        mDatePicker = (ImageButton) findViewById(R.id.img_btn_editDate);
         tvDateViewed = (TextView) findViewById(R.id.tvShowDate);
         btnBook = (Button) findViewById((R.id.btnBook));
         etLocationAddress = findViewById(R.id.etHospitalAddress);
@@ -91,23 +91,10 @@ public class TimeSlotBooking extends AppCompatActivity implements DatePickerDial
 
         int year = Calendar.getInstance().get(Calendar.YEAR);
         int month = Calendar.getInstance().get(Calendar.MONTH);
-        int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-        tvDateViewed.setText(year + "\n " + day + " " + new DateFormatSymbols().getMonths()[month]);
+        int dayOfMonth = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        tvDateViewed.setText("Select A Date");
 
         setListener();
-
-        if(day<10) {
-            dateSelected = ("0" + day + "-" + (month + 1) + "-" + year);
-        }
-        else if( month<10){
-            dateSelected = (day + "-0" + (month + 1) + "-" + year);
-        }
-        else if(day<10 && month<10 ){
-            dateSelected = ("0" + day + "-0" + (month + 1) + "-" + year);
-        }
-        else{
-            dateSelected = day + "-" + (month + 1) + "-" + year;
-        }
 
         Date currentDate = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -122,9 +109,7 @@ public class TimeSlotBooking extends AppCompatActivity implements DatePickerDial
         etLocationOperationHours.getEditText().setText(locationOperationHrs);
         etLocationOperationHours.getEditText().setTextColor(ContextCompat.getColor(this, R.color.black));
 
-        availableSlot(date);
-
-        mDatePicker.setOnClickListener(new View.OnClickListener() {
+        tvDateViewed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDatePickerDialog();
@@ -134,49 +119,52 @@ public class TimeSlotBooking extends AppCompatActivity implements DatePickerDial
         btnBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String locationName = getIntent().getStringExtra(EXTRA_LOCATION_TITLE);
-                String slot = String.valueOf(mTimeSlotAdapter.selectedSlot);
+                if (dateSelected == null) {
+                    Toast.makeText(TimeSlotBooking.this, "Please select a date...", Toast.LENGTH_SHORT).show();
+                } else {
+                    String locationName = getIntent().getStringExtra(EXTRA_LOCATION_TITLE);
+                    String slot = String.valueOf(mTimeSlotAdapter.selectedSlot);
+                    if (slot == "") {
+                        Toast.makeText(TimeSlotBooking.this, "Please select available time slot", Toast.LENGTH_SHORT).show();
+                    } else {
+                        String msg = "Confirm Booking" + locationName + " on " + dateSelected + " " + mTimeSlotAdapter.timeSlot(Integer.valueOf(slot));
+                        AlertDialog.Builder alert = new AlertDialog.Builder(TimeSlotBooking.this);
+                        alert.setTitle("Booking Confirmation");
+                        alert.setMessage(msg);
+                        alert.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                SharedPreferences prefs = getSharedPreferences("myPreferences", MODE_PRIVATE);
+                                String user = prefs.getString(KEY_USER_NAME, null);
 
-                if(slot == ""){
-                    Toast.makeText(TimeSlotBooking.this, "Please select available time slot", Toast.LENGTH_SHORT).show();
-                }else{
-                    String msg = "Confirm Booking" + locationName + " on " + dateSelected + " " + mTimeSlotAdapter.timeSlot(Integer.valueOf(slot));
-                    AlertDialog.Builder alert = new AlertDialog.Builder(TimeSlotBooking.this);
-                    alert.setTitle("Booking Confirmation");
-                    alert.setMessage(msg);
-                    alert.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            SharedPreferences prefs = getSharedPreferences("myPreferences", MODE_PRIVATE);
-                            String user = prefs.getString(KEY_USER_NAME,null);
+                                Map<String, Object> data = new HashMap<>();
+                                data.put("slot", slot);
+                                data.put("user", user);
+                                data.put("date", dateSelected);
+                                data.put("location", locationName);
 
-                            Map<String, Object> data = new HashMap<>();
-                            data.put("slot", slot);
-                            data.put("user", user);
-                            data.put("date" ,dateSelected);
-                            data.put("location" , locationName);
+                                db.collection("userBooking").add(data).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                    @Override
+                                    public void onSuccess(DocumentReference documentReference) {
+                                        Toast.makeText(TimeSlotBooking.this, "Booking Success", Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(TimeSlotBooking.this, "Booking Failure", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        });
+                        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        });
+                        alert.show();
 
-                            db.collection("userBooking").add(data).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                @Override
-                                public void onSuccess(DocumentReference documentReference) {
-                                    Toast.makeText(TimeSlotBooking.this, "Booking Success", Toast.LENGTH_SHORT).show();
-                                    finish();
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(TimeSlotBooking.this, "Booking Failure", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
-                    });
-                    alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
-                    });
-                    alert.show();
-
+                    }
                 }
             }
         });
@@ -191,10 +179,12 @@ public class TimeSlotBooking extends AppCompatActivity implements DatePickerDial
                 this, year, month, day);
 
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_YEAR, +14);
+        calendar.add(Calendar.DAY_OF_YEAR, +7);
+        Date minDate = calendar.getTime();
+        calendar.add(Calendar.DAY_OF_YEAR, +30);
         Date newDate = calendar.getTime();
 //        mDateView.setText(year +"\n " + day +" " + new DateFormatSymbols().getMonths()[month]);
-        datePickerDialog.getDatePicker().setMinDate(new Date().getTime());
+        datePickerDialog.getDatePicker().setMinDate(minDate.getTime());
         datePickerDialog.getDatePicker().setMaxDate(newDate.getTime());//set only can choose next 7 days
         datePickerDialog.show();
     }
@@ -208,16 +198,22 @@ public class TimeSlotBooking extends AppCompatActivity implements DatePickerDial
         availableSlot(date);
         tvDateViewed.setText(year + "\n " + dayOfMonth + " " + new DateFormatSymbols().getMonths()[month]);
 //        Toast.makeText(TimeSlotBooking.this, String.valueOf(month+1), Toast.LENGTH_SHORT).show();
+
+        dateSelected = "";
+
         if(dayOfMonth<10) {
-            dateSelected = ("0" + dayOfMonth + "-" + (month + 1) + "-" + year);
-
-        }else if( month<10){
-
-            dateSelected = (dayOfMonth + "-0" + (month + 1) + "-" + year);
+            dateSelected = dateSelected + "0" + dayOfMonth;
+        }else{
+            dateSelected = dateSelected + dayOfMonth;
         }
-        else{
-            dateSelected = dayOfMonth + "-" + (month + 1) + "-" + year;
+
+        if( month + 1 < 10){
+            dateSelected = dateSelected + "-0" + (month + 1);
+        }else{
+            dateSelected = dateSelected +"-"+ (month + 1);
         }
+
+        dateSelected = dateSelected + "-" + year;
     }
 
     private void availableSlot(String date) {

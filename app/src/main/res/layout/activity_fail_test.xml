@@ -18,7 +18,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:fontFamily="@font/baloo"
-        android:text="Congratulations !"
+        android:text="Sorry !"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="24dp"/>
@@ -28,9 +28,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:text="@string/quiz_pass"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/quiz_fail"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="18dp"/>
@@ -40,36 +40,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5" />
-
         <Button
-            android:id="@+id/btnBackToMenu"
-            android:layout_width="100dp"
+            android:id="@+id/btnBackToInfoMenu"
+            android:layout_width="match_parent"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
             android:layout_height="wrap_content"
             android:text="Close"
-            android:layout_weight="1"
             android:background="@color/red"/>
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.2" />
-
-        <Button
-            android:id="@+id/btnProceedToAppointment"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Act Now"
-            android:background="@color/red"/>
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"/>
 
     </LinearLayout>
 
