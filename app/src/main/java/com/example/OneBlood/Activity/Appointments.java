@@ -1,8 +1,10 @@
 package com.example.OneBlood.Activity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.Nullable;
@@ -19,7 +21,7 @@ import com.example.OneBlood.R;
 import java.util.List;
 
 public class Appointments extends AppCompatActivity {
-    Button btnProceed;
+    Button btnViewAppointment;
     RecyclerView mRecyclerView;
     LocationAdapter mAdapter;
 
@@ -28,8 +30,17 @@ public class Appointments extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_appointment);
 
-        btnProceed = findViewById(R.id.btnMakeAppointment);
+        btnViewAppointment = findViewById(R.id.btnViewAppointment);
         mRecyclerView = findViewById(R.id.myRecyclerView);
+
+        btnViewAppointment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Appointments.this, ViewBooking.class);
+                startActivity(i);
+                finish();
+            }
+        });
 
         LocationLab locationLab = LocationLab.get(Appointments.this);
         List<DonateLocation> locations = locationLab.getLocation();

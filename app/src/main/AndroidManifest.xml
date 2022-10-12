@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MainActivity">
-        <activity android:name=".Activity.PassTest"></activity>
+        <activity android:name=".Activity.ViewBooking"></activity>
+        <activity android:name=".Activity.PassTest" />
         <activity android:name=".Activity.FailTest" />
         <activity android:name=".Activity.TestQuestion" />
         <activity android:name=".Activity.SelfEvaluation" />

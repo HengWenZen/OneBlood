@@ -89,9 +89,6 @@ public class TimeSlotBooking extends AppCompatActivity implements DatePickerDial
         String locationContact = getIntent().getStringExtra(EXTRA_LOCATION_CONTACT);
         String locationOperationHrs = getIntent().getStringExtra(EXTRA_LOCATION_OPERATION_HOUR);
 
-        int year = Calendar.getInstance().get(Calendar.YEAR);
-        int month = Calendar.getInstance().get(Calendar.MONTH);
-        int dayOfMonth = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
         tvDateViewed.setText("Select A Date");
 
         setListener();
