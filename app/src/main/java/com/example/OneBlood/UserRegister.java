@@ -3,6 +3,7 @@ package com.example.OneBlood;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -25,17 +26,19 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class UserRegister extends AppCompatActivity {
 
+    public static final String EXTRA_USER_NAME = "userName";
 
     Button btnRegisterAcc;
     Button btnExistingUser;
     TextInputLayout etFullName, etUserPhone, etUserEmail, etUserPassword,etUserRace;
-    String userName, userEmail, userPhone, userPassword,userRace;
+    String userName, userEmail, userPhone, userPassword,userRace, token;
     ImageView ivBack;
     boolean loginSuccess = false;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -100,6 +103,21 @@ public class UserRegister extends AppCompatActivity {
             etUserRace.setError("Please fill in Race!");
             etUserRace.requestFocus();
         } else {
+            FirebaseMessaging.getInstance().getToken()
+                    .addOnCompleteListener(new OnCompleteListener<String>() {
+                        @Override
+                        public void onComplete(@NonNull Task<String> task) {
+                            if(!task.isSuccessful()){
+                                Log.d("FCM", "Failed to retrieve Token!");
+                                return;
+                            }
+
+                            token = task.getResult();
+                            Log.d("FCM", "FCM Token : " + token);
+
+                        }
+                    });
+
             mAuth.createUserWithEmailAndPassword(userEmail, userPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -109,6 +127,7 @@ public class UserRegister extends AppCompatActivity {
                         user.put("Email", userEmail);
                         user.put("Password", userPassword);
                         user.put("Race", userRace);
+                        user.put("Token", token);
 
                         db.collection("users")
                                 .add(user)
@@ -116,8 +135,8 @@ public class UserRegister extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(DocumentReference documentReference) {
                                         Intent i = new Intent(UserRegister.this, UserRegister2.class);
+                                        i.putExtra(EXTRA_USER_NAME, userName);
                                         startActivity(i);
-                                        finish();
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                             @Override

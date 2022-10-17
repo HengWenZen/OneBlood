@@ -1,17 +1,18 @@
 package com.example.OneBlood.Models;
 
-public class Booking {
+public class BookingEvent {
+
     private String mId;
     private String slot;
     private String locationName;
     private String date;
     private String user;
 
-    public Booking(String mId, String locationName, String date, String slot, String user) {
-        this.mId = mId;
+    public BookingEvent(String id, String locationName, String date, String slot, String user) {
+        mId = id;
+        this.slot = slot;
         this.locationName = locationName;
         this.date = date;
-        this.slot = slot;
         this.user = user;
     }
 

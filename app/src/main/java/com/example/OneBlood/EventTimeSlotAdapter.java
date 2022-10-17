@@ -5,14 +5,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.OneBlood.Models.EventTimeSlot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class EventTimeSlotAdapter extends RecyclerView.Adapter<EventTimeSlotAdapter.EventsHolder> {
@@ -22,11 +29,16 @@ public class EventTimeSlotAdapter extends RecyclerView.Adapter<EventTimeSlotAdap
     List<EventTimeSlot> mEventsTimeSlot;
     List<CardView> mCardViewList;
     String selectedSlot = "";
+    String toTime, startTime;
+    Date mStartTime, mEndTime;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public EventTimeSlotAdapter(Context context, List<EventTimeSlot> eventsTimeSlots){
+    public EventTimeSlotAdapter(Context context, List<EventTimeSlot> eventsTimeSlots, Date startTime, Date endTime){
         this.mContext = context;
         mEventsTimeSlot = eventsTimeSlots;
         mCardViewList = new ArrayList<>();
+        mStartTime = startTime;
+        mEndTime = endTime;
     }
 
 
@@ -68,7 +80,11 @@ public class EventTimeSlotAdapter extends RecyclerView.Adapter<EventTimeSlotAdap
 
     @Override
     public int getItemCount() {
-        return 12;
+        //Get Number of Slot Needed based on the event duration
+        long diff = mEndTime.getTime() - mStartTime.getTime();
+        long diffHours = diff / (60 * 60 * 1000) % 24;
+        int timeDiff = (int) diffHours;
+        return timeDiff;
     }
 
     public class EventsHolder extends RecyclerView.ViewHolder{
@@ -85,22 +101,19 @@ public class EventTimeSlotAdapter extends RecyclerView.Adapter<EventTimeSlotAdap
             itemView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view) {
-//                    Toast.makeText(context, slot.getSlot()+"clicked", Toast.LENGTH_SHORT).show();
                     for(CardView cardView:mCardViewList)
                     {
+                        //Set white background color when the item is not clicked
                         if(cardView.getTag() == null){
                             cardView.setCardBackgroundColor(mContext.getResources().getColor(R.color.white));
                         }
                     }
+                    //Set red background color when the item is clicked
                     event_card_time_slot.setCardBackgroundColor(mContext.getResources().getColor(R.color.red));
                     selectedSlot = String.valueOf(slot);
                 }
             });
-
-
-
         }
-
         public void bindSlot(int position) {
             slot = position;
         }
@@ -108,33 +121,113 @@ public class EventTimeSlotAdapter extends RecyclerView.Adapter<EventTimeSlotAdap
     }
 
     public String timeSlot(int position) {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        Calendar calendar = Calendar.getInstance();
+
+        //Set each slot has one hour duration
         switch (position) {
             case 0:
-                return "8:00-9:00";
+                startTime = sdf.format(mStartTime);
+                calendar.setTime(mStartTime);
+                calendar.add(Calendar.HOUR, 1);
+                toTime = sdf.format(calendar.getTime());
+                return (startTime + "-" + toTime);
+
             case 1:
-                return "9:00-10:00";
+                calendar.setTime(mStartTime);
+                calendar.add(Calendar.HOUR, 2);
+                startTime = sdf.format(calendar.getTime());
+                calendar.add(Calendar.HOUR, 1);
+                toTime = sdf.format(calendar.getTime());
+                return (startTime + "-" + toTime);
+
             case 2:
-                return "10:00-11:00";
+                calendar.setTime(mStartTime);
+                calendar.add(Calendar.HOUR, 3);
+                startTime = sdf.format(calendar.getTime());
+                calendar.add(Calendar.HOUR, 1);
+                toTime = sdf.format(calendar.getTime());
+                return (startTime + "-" + toTime);
+
             case 3:
-                return "11:00-12:00";
+                calendar.setTime(mStartTime);
+                calendar.add(Calendar.HOUR, 4);
+                startTime = sdf.format(calendar.getTime());
+                calendar.add(Calendar.HOUR, 1);
+                toTime = sdf.format(calendar.getTime());
+                return (startTime + "-" + toTime);
+
             case 4:
-                return "12:00-13:00";
+                calendar.setTime(mStartTime);
+                calendar.add(Calendar.HOUR, 5);
+                startTime = sdf.format(calendar.getTime());
+                calendar.add(Calendar.HOUR, 1);
+                toTime = sdf.format(calendar.getTime());
+                return (startTime + "-" + toTime);
+
             case 5:
-                return "13:00-14:00";
+                calendar.setTime(mStartTime);
+                calendar.add(Calendar.HOUR, 6);
+                startTime = sdf.format(calendar.getTime());
+                calendar.add(Calendar.HOUR, 1);
+                toTime = sdf.format(calendar.getTime());
+                return (startTime + "-" + toTime);
+
             case 6:
-                return "14:00-15:00";
+                calendar.setTime(mStartTime);
+                calendar.add(Calendar.HOUR, 7);
+                startTime = sdf.format(calendar.getTime());
+                calendar.add(Calendar.HOUR, 1);
+                toTime = sdf.format(calendar.getTime());
+                return (startTime + "-" + toTime);
+
             case 7:
-                return "15:00-16:00";
+                calendar.setTime(mStartTime);
+                calendar.add(Calendar.HOUR, 8);
+                startTime = sdf.format(calendar.getTime());
+                calendar.add(Calendar.HOUR, 1);
+                toTime = sdf.format(calendar.getTime());
+                return (startTime + "-" + toTime);
+
             case 8:
-                return "16:00-17:00";
+                calendar.setTime(mStartTime);
+                calendar.add(Calendar.HOUR, 9);
+                startTime = sdf.format(calendar.getTime());
+                calendar.add(Calendar.HOUR, 1);
+                toTime = sdf.format(calendar.getTime());
+                return (startTime + "-" + toTime);
+
             case 9:
-                return "17:00-18:00";
+                calendar.setTime(mStartTime);
+                calendar.add(Calendar.HOUR, 10);
+                startTime = sdf.format(calendar.getTime());
+                calendar.add(Calendar.HOUR, 1);
+                toTime = sdf.format(calendar.getTime());
+                return (startTime + "-" + toTime);
+
             case 10:
-                return "18:00-19:00";
+                calendar.setTime(mStartTime);
+                calendar.add(Calendar.HOUR, 11);
+                startTime = sdf.format(calendar.getTime());
+                calendar.add(Calendar.HOUR, 1);
+                toTime = sdf.format(calendar.getTime());
+                return (startTime + "-" + toTime);
             case 11:
-                return "19:00-20:00";
+                calendar.setTime(mStartTime);
+                calendar.add(Calendar.HOUR, 12);
+                startTime = sdf.format(calendar.getTime());
+                calendar.add(Calendar.HOUR, 1);
+                toTime = sdf.format(calendar.getTime());
+                return (startTime + "-" + toTime);
+
             case 12:
-                return "20:00-21:00";
+                calendar.setTime(mStartTime);
+                calendar.add(Calendar.HOUR, 13);
+                startTime = sdf.format(calendar.getTime());
+                calendar.add(Calendar.HOUR, 1);
+                toTime = sdf.format(calendar.getTime());
+                return (startTime + "-" + toTime);
+
             default:
                 return "Closed";
         }

@@ -95,7 +95,7 @@ public class ViewBooking extends AppCompatActivity {
                     alertDataEmpty();
                 }
                 else {
-                    mViewBookingAdapter = new ViewBookingAdapter(ViewBooking.this, mBookings);
+                    mViewBookingAdapter = new ViewBookingAdapter(ViewBooking.this, mBookings, false);
                     rv.setLayoutManager(new LinearLayoutManager(ViewBooking.this));
                     rv.setAdapter(mViewBookingAdapter);
                 }

@@ -19,11 +19,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UserRegister2 extends AppCompatActivity {
+
+    public static final String EXTRA_USER_NAME = "userName";
+
     Button btnNext;
     RadioButton selectedGender;
     RadioGroup radioGroup;
     DatePicker datePicker;
     Firebase db = new Firebase();
+    String userName;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +38,11 @@ public class UserRegister2 extends AppCompatActivity {
         btnNext = findViewById(R.id.btnNext);
         radioGroup = findViewById(R.id.rgUserGender);
         datePicker = findViewById(R.id.dpDateOfBirth);
+
+        Intent intent = getIntent();
+        Bundle b = intent.getExtras();
+
+        userName = (String)b.get(EXTRA_USER_NAME);
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +57,7 @@ public class UserRegister2 extends AppCompatActivity {
             return;
         }else {
             Intent i = new Intent(UserRegister2.this, UserRegister3.class);
+            i.putExtra(EXTRA_USER_NAME, userName);
             startActivity(i);
             finish();
         }
@@ -69,9 +80,11 @@ public class UserRegister2 extends AppCompatActivity {
                     ArrayList<String> list = new ArrayList<>();
 
                     for (Map<String, Object> map : docList) {
-                        Map<String, Object> user = new HashMap<>();
-                        user.put("Gender", gender);
-                        db.updData("users", user, map.get("id").toString());
+                        if(map.get("FullName").toString().equals(userName)) {
+                            Map<String, Object> user = new HashMap<>();
+                            user.put("Gender", gender);
+                            db.updData("users", user, map.get("id").toString());
+                        }
                     }
                 }
             });
@@ -105,9 +118,11 @@ public class UserRegister2 extends AppCompatActivity {
                     ArrayList<String> list = new ArrayList<>();
 
                     for (Map<String, Object> map : docList) {
-                        Map<String, Object> user = new HashMap<>();
-                        user.put("Date of Birth", DOB);
-                        db.updData("users", user, map.get("id").toString());
+                        if(map.get("FullName").toString().equals(userName)) {
+                            Map<String, Object> user = new HashMap<>();
+                            user.put("Date of Birth", DOB);
+                            db.updData("users", user, map.get("id").toString());
+                        }
                     }
                 }
             });

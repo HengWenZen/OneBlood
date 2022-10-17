@@ -21,11 +21,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UserRegister3 extends AppCompatActivity {
+    public static final String EXTRA_USER_NAME = "userName";
 
     Button btnRegisterUser3;
     TextInputLayout etUserPhone, etBloodType;
     AutoCompleteTextView actvBloodType;
-    String userPhoneNo, getUserPhoneNo, getSelectedBloodType;
+    String userPhoneNo, getUserPhoneNo, getSelectedBloodType, userName;
     Firebase db = new Firebase();
 
     @Override
@@ -38,6 +39,12 @@ public class UserRegister3 extends AppCompatActivity {
         etBloodType = findViewById(R.id.spBloodType);
         actvBloodType = findViewById(R.id.actvBloodType);
         final String[] bloodType = getResources().getStringArray(R.array.bloodType);
+
+        Intent intent = getIntent();
+        Bundle b = intent.getExtras();
+
+        userName = (String)b.get(EXTRA_USER_NAME);
+
 
         ArrayAdapter<String> hospitalAdapter = new ArrayAdapter<>(
                 UserRegister3.this,
@@ -100,9 +107,11 @@ public class UserRegister3 extends AppCompatActivity {
                     ArrayList<String> list = new ArrayList<>();
 
                     for (Map<String, Object> map : docList) {
-                        Map<String, Object> user = new HashMap<>();
-                        user.put("phone number", getUserPhoneNo);
-                        db.updData("users", user, map.get("id").toString());
+                        if(map.get("FullName").toString().equals(userName)) {
+                            Map<String, Object> user = new HashMap<>();
+                            user.put("phone number", getUserPhoneNo);
+                            db.updData("users", user, map.get("id").toString());
+                        }
                     }
                 }
             });
@@ -124,9 +133,11 @@ public class UserRegister3 extends AppCompatActivity {
                     ArrayList<String> list = new ArrayList<>();
 
                     for (Map<String, Object> map : docList) {
-                        Map<String, Object> user = new HashMap<>();
-                        user.put("blood type", getSelectedBloodType);
-                        db.updData("users", user, map.get("id").toString());
+                        if(map.get("FullName").toString().equals(userName)) {
+                            Map<String, Object> user = new HashMap<>();
+                            user.put("blood type", getSelectedBloodType);
+                            db.updData("users", user, map.get("id").toString());
+                        }
                     }
                 }
             });

@@ -2,7 +2,7 @@ package com.example.OneBlood.Models;
 
 public class Events {
 
-    String mStartDate, mEndDate, mOperationHrs, mLocation, imageURL, mId, mTitle, mDescription;
+    String mStartDate, mEndDate, mLocation, imageURL, mId, mTitle, mDescription, mStartTime, mEndTime;
 
     public String getStartDate() {
         return mStartDate;
@@ -18,14 +18,6 @@ public class Events {
 
     public void setEndDate(String endDate) {
         mEndDate = endDate;
-    }
-
-    public String getOperationHrs() {
-        return mOperationHrs;
-    }
-
-    public void setOperationHrs(String operationHrs) {
-        mOperationHrs = operationHrs;
     }
 
     public String getLocation() {
@@ -66,5 +58,21 @@ public class Events {
 
     public void setDescription(String description) {
         mDescription = description;
+    }
+
+    public String getStartTime() {
+        return mStartTime;
+    }
+
+    public void setStartTime(String startTime) {
+        mStartTime = startTime;
+    }
+
+    public String getEndTime() {
+        return mEndTime;
+    }
+
+    public void setEndTime(String endTime) {
+        mEndTime = endTime;
     }
 }

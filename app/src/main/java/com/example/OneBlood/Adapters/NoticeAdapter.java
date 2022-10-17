@@ -27,13 +27,10 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.NoticeHold
     public static final String EXTRA_NOTICE_HOSPITAL = "hospitalName";
     public static final String EXTRA_NOTICE_ID = "noticeID";
 
-
-
     public NoticeAdapter(List<Notice> notice, Context context){
         mNotices = notice;
         mContext = context;
     }
-
 
     @NonNull
     @Override

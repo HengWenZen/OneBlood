@@ -25,10 +25,12 @@ import java.util.List;
 public class ViewBookingAdapter extends RecyclerView.Adapter<ViewBookingAdapter.ViewBookingHolder> {
     private Context mContext;
     private List<Booking> mBookingList;
+    boolean isHospital = false;
 
-    public ViewBookingAdapter(Context context, List<Booking> viewAppointments) {
+    public ViewBookingAdapter(Context context, List<Booking> viewAppointments, boolean isHospital) {
         this.mContext = context;
         this.mBookingList = viewAppointments;
+        this.isHospital = isHospital;
     }
 
     @NonNull
@@ -46,6 +48,16 @@ public class ViewBookingAdapter extends RecyclerView.Adapter<ViewBookingAdapter.
         holder.appointmentDate.setText(booking.getDate());
         holder.appointmentTime.setText(timeSlot(Integer.valueOf(booking.getSlot())));
 
+        if(isHospital == true){
+           holder.locationName.setVisibility(View.INVISIBLE);
+           holder.appointmentUser.setVisibility(View.VISIBLE);
+           holder.appointmentUser.setText(booking.getUser());
+           holder.btnCancelAppointment.setVisibility(View.INVISIBLE);
+        }else{
+            holder.btnCancelAppointment.setVisibility(View.VISIBLE);
+            holder.locationName.setVisibility(View.VISIBLE);
+            holder.appointmentUser.setVisibility(View.INVISIBLE);
+        }
         holder.bindBooking(booking);
     }
 
@@ -65,7 +77,7 @@ public class ViewBookingAdapter extends RecyclerView.Adapter<ViewBookingAdapter.
             locationName = itemView.findViewById(R.id.tvBookingLocationName);
             appointmentDate = itemView.findViewById(R.id.tvBookingDate);
             appointmentTime = itemView.findViewById(R.id.tvBookingTime);
-            appointmentUser = itemView.findViewById(R.id.tv_BookingUser);
+            appointmentUser = itemView.findViewById(R.id.tvBookingUser);
             btnCancelAppointment = itemView.findViewById(R.id.btn_Cancel_Booking);
 
             btnCancelAppointment.setOnClickListener(new View.OnClickListener() {

@@ -16,10 +16,15 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.internal.FirebaseInstanceIdInternal;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingService;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -32,7 +37,7 @@ public class UserLogin extends AppCompatActivity {
     Button btnRegister;
     TextView tvAdminLogin;
     TextView tvHospitalLogin;
-    String userName, userEmail, userPhone, userPassword, userId;
+    String userName, userEmail, userPhone, userPassword, userId, userBloodType, token;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     Firebase firebase = new Firebase();
     FirebaseAuth mAuth;
@@ -59,7 +64,22 @@ public class UserLogin extends AppCompatActivity {
         mPreferences = getSharedPreferences("myPreferences", MODE_PRIVATE);
 
         if (mPreferences.contains(KEY_USER_EMAIL) && mPreferences.contains(KEY_PASSWORD)) {
-            Intent i = new Intent(UserLogin.this,UserDashBoard.class);
+            FirebaseMessaging.getInstance().deleteToken();
+            FirebaseMessaging.getInstance().subscribeToTopic(userBloodType);
+            FirebaseMessaging.getInstance().getToken()
+                    .addOnCompleteListener(new OnCompleteListener<String>() {
+                        @Override
+                        public void onComplete(@NonNull Task<String> task) {
+                            if(!task.isSuccessful()){
+                                Log.d("FCM", "Failed to retrieve Token!");
+                                return;
+                            }
+
+                            token = task.getResult();
+                            Log.d("FCM", "FCM Token : " + token);
+                        }
+                    });
+            Intent i = new Intent(UserLogin.this, UserDashBoard.class);
             startActivity(i);
             finish();
         }
@@ -123,8 +143,55 @@ public class UserLogin extends AppCompatActivity {
                                     if (map.get("Email").toString().equals(userEmail)) {
                                         userName = map.get("FullName").toString();
                                         userId = map.get("id").toString();
+                                        userBloodType = map.get("blood type").toString();
 
-                                        Toast.makeText(UserLogin.this, "Logged in Successfully!" + userName, Toast.LENGTH_SHORT).show();
+                                        if(userBloodType.equals("A+")){
+                                            userBloodType = "A_Positive";
+                                        }else if(userBloodType.equals("B+")) {
+                                            userBloodType = "B_Positive";
+                                        }else if(userBloodType .equals("AB+")) {
+                                            userBloodType = "AB_Positive";
+                                        }else if(userBloodType.equals("O+")) {
+                                            userBloodType = "O_Positive";
+                                        }else if(userBloodType.equals("A-")) {
+                                            userBloodType = "A_Negative";
+                                        }else if(userBloodType.equals("B-")) {
+                                            userBloodType = "B_Negative";
+                                        }else if(userBloodType.equals("AB-")) {
+                                            userBloodType = "AB_Negative";
+                                        }else if(userBloodType.equals("O-")) {
+                                            userBloodType = "O_Negative";
+                                        }
+
+                                        FirebaseMessaging.getInstance().deleteToken();
+                                        FirebaseMessaging.getInstance().subscribeToTopic(userBloodType).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_LONG).show();
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Toast.makeText(getApplicationContext(),"Fail to Subscribe " + e.getMessage(),Toast.LENGTH_LONG).show();
+                                            }
+                                        });
+
+                                        FirebaseMessaging.getInstance().getToken()
+                                                .addOnCompleteListener(new OnCompleteListener<String>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<String> task) {
+                                                        if(!task.isSuccessful()){
+                                                            Log.d("FCM", "Failed to retrieve Token!");
+                                                            return;
+                                                        }
+
+                                                        token = task.getResult();
+                                                        Log.d("FCM", "FCM Token : " + token);
+                                                    }
+                                                });
+                                        Toast.makeText(UserLogin.this, userBloodType + token, Toast.LENGTH_SHORT).show();
+
+                                        Toast.makeText(UserLogin.this, "Logged in Successfully!", Toast.LENGTH_SHORT).show();
                                         Intent i = new Intent(UserLogin.this, UserDashBoard.class);
                                         startActivity(i);
                                         finish();

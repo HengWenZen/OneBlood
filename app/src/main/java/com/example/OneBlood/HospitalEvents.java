@@ -6,12 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.text.format.DateFormat;
 import android.text.method.HideReturnsTransformationMethod;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.OneBlood.Activity.HospitalMenu;
@@ -28,6 +31,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -40,6 +44,7 @@ import org.w3c.dom.Text;
 import java.net.URI;
 import java.security.PublicKey;
 import java.text.DateFormatSymbols;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -48,6 +53,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.SSLEngineResult;
 
@@ -60,10 +66,13 @@ public class HospitalEvents extends AppCompatActivity {
 
    private static int mYear1, mMonth1, mDay1, mYear2, mMonth2, mDay2;
     EditText etHospitalEventStartDate, etHospitalEventEndDate;
-    TextInputLayout etHospitalEventTitle, etHospitalEventLocation, etHospitalEventDescription, etHospitalEventOperationHrs;
+    TextInputLayout etHospitalEventTitle, etHospitalEventLocation, etHospitalEventDescription, etHospitalEventOperationHrs, etHospitalEventStartTime, etHospitalEventEndTime;
+    TextInputEditText etStartTime, etEndTime;
     Button btnPostEvent, btnChoosePic;
     ImageView ivBackToHome, ivEventPic, ivStartDate, ivEndDate;
     String randomNum, generatedFilePath, startDate, endDate;
+    int startHour, startMinute, endHour, endMinute;
+    Date mStartDate, mEndDate, startTime, endTime;
     Uri imageUri;
     EditText clickedEditText;
     private final int GALLERY_REQ_CODE = 1000;
@@ -81,7 +90,10 @@ public class HospitalEvents extends AppCompatActivity {
         etHospitalEventEndDate = findViewById(R.id.etEventEndDate);
         etHospitalEventTitle = findViewById(R.id.etHospitalEventTitle);
         etHospitalEventDescription = findViewById(R.id.etHospitalEventDescription);
-        etHospitalEventOperationHrs = findViewById(R.id.etHospitalEventOperationHours);
+        etHospitalEventStartTime = findViewById(R.id.etHospitalEventStartTime);
+        etHospitalEventEndTime = findViewById(R.id.etHospitalEventEndTime);
+        etStartTime = findViewById(R.id.startTime);
+        etEndTime = findViewById(R.id.endTime);
         btnPostEvent = findViewById(R.id.btnPostEvent);
         btnChoosePic = findViewById(R.id.btnChoosePic);
         ivStartDate = findViewById(R.id.ivStartDate);
@@ -113,8 +125,6 @@ public class HospitalEvents extends AppCompatActivity {
                calendar.add(DAY_OF_MONTH, 14);
                Date StartDate = calendar.getTime();
 
-//        mDateView.setText(year +"\n " + day +" " + new DateFormatSymbols().getMonths()[month]);
-
                datePickerDialog.getDatePicker().setMinDate(StartDate.getTime());
                calendar.add(DAY_OF_MONTH, 60);
                Date EndDate = calendar.getTime();
@@ -143,13 +153,55 @@ public class HospitalEvents extends AppCompatActivity {
            }
        });
 
+       etStartTime.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+                //Initialize time pickerdialog
+               TimePickerDialog timePickerDialog = new TimePickerDialog(HospitalEvents.this, new TimePickerDialog.OnTimeSetListener() {
+                   @Override
+                   public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                       startHour = hourOfDay;
+                       startMinute = minute;
+
+                       Calendar calendar = Calendar.getInstance();
+                       calendar.set(0,0,0,startHour,startMinute);
+                       startTime = calendar.getTime();
+                       etStartTime.setText(DateFormat.format("hh:mm aa", calendar));
+
+                   }
+               }, 12, 0, false);
+               timePickerDialog.updateTime(startHour, startMinute);
+               timePickerDialog.show();
+           }
+       });
+
+        etEndTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Initialize time pickerdialog
+                TimePickerDialog timePickerDialog = new TimePickerDialog(HospitalEvents.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        endHour = hourOfDay;
+                        endMinute = minute;
+
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(0,0,0,endHour,endMinute);
+                        endTime = calendar.getTime();
+                        etEndTime.setText(DateFormat.format("hh:mm aa", calendar));
+
+                    }
+                }, 12, 0, false);
+                timePickerDialog.updateTime(endHour, endMinute);
+                timePickerDialog.show();
+            }
+        });
     }
 
     private void setListener() {
         ivBackToHome.setOnClickListener(v -> onBackPressed());
         btnPostEvent.setOnClickListener(v -> postEvent());
         btnChoosePic.setOnClickListener(v -> choosePic());
-
     }
 
     private void update() {
@@ -158,18 +210,29 @@ public class HospitalEvents extends AppCompatActivity {
         clickedEditText.setText(sdf.format(myCalendar.getTime()));
     }
 
-    private void postEvent(){
-        String eventLocation, eventOperationHrs, eventStartDate, eventEndDate, eventTitle, eventDescription;
+    private void postEvent() {
+        String eventLocation, eventStartDate, eventEndDate, eventTitle, eventDescription, eventStartTime, eventEndTime;
         eventLocation = etHospitalEventLocation.getEditText().getText().toString().trim();
         eventTitle = etHospitalEventTitle.getEditText().getText().toString().trim();
         eventDescription = etHospitalEventDescription.getEditText().getText().toString().trim();
-        eventOperationHrs = etHospitalEventOperationHrs.getEditText().getText().toString().trim();
+        eventStartTime = etHospitalEventStartTime.getEditText().getText().toString().trim();
+        eventEndTime = etHospitalEventEndTime.getEditText().getText().toString().trim();
         eventStartDate = etHospitalEventStartDate.getText().toString().trim();
         eventEndDate = etHospitalEventEndDate.getText().toString().trim();
 
-        if(imageUri == null){
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        try {
+            mStartDate = df.parse(eventStartDate);
+            mEndDate = df.parse(eventEndDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if (imageUri == null) {
+            //Check if there is any image selected
             Toast.makeText(this, "Please Select an Image!", Toast.LENGTH_SHORT).show();
-        }else {
+        } else {
+            //Validate user input to make sure no empty field
             if (TextUtils.isEmpty(eventTitle)) {
                 etHospitalEventTitle.setError("Please fill in Request Title!");
                 etHospitalEventTitle.requestFocus();
@@ -188,39 +251,55 @@ public class HospitalEvents extends AppCompatActivity {
 
             } else if (TextUtils.isEmpty(eventEndDate)) {
                 Toast.makeText(this, "Please select the end day!", Toast.LENGTH_SHORT).show();
-                etHospitalEventStartDate.requestFocus();
+                etHospitalEventEndDate.requestFocus();
 
-            } else if (TextUtils.isEmpty(eventOperationHrs)) {
-                etHospitalEventOperationHrs.setError("Please fill in Request Location!");
-                etHospitalEventOperationHrs.requestFocus();
+            } else if (TextUtils.isEmpty(eventStartTime)) {
+                etHospitalEventStartTime.setError("Please fill in Start Time!");
+                etHospitalEventStartTime.requestFocus();
 
+            }else if (TextUtils.isEmpty(eventEndTime)) {
+                etHospitalEventEndTime.setError("Please fill in Start Time!");
+                etHospitalEventEndTime.requestFocus();
             } else {
-                uploadPicture();
-                Map<String, Object> event = new HashMap<>();
-                event.put("title", eventTitle);
-                event.put("description", eventDescription);
-                event.put("location", eventLocation);
-                event.put("imageUri", randomNum);
-                event.put(START_DATE, eventStartDate);
-                event.put(END_DATE, eventEndDate);
-                event.put("time", eventOperationHrs);
+                long diff = mEndDate.getTime() - mStartDate.getTime();
+                long days = TimeUnit.MILLISECONDS.toDays(diff);
+                int numberOfDays = (int) days;
 
-                db.collection("events")
-                        .add(event)
-                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                            @Override
-                            public void onSuccess(DocumentReference documentReference) {
-                                Toast.makeText(HospitalEvents.this, "Event Posted Successfully !", Toast.LENGTH_SHORT).show();
-                                Intent i = new Intent(HospitalEvents.this, HospitalMenu.class);
-                                startActivity(i);
-                                finish();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(HospitalEvents.this, "Fail to post Event. Please Try Again.", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                if (numberOfDays < 1) {
+                    //Check if End Date is greater than Start Date
+                    Toast.makeText(this, "End Date cannot be greater than or equal to Start Date!", Toast.LENGTH_SHORT).show();
+                    etHospitalEventStartDate.requestFocus();
+                    etHospitalEventEndDate.requestFocus();
+                } else {
+                    uploadPicture();
+                    Map<String, Object> event = new HashMap<>();
+                    event.put("title", eventTitle);
+                    event.put("description", eventDescription);
+                    event.put("location", eventLocation);
+                    event.put("imageUri", randomNum);
+                    event.put(START_DATE, eventStartDate);
+                    event.put(END_DATE, eventEndDate);
+                    event.put("startTime", eventStartTime);
+                    event.put("endTime", eventEndTime);
+
+                    //Save event details into Firebase Database
+                    db.collection("events")
+                            .add(event)
+                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+                                    Toast.makeText(HospitalEvents.this, "Event Posted Successfully !", Toast.LENGTH_SHORT).show();
+                                    Intent i = new Intent(HospitalEvents.this, HospitalMenu.class);
+                                    startActivity(i);
+                                    finish();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(HospitalEvents.this, "Fail to post Event. Please Try Again.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
         }
     }

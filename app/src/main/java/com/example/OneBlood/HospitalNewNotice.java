@@ -14,12 +14,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.OneBlood.Activity.HospitalMenu;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
@@ -124,6 +131,48 @@ public class HospitalNewNotice extends AppCompatActivity {
                     Toast.makeText(HospitalNewNotice.this, "Fail to Submit Request!" + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
+            sentPush("Emergency Request");
         }
+    }
+
+    public void sentPush(String title){
+
+        RequestQueue mRequestQue = Volley.newRequestQueue(this);
+
+        // Create the json object to store the notification details //
+        JSONObject json = new JSONObject();
+        try
+        {
+            // Set the topic, title and body of the notification //
+            json.put("to", "/topics/" + noticeTitle);
+            JSONObject notificationObj = new JSONObject();
+            notificationObj.put("title", "Announcement From " + noticePostedBy);
+            notificationObj.put("body", title);
+
+            json.put("notification", notificationObj);
+
+            // Set the credentials to send the notification API //
+            String URL = "https://fcm.googleapis.com/fcm/send";
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL,
+                    json,
+                    response -> Log.d("MUR", "onResponse: " + response.toString()),
+                    error -> Log.d("MUR", "onError: " + error.networkResponse)
+            ) {
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> header = new HashMap<>();
+                    header.put("content-type", "application/json");
+                    header.put("authorization", "key=AAAA0RiHfKQ:APA91bGBj2PS5EEmgcFr5UBIRX0nxZLyCTbdYuhY1KikYOpyqqJLmzJtSdoNHJDcqPwehtNZjUNM1F-7V7o32Sp0yaVRacNO_7kNdp0fc4ylHGNeRJnrO5DWjGLOyJkYY5WjuGJmMWM4");
+                    return header;
+                }
+            };
+
+            mRequestQue.add(request);
+        }
+        catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
+
     }
 }

@@ -29,6 +29,8 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventHolde
     public static final String EXTRA_EVENT_OPERATION_HOUR = "time";
     public static final String EXTRA_EVENT_START_DATE = "startDate";
     public static final String EXTRA_EVENT_END_DATE = "endDate";
+    public static final String EXTRA_EVENT_START_TIME = "startTime";
+    public static final String EXTRA_EVENT_END_TIME = "endTime";
     public static SharedPreferences mPreferences;
     private final String SHARED_PREF = "myPreferences";
     private final String KEY_USER = "user";
@@ -85,8 +87,9 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventHolde
                     i.putExtra(EXTRA_EVENT_LOCATION, mEvents.getLocation());
                     i.putExtra(EXTRA_EVENT_START_DATE, mEvents.getStartDate());
                     i.putExtra(EXTRA_EVENT_END_DATE, mEvents.getEndDate());
-                    i.putExtra(EXTRA_EVENT_OPERATION_HOUR, mEvents.getOperationHrs());
                     i.putExtra(EXTRA_EVENT_DESCRIPTION, mEvents.getDescription());
+                    i.putExtra(EXTRA_EVENT_START_TIME, mEvents.getStartTime());
+                    i.putExtra(EXTRA_EVENT_END_TIME, mEvents.getEndTime());
                     mContext.startActivity(i);
                 }
             });

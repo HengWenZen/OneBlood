@@ -27,6 +27,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -79,6 +80,11 @@ public class UserMainMenu extends AppCompatActivity implements OnMapReadyCallbac
     private final String KEY_PASSWORD = "password";
     private final String KEY_USER_EMAIL = "userEmail";
 
+    public static final String EXTRA_LOCATION_TITLE = "location_name";
+    public static final String EXTRA_LOCATION_ADDRESS = "location_address";
+    public static final String EXTRA_LOCATION_CONTACT = "location_contact";
+    public static final String EXTRA_LOCATION_OPERATION_HOUR = "location_operation_hours";
+
     boolean isPermissionGranted;
     GoogleMap mGoogleMap;
     FloatingActionButton fab;
@@ -89,8 +95,9 @@ public class UserMainMenu extends AppCompatActivity implements OnMapReadyCallbac
     Toolbar mToolbar;
     StorageReference storageReference;
     ImageView mPopupImage;
-    String imageId;
+    String imageId, locationTitle, locationAddress, locationContact,locationOperationHrs;
     private List<DonateLocation> mDonateLocations = new ArrayList<>();
+
 
 
     @Override
@@ -237,7 +244,7 @@ public class UserMainMenu extends AppCompatActivity implements OnMapReadyCallbac
 
                 PopupWindow popupWindow = new PopupWindow(popWindow);
                 popupWindow.setWidth(width-40);
-                popupWindow.setHeight(height/2-300);
+                popupWindow.setHeight(height/2-400);
                 popupWindow.setFocusable(true);
 
                 popupWindow.showAtLocation(popWindow, Gravity.BOTTOM, 0, 150);
@@ -255,16 +262,34 @@ public class UserMainMenu extends AppCompatActivity implements OnMapReadyCallbac
 
                 TextView mPopText = popWindow.findViewById(R.id.tvPopTitle);
                 TextView mPopAddress = popWindow.findViewById(R.id.tvPopAddress);
+                Button btnViewLocation = popWindow.findViewById(R.id.btnViewLocation);
                 mPopupImage =  popWindow.findViewById(R.id.ivPopupImage);
 
                 for (DonateLocation location : mDonateLocations)
                 {
                     if (location.getID().equals(marker.getTitle())){
                     mPopText.setText(location.getTitle());
-                    mPopAddress.setText("Address : " + location.getAddress());
+                    mPopAddress.setText(location.getAddress());
+                    locationTitle = location.getTitle();
+                    locationAddress = location.getAddress();
+                    locationContact = location.getContact();
+                    locationOperationHrs = location.getOperationHrs();
                     imageId = location.getImageUrl();
                     }
                 }
+
+                btnViewLocation.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(UserMainMenu.this, TimeSlotBooking.class);
+                        i.putExtra(EXTRA_LOCATION_TITLE, locationTitle);
+                        i.putExtra(EXTRA_LOCATION_ADDRESS, locationAddress);
+                        i.putExtra(EXTRA_LOCATION_CONTACT, locationContact);
+                        i.putExtra(EXTRA_LOCATION_OPERATION_HOUR, locationOperationHrs);
+                        startActivity(i);
+                        popupWindow.dismiss();
+                    }
+                });
 
                 storageReference = FirebaseStorage.getInstance().getReference();
                 StorageReference ref

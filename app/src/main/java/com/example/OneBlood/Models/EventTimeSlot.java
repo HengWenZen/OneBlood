@@ -1,10 +1,14 @@
 package com.example.OneBlood.Models;
 
+import java.util.Date;
+
 public class EventTimeSlot {
     private String slot;
     private String location;
     private String user;
     private String date;
+    private Date startTime;
+    private Date endTime;
 
 
     public String getUser() {

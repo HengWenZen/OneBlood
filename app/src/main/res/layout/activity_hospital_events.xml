@@ -233,41 +233,40 @@
 
             </LinearLayout>
 
-            <!--
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/etHospitalEventEndDate"
+                android:id="@+id/etHospitalEventStartTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:hint="@string/event_endDate"
-                app:startIconDrawable="@drawable/ic_calendar"
+                app:startIconDrawable="@drawable/ic_menu"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:startIconTint="@color/black"
                 app:hintTextColor="@color/black"
                 android:textColorHint="@color/black"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/black"
+                android:clickable="true"
                 app:boxStrokeWidthFocused="2dp"
                 app:boxStrokeColor="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/startTime"
+                    android:clickable="true"
+                    android:focusableInTouchMode="false"
+                    android:hint="Start Date"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent" />
             </com.google.android.material.textfield.TextInputLayout>
-            -->
-
-
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/etHospitalEventOperationHours"
+                android:id="@+id/etHospitalEventEndTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:hint="@string/location_operation_hours"
                 app:startIconDrawable="@drawable/ic_menu"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:startIconTint="@color/black"
@@ -276,9 +275,14 @@
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/black"
                 app:boxStrokeWidthFocused="2dp"
+                android:clickable="true"
                 app:boxStrokeColor="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/endTime"
+                    android:clickable="true"
+                    android:focusableInTouchMode="false"
+                    android:hint="End Date"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </com.google.android.material.textfield.TextInputLayout>

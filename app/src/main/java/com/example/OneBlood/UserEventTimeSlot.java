@@ -50,6 +50,8 @@ public class UserEventTimeSlot extends AppCompatActivity implements DatePickerDi
     public static final String EXTRA_EVENT_OPERATION_HOUR = "time";
     public static final String EXTRA_EVENT_START_DATE = "startDate";
     public static final String EXTRA_EVENT_END_DATE = "endDate";
+    public static final String EXTRA_EVENT_START_TIME = "startTime";
+    public static final String EXTRA_EVENT_END_TIME = "endTime";
     public static SharedPreferences mPreferences;
     private final String SHARED_PREF = "myPreferences";
     private final String KEY_USER = "user";
@@ -62,8 +64,8 @@ public class UserEventTimeSlot extends AppCompatActivity implements DatePickerDi
     TextView tvShowEventDate;
     Button btnBookEventTimeSlot;
     RecyclerView rv;
-    Date mStartDate, mEndDate;
-    String dateSelected, eventTitle, eventLocation, eventStartDate, eventEndDate, eventOperationHour;
+    Date mStartDate, mEndDate, mStartTime, mEndTime;
+    String dateSelected, eventTitle, eventLocation, eventStartDate, eventEndDate, eventStartTime, eventEndTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +86,8 @@ public class UserEventTimeSlot extends AppCompatActivity implements DatePickerDi
         eventEndDate = getIntent().getStringExtra(EXTRA_EVENT_END_DATE);
         eventStartDate = getIntent().getStringExtra(EXTRA_EVENT_START_DATE);
         eventTitle = getIntent().getStringExtra(EXTRA_EVENT_TITLE);
+        eventStartTime = getIntent().getStringExtra(EXTRA_EVENT_START_TIME);
+        eventEndTime = getIntent().getStringExtra(EXTRA_EVENT_END_TIME);
         tvShowEventDate.setText("Select Date");
 
 
@@ -92,7 +96,16 @@ public class UserEventTimeSlot extends AppCompatActivity implements DatePickerDi
             String eventStartDate = getIntent().getStringExtra(EXTRA_EVENT_START_DATE);
             mStartDate = df.parse(eventStartDate);
             String date = df.format(mStartDate);
-            availableSlot(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        SimpleDateFormat time = new SimpleDateFormat("hh:mm aa");
+        try {
+            eventStartTime = getIntent().getStringExtra(EXTRA_EVENT_START_TIME);
+            eventEndTime = getIntent().getStringExtra(EXTRA_EVENT_END_TIME);
+            mStartTime = time.parse(eventStartTime);
+            mEndTime = time.parse(eventEndTime);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -245,7 +258,7 @@ public class UserEventTimeSlot extends AppCompatActivity implements DatePickerDi
                         }
                         dialog.dismiss();
                         rv.setHasFixedSize(true);
-                        mEventTimeSlotAdapter = new EventTimeSlotAdapter(UserEventTimeSlot.this, mEventTimeSlots);
+                        mEventTimeSlotAdapter = new EventTimeSlotAdapter(UserEventTimeSlot.this, mEventTimeSlots, mStartTime, mEndTime);
                         rv.setAdapter(mEventTimeSlotAdapter);
                         rv.setLayoutManager(new GridLayoutManager(UserEventTimeSlot.this, 3));
                     }

@@ -47,7 +47,6 @@ public class EventTimeSlotLab {
                                     events.setTitle(document.get("title").toString());
                                     events.setEndDate(document.get("endDate").toString());
                                     events.setStartDate(document.get("startDate").toString());
-                                    events.setOperationHrs(document.get("time").toString());
                                     events.setImageURL(document.get("imageUri").toString());
                                     events.setDescription(document.get("description").toString());
                                     events.setLocation(document.get("location").toString());

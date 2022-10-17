@@ -13,8 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.OneBlood.HospitalEvents;
 import com.example.OneBlood.HospitalLogin;
 import com.example.OneBlood.R;
-import com.example.OneBlood.UserLogin;
-import com.example.OneBlood.UserMainMenu;
 
 public class HospitalMenu extends AppCompatActivity {
     TextView tvTextView;
@@ -40,10 +38,28 @@ public class HospitalMenu extends AppCompatActivity {
             }
         });
 
+        btnHospitalAppointments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(HospitalMenu.this, HospitalViewBooking.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
         btnHospitalNotice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(HospitalMenu.this, HospitalNoticeMenu.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
+        btnHospitalEmergency.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(HospitalMenu.this, HospitalEmergencyNotice.class);
                 startActivity(i);
                 finish();
             }
@@ -61,10 +77,5 @@ public class HospitalMenu extends AppCompatActivity {
                 finish();
             }
         });
-
-
-
-
-
     }
 }

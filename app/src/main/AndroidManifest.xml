@@ -14,7 +14,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MainActivity">
-        <activity android:name=".Activity.ViewBooking"></activity>
+        <activity android:name=".Activity.HospitalEmergencyNotice"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"/>
+        <activity android:name=".Activity.HospitalViewBooking" />
+        <activity android:name=".Activity.ViewBooking" />
         <activity android:name=".Activity.PassTest" />
         <activity android:name=".Activity.FailTest" />
         <activity android:name=".Activity.TestQuestion" />
@@ -66,6 +69,14 @@
             android:name=".UserRegister"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity android:name=".UserMainMenu" />
+
+        <service
+            android:name=".PushNotification"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
         <meta-data
             android:name="com.google.android.gms.version"

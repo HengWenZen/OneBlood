@@ -47,7 +47,8 @@ public class EventLab {
                                     events.setId(document.getId());
                                     events.setTitle(document.get("title").toString());
                                     events.setDescription(document.get("description").toString());
-                                    events.setOperationHrs(document.get("time").toString());
+                                    events.setStartTime(document.get("startTime").toString());
+                                    events.setEndTime(document.get("endTime").toString());
                                     events.setImageURL(document.get("imageUri").toString());
                                     events.setLocation(document.get("location").toString());
                                     events.setStartDate(document.get("startDate").toString());

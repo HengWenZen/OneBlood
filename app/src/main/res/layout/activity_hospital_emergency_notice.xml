@@ -15,7 +15,7 @@
         android:padding="5dp">
 
         <ImageView
-            android:id="@+id/ivBackToMenu"
+            android:id="@+id/ivBackToHospitalMenu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_back"
@@ -23,14 +23,14 @@
             android:layout_margin="12dp"/>
 
         <TextView
-            android:id="@+id/tvNewNotice"
+            android:id="@+id/tvNewEmergency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:layout_weight="1"
             android:fontFamily="@font/baloo"
             android:padding="5dp"
-            android:text="New Notice"
+            android:text="New Emergency Request"
             android:textSize="24dp" />
 
     </LinearLayout>
@@ -43,19 +43,8 @@
         android:orientation="vertical"
         android:layout_marginTop="10dp">
 
-        <TextView
-            android:id="@+id/tvNoticeDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginEnd="16dp"
-            android:layout_weight="1"
-            android:text="TextView"
-            android:textSize="15dp" />
-
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/etNoticeTitle"
+            android:id="@+id/etEmergencyDate"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -79,7 +68,31 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/etHospitalName"
+            android:id="@+id/etEmergencyTitle"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="16dp"
+            android:hint="@string/request_title"
+            android:textColorHint="@color/black"
+            app:boxStrokeColor="@color/black"
+            app:boxStrokeWidthFocused="2dp"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/black"
+            app:hintTextColor="@color/black"
+            app:startIconDrawable="@drawable/ic_menu"
+            app:startIconTint="@color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/etNameOfHospital"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -103,7 +116,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/etNoticeDescription"
+            android:id="@+id/etEmergencyDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
@@ -131,12 +144,30 @@
                 android:scrollHorizontally="false"/>
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/etEmergencyBloodType"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="6dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:hint="@string/select_bloodType"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu">
+
+            <AutoCompleteTextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:id="@+id/actvEmergencyBloodType"
+                android:inputType="" />
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
     <Space
         android:layout_width="match_parent"
         android:layout_height="250dp"/>
     <Button
-        android:id="@+id/btnHospitalPostNotice"
+        android:id="@+id/btnHospitalPostEmergency"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
