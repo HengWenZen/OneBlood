@@ -14,8 +14,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MainActivity">
-        <activity android:name=".Activity.HospitalEmergencyNotice"
+        <activity android:name=".Activity.HospitalViewBookingDetails"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"/>
+        <activity android:name=".Activity.UserViewBookingDetails"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"/>
+        <activity
+            android:name=".Activity.HospitalEmergencyNotice"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity android:name=".Activity.HospitalViewBooking" />
         <activity android:name=".Activity.ViewBooking" />
         <activity android:name=".Activity.PassTest" />

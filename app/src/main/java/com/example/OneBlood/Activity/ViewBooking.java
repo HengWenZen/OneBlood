@@ -53,7 +53,7 @@ public class ViewBooking extends AppCompatActivity {
         String user = prefs.getString(KEY_USER_NAME, null);
 
         rv = findViewById(R.id.rvViewBooking);
-        btnCancelAppointment = findViewById(R.id.btn_Cancel_Booking);
+        btnCancelAppointment = findViewById(R.id.btn_view_booking);
 
         loadExistingAppointment(user);
     }
