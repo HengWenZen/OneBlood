@@ -37,7 +37,7 @@ public class UserLogin extends AppCompatActivity {
     Button btnRegister;
     TextView tvAdminLogin;
     TextView tvHospitalLogin;
-    String userName, userEmail, userPhone, userPassword, userId, userBloodType, token;
+    String userName, userEmail, userPhone, userPassword, userId, userBloodType, token, userStatus;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     Firebase firebase = new Firebase();
     FirebaseAuth mAuth;
@@ -48,6 +48,7 @@ public class UserLogin extends AppCompatActivity {
     private final String KEY_USER_NAME = "userName";
     private final String KEY_PASSWORD = "password";
     private final String KEY_USER_EMAIL = "userEmail";
+    private final String KEY_USER_STATUS = "userStatus";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -144,6 +145,7 @@ public class UserLogin extends AppCompatActivity {
                                         userName = map.get("FullName").toString();
                                         userId = map.get("id").toString();
                                         userBloodType = map.get("blood type").toString();
+                                        userStatus = map.get("status").toString();
 
                                         if(userBloodType.equals("A+")){
                                             userBloodType = "A_Positive";
@@ -201,6 +203,7 @@ public class UserLogin extends AppCompatActivity {
                                         editor.putString(KEY_PASSWORD, etPassword.getText().toString());
                                         editor.putString(KEY_USER_ID, userId);
                                         editor.putString(KEY_USER_NAME, userName);
+                                        editor.putString(KEY_USER_STATUS, userStatus);
                                         editor.apply();
                                         editor.commit();
                                     }

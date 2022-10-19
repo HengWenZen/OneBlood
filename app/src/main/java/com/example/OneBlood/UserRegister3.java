@@ -136,6 +136,7 @@ public class UserRegister3 extends AppCompatActivity {
                         if(map.get("FullName").toString().equals(userName)) {
                             Map<String, Object> user = new HashMap<>();
                             user.put("blood type", getSelectedBloodType);
+                            user.put("status", "active");
                             db.updData("users", user, map.get("id").toString());
                         }
                     }

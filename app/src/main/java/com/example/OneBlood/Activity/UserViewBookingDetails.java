@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.auth.User;
 
 public class UserViewBookingDetails extends AppCompatActivity {
     public static final String EXTRA_BOOKING_DATE = "noticeDate";
@@ -60,6 +61,7 @@ public class UserViewBookingDetails extends AppCompatActivity {
             }
         });
     }
+
     private void cancelBooking() {
         new AlertDialog.Builder(UserViewBookingDetails.this)
                 .setMessage("Confirm Appointment Cancellation?")
@@ -116,5 +118,12 @@ public class UserViewBookingDetails extends AppCompatActivity {
             default:
                 return "Closed";
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        Intent intent = new Intent(UserViewBookingDetails.this, ViewBooking.class);
+        startActivity(intent);
     }
 }

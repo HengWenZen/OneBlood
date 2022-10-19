@@ -3,6 +3,7 @@ package com.example.OneBlood.Models;
 public class TimeSlot {
     private String slot;
     private String locationName;
+    private String status;
 
     public String getLocationName() {
         return locationName;
@@ -42,4 +43,11 @@ public class TimeSlot {
         this.slot = slot;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

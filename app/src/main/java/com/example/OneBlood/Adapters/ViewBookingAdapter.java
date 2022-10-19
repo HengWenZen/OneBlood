@@ -1,27 +1,22 @@
 package com.example.OneBlood.Adapters;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.OneBlood.Activity.HospitalViewBookingDetails;
-import com.example.OneBlood.Activity.UserViewBookingDetails;
+import com.example.OneBlood.Activity.HospitalViewBooking;
 import com.example.OneBlood.Activity.ViewBooking;
+import com.example.OneBlood.HospitalViewBookingDetails;
+import com.example.OneBlood.Activity.UserViewBookingDetails;
 import com.example.OneBlood.Models.Booking;
 import com.example.OneBlood.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
@@ -68,7 +63,7 @@ public class ViewBookingAdapter extends RecyclerView.Adapter<ViewBookingAdapter.
         if(isHospital == true){
            holder.locationName.setVisibility(View.INVISIBLE);
            holder.appointmentUser.setVisibility(View.VISIBLE);
-           holder.appointmentUser.setText(booking.getUser());
+           holder.appointmentUser.setText(bookingUser);
 
         }else{
             holder.locationName.setVisibility(View.VISIBLE);
@@ -100,7 +95,20 @@ public class ViewBookingAdapter extends RecyclerView.Adapter<ViewBookingAdapter.
                 @Override
                 public void onClick(View v) {
 
-                    if(isHospital == false) {
+                    if(isHospital == true) {
+
+                        ((HospitalViewBooking) mContext).adapterChange(getAdapterPosition());
+                        Intent y = new Intent(mContext, HospitalViewBookingDetails.class);
+                        y.putExtra(EXTRA_USER_NAME, bookingUser);
+                        y.putExtra(EXTRA_BOOKING_DATE, bookingDate);
+                        y.putExtra(EXTRA_BOOKING_TIME, bookingSlot);
+                        y.putExtra(EXTRA_BOOKING_ID, bookingId);
+                        y.putExtra(EXTRA_BOOKING_HOSPITAL, bookingHospital);
+                        mContext.startActivity(y);
+
+                    }
+                    else{
+                        ((ViewBooking) mContext).adapterChange(getAdapterPosition());
                         Intent i = new Intent(mContext, UserViewBookingDetails.class);
                         i.putExtra(EXTRA_BOOKING_HOSPITAL, bookingHospital);
                         i.putExtra(EXTRA_BOOKING_DATE, bookingDate);
@@ -108,13 +116,6 @@ public class ViewBookingAdapter extends RecyclerView.Adapter<ViewBookingAdapter.
                         i.putExtra(EXTRA_USER_NAME, bookingUser);
                         i.putExtra(EXTRA_BOOKING_ID, bookingId);
                         mContext.startActivity(i);
-                    }
-                    else{
-                        Intent y = new Intent(mContext, HospitalViewBookingDetails.class);
-                        y.putExtra(EXTRA_USER_NAME, bookingUser);
-                        y.putExtra(EXTRA_BOOKING_DATE, bookingDate);
-                        y.putExtra(EXTRA_BOOKING_TIME, bookingSlot);
-                        mContext.startActivity(y);
                     }
                 }
             });

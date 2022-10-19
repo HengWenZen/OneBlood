@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -79,6 +80,9 @@ public class ViewBooking extends AppCompatActivity {
                                                 document.get("slot").toString(),
                                                 document.get("user").toString());
                                         mBookings.add(b);
+                                    }else {
+
+
                                     }
                                 }
                                 Log.d("data", mBookings.toString());
@@ -100,7 +104,7 @@ public class ViewBooking extends AppCompatActivity {
                     rv.setAdapter(mViewBookingAdapter);
                 }
             }
-        }, 2000);
+        }, 1000);
 
     }
 
@@ -110,6 +114,8 @@ public class ViewBooking extends AppCompatActivity {
                 .setPositiveButton("Return", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent y = new Intent(ViewBooking.this, Appointments.class);
+                        startActivity(y);
                         finish();
                     }
                 }).create().show();
@@ -164,5 +170,12 @@ public class ViewBooking extends AppCompatActivity {
         if(mBookings.size() == 0) {
             finish();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(ViewBooking.this, Appointments.class);
+        startActivity(intent);
+        finish();
     }
 }

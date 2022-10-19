@@ -22,6 +22,8 @@ import com.example.OneBlood.Activity.AvailableDonorMainMenu;
 import com.example.OneBlood.Activity.BloodDonationInfo;
 import com.example.OneBlood.Activity.BloodRequestMainMenu;
 import com.example.OneBlood.Activity.UserEvent;
+import com.example.OneBlood.Activity.UserViewBookingDetails;
+import com.example.OneBlood.Activity.ViewBooking;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.HashMap;
@@ -145,5 +147,10 @@ public class UserDashBoard extends AppCompatActivity implements NavigationView.O
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }

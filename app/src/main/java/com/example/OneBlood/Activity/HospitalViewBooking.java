@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 
 import com.example.OneBlood.Adapters.ViewBookingAdapter;
 import com.example.OneBlood.Models.Booking;
@@ -49,7 +51,9 @@ public class HospitalViewBooking extends AppCompatActivity {
         ProgressDialog dialog = ProgressDialog.show(HospitalViewBooking.this, "",
                 "Loading....", true);
 
-        db.collection("userBooking").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("userBooking")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
@@ -67,20 +71,25 @@ public class HospitalViewBooking extends AppCompatActivity {
                                 mBookings.add(b);
                             }
                         }
-                        if(mBookings.size() == 0) {
-                            dialog.dismiss();
-                            alertDataEmpty();
-                        }
-                        else {
-                            dialog.dismiss();
-                            mViewBookingAdapter = new ViewBookingAdapter(HospitalViewBooking.this, mBookings, true);
-                            rv.setLayoutManager(new LinearLayoutManager(HospitalViewBooking.this));
-                            rv.setAdapter(mViewBookingAdapter);
-                        }
                     }
                 }
             }
         });
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                dialog.dismiss();
+                if(mBookings.size() == 0) {
+                    alertDataEmpty();
+                }
+                else {
+                    mViewBookingAdapter = new ViewBookingAdapter(HospitalViewBooking.this, mBookings, true);
+                    rv.setLayoutManager(new LinearLayoutManager(HospitalViewBooking.this));
+                    rv.setAdapter(mViewBookingAdapter);
+                }
+            }
+        }, 2000);
     }
 
     private boolean checkDate(String result, String slot) {
@@ -137,5 +146,20 @@ public class HospitalViewBooking extends AppCompatActivity {
                         finish();
                     }
                 }).create().show();
+    }
+
+    public void adapterChange(int position){
+        mBookings.remove(position);
+        mViewBookingAdapter.notifyItemRemoved(position);
+        if(mBookings.size() == 0) {
+            finish();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        Intent intent = new Intent(HospitalViewBooking.this, HospitalMenu.class);
+        startActivity(intent);
     }
 }

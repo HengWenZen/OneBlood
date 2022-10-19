@@ -17,6 +17,7 @@ import com.example.OneBlood.Adapters.LocationAdapter;
 import com.example.OneBlood.Labs.LocationLab;
 import com.example.OneBlood.Models.DonateLocation;
 import com.example.OneBlood.R;
+import com.example.OneBlood.UserDashBoard;
 
 import java.util.List;
 
@@ -55,7 +56,13 @@ public class Appointments extends AppCompatActivity {
                 mAdapter = new LocationAdapter(locations, Appointments.this);
                 mRecyclerView.setAdapter(mAdapter);
             }
-        }, 2000);
+        }, 1000);
+    }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(Appointments.this, UserDashBoard.class);
+        startActivity(intent);
+        finish();
     }
 }
