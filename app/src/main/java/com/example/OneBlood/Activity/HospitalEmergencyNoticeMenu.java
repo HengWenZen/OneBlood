@@ -9,15 +9,14 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.OneBlood.Adapters.BloodRequestAdapter;
+import com.example.OneBlood.Adapters.DonorListAdapter;
 import com.example.OneBlood.Adapters.EmergencyNoticeAdapters;
-import com.example.OneBlood.Firebase;
-import com.example.OneBlood.Labs.BloodRequestLab;
-import com.example.OneBlood.Models.BloodRequest;
+import com.example.OneBlood.Models.Donor;
 import com.example.OneBlood.Models.EmergencyNotice;
 import com.example.OneBlood.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,51 +25,43 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BloodRequestMainMenu extends AppCompatActivity {
-
-    Button btnViewYourRequest, btnNewRequest;
+public class HospitalEmergencyNoticeMenu extends AppCompatActivity {
     RecyclerView rv;
     EmergencyNoticeAdapters mEmergencyNoticeAdapters;
+    Button btnViewOwnEmergencyNotice;
     List<EmergencyNotice> mEmergencyNotices;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_blood_request_main_menu);
+        setContentView(R.layout.activity_hospital_emergency_notice_menu);
 
-        btnNewRequest = findViewById(R.id.btnNewRequest);
-        btnViewYourRequest = findViewById(R.id.btnViewYourRequest);
-        rv = findViewById(R.id.rvBloodRequestList);
+        rv = findViewById(R.id.rvEmergencyNoticeList);
+        btnViewOwnEmergencyNotice = findViewById(R.id.btnViewOwnEmergencyNotice);
 
-        loadRequestList();
+        loadEmergencyNoticeList();
 
-        btnNewRequest.setOnClickListener(new View.OnClickListener() {
+        btnViewOwnEmergencyNotice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(BloodRequestMainMenu.this, NewBloodRequest.class);
-                startActivity(i);
+                Intent intent = new Intent(HospitalEmergencyNoticeMenu.this, HospitalEmergencyNotice.class);
+                startActivity(intent);
+                finish();
             }
         });
 
-        btnViewYourRequest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(BloodRequestMainMenu.this, NewBloodRequest.class);
-                startActivity(i);
-            }
-        });
     }
 
-    private void loadRequestList() {
+    private void loadEmergencyNoticeList() {
         mEmergencyNotices = new ArrayList<>();
 
-        ProgressDialog dialog = ProgressDialog.show(com.example.OneBlood.Activity.BloodRequestMainMenu.this, "",
+        ProgressDialog dialog = ProgressDialog.show(HospitalEmergencyNoticeMenu.this, "",
                 "Loading. Please wait...", true);   //show loading dialog
-
 
         db.collection("emergencyRequest")
                 .get()
@@ -101,14 +92,13 @@ public class BloodRequestMainMenu extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             public void run() {
                 dialog.dismiss();   //remove loading Dialog
-                if (mEmergencyNotices.size() == 0) {
-                    Toast.makeText(BloodRequestMainMenu.this, "No Requests Found.", Toast.LENGTH_SHORT).show();
+                if(mEmergencyNotices.size() == 0){
+                    Toast.makeText(HospitalEmergencyNoticeMenu.this, "No Requests Found.", Toast.LENGTH_SHORT).show();
                 }
-                rv.setLayoutManager(new LinearLayoutManager(BloodRequestMainMenu.this));
-                mEmergencyNoticeAdapters = new EmergencyNoticeAdapters(mEmergencyNotices, BloodRequestMainMenu.this, true);
+                rv.setLayoutManager(new LinearLayoutManager(HospitalEmergencyNoticeMenu.this));
+                mEmergencyNoticeAdapters = new EmergencyNoticeAdapters(mEmergencyNotices,HospitalEmergencyNoticeMenu.this, false);
                 rv.setAdapter(mEmergencyNoticeAdapters);
             }
         }, 1000);
     }
-
 }

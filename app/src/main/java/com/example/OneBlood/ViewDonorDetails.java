@@ -54,7 +54,7 @@ public class ViewDonorDetails extends AppCompatActivity {
         etDonorBloodType.getEditText().setText((String)b.get(EXTRA_DONOR_BLOOD_TYPE));
         etDonorBloodType.getEditText().setTextColor(ContextCompat.getColor(this, R.color.black));
 
-        btnChat.setOnClickListener(new View.OnClickListener() {
+        /*btnChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(ViewDonorDetails.this, UserChatBox.class);
@@ -64,6 +64,6 @@ public class ViewDonorDetails extends AppCompatActivity {
                 i.putExtra(EXTRA_DONOR_ID, userId);
                 startActivity(i);
             }
-        });
+        });*/
     }
 }

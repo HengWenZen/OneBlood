@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,6 +14,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.OneBlood.Firebase;
 import com.example.OneBlood.R;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -20,6 +25,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
@@ -130,16 +138,34 @@ public class NewBloodRequest extends AppCompatActivity {
             data.put("date", date);
             data.put("description", requestDescription);
             data.put("blood type" , getRequiredBloodType);
-            data.put("recipient" , recipientName);
+            data.put("postedBy" , recipientName);
             data.put("contact" , recipientContact);
-            data.put("email" , recipientEmail);
             data.put("title",requestTitle);
 
+            if(getRequiredBloodType.equals("A+")){
+                getRequiredBloodType = "A_Positive";
+            }else if(getRequiredBloodType.equals("B+")) {
+                getRequiredBloodType = "B_Positive";
+            }else if(getRequiredBloodType.equals("AB+")) {
+                getRequiredBloodType = "AB_Positive";
+            }else if(getRequiredBloodType.equals("O+")) {
+                getRequiredBloodType = "O_Positive";
+            }else if(getRequiredBloodType.equals("A-")) {
+                getRequiredBloodType = "A_Negative";
+            }else if(getRequiredBloodType.equals("B-")) {
+                getRequiredBloodType = "B_Negative";
+            }else if(getRequiredBloodType.equals("AB-")) {
+                getRequiredBloodType = "AB_Negative";
+            }else if(getRequiredBloodType.equals("O-")) {
+                getRequiredBloodType = "O_Negative";
+            }
+
             //Insert data into database
-            db.collection("bloodRequest").add(data).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            db.collection("emergencyRequest").add(data).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                 @Override
                 public void onSuccess(DocumentReference documentReference) {
                     Toast.makeText(NewBloodRequest.this, "Request Submitted Successfully!", Toast.LENGTH_SHORT).show();
+                    sentPush(requestTitle);
                     finish();
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -149,5 +175,45 @@ public class NewBloodRequest extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    public void sentPush(String title){
+
+        RequestQueue mRequestQue = Volley.newRequestQueue(this);
+
+        // Create the json object to store the notification details //
+        JSONObject json = new JSONObject();
+        try
+        {
+            // Set the topic, title and body of the notification //
+            json.put("to", "/topics/" + "user");
+            JSONObject notificationObj = new JSONObject();
+            notificationObj.put("title", "Emergency Request From " + recipientName);
+            notificationObj.put("body", title);
+
+            json.put("notification", notificationObj);
+
+            // Set the credentials to send the notification API //
+            String URL = "https://fcm.googleapis.com/fcm/send";
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL,
+                    json,
+                    response -> Log.d("MUR", "onResponse: " + response.toString()),
+                    error -> Log.d("MUR", "onError: " + error.networkResponse)
+            ) {
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> header = new HashMap<>();
+                    header.put("content-type", "application/json");
+                    header.put("authorization", "key=AAAA0RiHfKQ:APA91bGBj2PS5EEmgcFr5UBIRX0nxZLyCTbdYuhY1KikYOpyqqJLmzJtSdoNHJDcqPwehtNZjUNM1F-7V7o32Sp0yaVRacNO_7kNdp0fc4ylHGNeRJnrO5DWjGLOyJkYY5WjuGJmMWM4");
+                    return header;
+                }
+            };
+            mRequestQue.add(request);
+        }
+        catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
+
     }
 }

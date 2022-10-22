@@ -18,6 +18,18 @@
         <item>AB-</item>
     </string-array>
 
+    <string-array name="filterBloodType">
+        <item>All</item>
+        <item>A+</item>
+        <item>A-</item>
+        <item>B+</item>
+        <item>B-</item>
+        <item>O+</item>
+        <item>O-</item>
+        <item>AB+</item>
+        <item>AB-</item>
+    </string-array>
+
     <string-array name="requiredBloodType">
         <item>A+</item>
         <item>A-</item>

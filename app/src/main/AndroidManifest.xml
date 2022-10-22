@@ -14,15 +14,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MainActivity">
-        <activity android:name=".HospitalViewBookingDetails"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"/>
-        <activity android:name=".Activity.UserViewBookingDetails"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"/>
+        <activity android:name=".Activity.HospitalEmergencyNoticeDetail"></activity>
+        <activity android:name=".Activity.HospitalEmergencyNoticeMenu" />
+        <activity android:name=".Activity.HospitalViewEventBookingDetails" />
+        <activity android:name=".Activity.UserViewEventBookingDetails"
+        android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"/>
+        <activity android:name=".Activity.HospitalViewEventBooking" />
+        <activity android:name=".Activity.UserViewEventBooking" />
+        <activity
+            android:name=".HospitalViewBookingDetails"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+        <activity
+            android:name=".Activity.UserViewBookingDetails"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity
             android:name=".Activity.HospitalEmergencyNotice"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity android:name=".Activity.HospitalViewBooking" />
-        <activity android:name=".Activity.ViewBooking" />
+        <activity android:name=".Activity.UserViewBooking" />
         <activity android:name=".Activity.PassTest" />
         <activity android:name=".Activity.FailTest" />
         <activity android:name=".Activity.TestQuestion" />

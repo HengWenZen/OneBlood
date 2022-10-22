@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.OneBlood.Activity.HospitalMenu;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -26,10 +27,13 @@ public class HospitalLogin extends AppCompatActivity {
     Button btnLogin;
     TextView tvAdminLogin;
     Firebase db = new Firebase();
+    FirebaseFirestore database = FirebaseFirestore.getInstance();
     boolean loginSuccess = false;
     public static SharedPreferences hospitalPreferences;
     private final String SHARED_PREFERENCE = "hospitalPreferences";
     private final String KEY_HOSPITAL_NAME = "hospitalName";
+    private final String KEY_HOSPITAL_CONTACT = "hospitalContact";
+    String hospitalContact, hospitalName;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,7 +60,7 @@ public class HospitalLogin extends AppCompatActivity {
 
     private void Login() {
 
-            db.getData("hospitals",null, new com.example.OneBlood.MyCallback(){
+            db.getData("location",null, new com.example.OneBlood.MyCallback(){
                 @Override
                 public void returnData(ArrayList<Map<String, Object>> docList) {
                     Log.d("Documents Retrieved", docList.toString());
@@ -65,13 +69,17 @@ public class HospitalLogin extends AppCompatActivity {
                     for(Map<String, Object> map : docList){
                         if (map.get("name").toString().equals(spHospital.getSelectedItem().toString()) && map.get("password").toString().equals(etPassword.getText().toString())) {
                             Toast.makeText(HospitalLogin.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                            hospitalContact = map.get("contact").toString();
+                            hospitalName = spHospital.getSelectedItem().toString();
+
                             Intent i = new Intent(HospitalLogin.this, HospitalMenu.class);
                             startActivity(i);
                             finish();
                             loginSuccess = true;
 
                             SharedPreferences.Editor editor = hospitalPreferences.edit();
-                            editor.putString(KEY_HOSPITAL_NAME, spHospital.getSelectedItem().toString());
+                            editor.putString(KEY_HOSPITAL_NAME, hospitalName);
+                            editor.putString(KEY_HOSPITAL_CONTACT, hospitalContact);
                             editor.apply();
                         }
                     }
@@ -80,6 +88,8 @@ public class HospitalLogin extends AppCompatActivity {
                     }
                 }
             });
+
+
     }
 }
 

@@ -180,6 +180,17 @@
 
         </androidx.recyclerview.widget.RecyclerView>
 
+        <TextView
+            android:id="@+id/tvBookingStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:text="You have already made an appointment, or you have already donated recently and it is advisable to wait for at least 90 days before the next donation."
+            android:visibility="invisible"
+            android:layout_marginStart="16dp"/>
+
     <Button
         android:id="@+id/btnBook"
         android:layout_width="match_parent"

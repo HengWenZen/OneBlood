@@ -9,8 +9,12 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.example.OneBlood.Adapters.ViewBookingAdapter;
 import com.example.OneBlood.Models.Booking;
@@ -27,54 +31,66 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class HospitalViewBooking extends AppCompatActivity {
+public class UserViewBooking extends AppCompatActivity {
+
+    public static SharedPreferences mPreferences;
+    private final String SHARED_PREF = "myPreferences";
+    private final String KEY_USER = "user";
+    private final String KEY_USER_NAME = "userName";
+
     private ViewBookingAdapter mViewBookingAdapter;
     private RecyclerView rv;
+    Button btnCancelAppointment;
 
-    List<String> list = new ArrayList<>();
+    List<String> date;
     List<Booking> mBookings;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hospital_view_booking);
+        setContentView(R.layout.activity_view_booking);
 
-        rv = findViewById(R.id.rv_AdminViewBooking);
+        SharedPreferences prefs = getSharedPreferences("myPreferences", MODE_PRIVATE);
+        String user = prefs.getString(KEY_USER_NAME, null);
 
-        loadBookingList();
+        rv = findViewById(R.id.rvViewBooking);
+        btnCancelAppointment = findViewById(R.id.btn_view_booking);
+
+        loadExistingAppointment(user);
     }
 
-    private void loadBookingList() {
+    private void loadExistingAppointment(String user) {
         mBookings = new ArrayList<>();
-
-        ProgressDialog dialog = ProgressDialog.show(HospitalViewBooking.this, "",
+        ProgressDialog dialog = ProgressDialog.show(UserViewBooking.this, "",
                 "Loading....", true);
 
-        db.collection("userBooking")
-                .get()
+        db.collection("userBooking").whereEqualTo("user", user).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    QuerySnapshot result = task.getResult();
-                    if (!result.isEmpty()) {
-                        for (QueryDocumentSnapshot document : result) {
-                            boolean check = checkDate(document.get("date").toString(),document.get("slot").toString());
-                            if(check) {
-//                            Log.d("data",document.getData().toString());
-                                Booking b = new Booking(document.getId(),
-                                        document.get("location").toString(),
-                                        document.get("date").toString(),
-                                        document.get("slot").toString(),
-                                        document.get("user").toString());
-                                mBookings.add(b);
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            QuerySnapshot result = task.getResult();
+                            if (!result.isEmpty()) {
+                                for (QueryDocumentSnapshot document : result) {
+                                    boolean check = checkDate(document.get("date").toString(), document.get("slot").toString());
+                                    if (check) {
+                                        Booking b = new Booking(document.getId(),
+                                                document.get("location").toString(),
+                                                document.get("date").toString(),
+                                                document.get("slot").toString(),
+                                                document.get("user").toString());
+                                        mBookings.add(b);
+                                    }else {
+
+
+                                    }
+                                }
+                                Log.d("data", mBookings.toString());
                             }
                         }
                     }
-                }
-            }
-        });
+                });
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -84,16 +100,29 @@ public class HospitalViewBooking extends AppCompatActivity {
                     alertDataEmpty();
                 }
                 else {
-                    mViewBookingAdapter = new ViewBookingAdapter(HospitalViewBooking.this, mBookings, true);
-                    rv.setLayoutManager(new LinearLayoutManager(HospitalViewBooking.this));
+                    mViewBookingAdapter = new ViewBookingAdapter(UserViewBooking.this, mBookings, false);
+                    rv.setLayoutManager(new LinearLayoutManager(UserViewBooking.this));
                     rv.setAdapter(mViewBookingAdapter);
                 }
             }
-        }, 2000);
+        }, 1000);
+
     }
 
-    private boolean checkDate(String result, String slot) {
+    private void alertDataEmpty() {
+        new AlertDialog.Builder(this)
+                .setMessage("No Existing Appointment Made..")
+                .setPositiveButton("Return", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent y = new Intent(UserViewBooking.this, Appointments.class);
+                        startActivity(y);
+                        finish();
+                    }
+                }).create().show();
+    }
 
+    private boolean checkDate(String result, String slot){
         slot = timeSlot(Integer.valueOf(slot));
         result = result.concat(" " + slot);
         Date strDate = null;
@@ -110,7 +139,6 @@ public class HospitalViewBooking extends AppCompatActivity {
             return true;
         }
     }
-
 
     public String timeSlot(int position) {
         switch (position) {
@@ -137,19 +165,6 @@ public class HospitalViewBooking extends AppCompatActivity {
         }
     }
 
-    private void alertDataEmpty() {
-        new AlertDialog.Builder(this)
-                .setMessage("No Booking Existing!")
-                .setPositiveButton("Return", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent intent = new Intent(HospitalViewBooking.this, HospitalMenu.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                }).create().show();
-    }
-
     public void adapterChange(int position){
         mBookings.remove(position);
         mViewBookingAdapter.notifyItemRemoved(position);
@@ -160,8 +175,8 @@ public class HospitalViewBooking extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        finish();
-        Intent intent = new Intent(HospitalViewBooking.this, HospitalMenu.class);
+        Intent intent = new Intent(UserViewBooking.this, Appointments.class);
         startActivity(intent);
+        finish();
     }
 }

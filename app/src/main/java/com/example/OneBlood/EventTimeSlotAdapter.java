@@ -83,7 +83,7 @@ public class EventTimeSlotAdapter extends RecyclerView.Adapter<EventTimeSlotAdap
         //Get Number of Slot Needed based on the event duration
         long diff = mEndTime.getTime() - mStartTime.getTime();
         long diffHours = diff / (60 * 60 * 1000) % 24;
-        int timeDiff = (int) diffHours;
+        int timeDiff = (int) diffHours - 1;
         return timeDiff;
     }
 

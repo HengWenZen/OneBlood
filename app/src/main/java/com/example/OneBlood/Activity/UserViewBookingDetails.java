@@ -18,7 +18,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.auth.User;
 
 public class UserViewBookingDetails extends AppCompatActivity {
     public static final String EXTRA_BOOKING_DATE = "noticeDate";
@@ -75,7 +74,7 @@ public class UserViewBookingDetails extends AppCompatActivity {
                                     public void onSuccess(Void aVoid) {
                                         Toast.makeText(UserViewBookingDetails.this, "Appointment Cancelled Successfully!", Toast.LENGTH_SHORT).show();
                                         Log.d("Document ID", bookingId);
-                                        Intent i = new Intent(UserViewBookingDetails.this, ViewBooking.class);
+                                        Intent i = new Intent(UserViewBookingDetails.this, UserViewBooking.class);
                                         startActivity(i);
                                         finish();
                                     }
@@ -123,7 +122,7 @@ public class UserViewBookingDetails extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         finish();
-        Intent intent = new Intent(UserViewBookingDetails.this, ViewBooking.class);
+        Intent intent = new Intent(UserViewBookingDetails.this, UserViewBooking.class);
         startActivity(intent);
     }
 }

@@ -40,12 +40,12 @@ public class DonorLab {
 
                         if(!result.isEmpty()){
                             for(QueryDocumentSnapshot documentSnapshot : result){
-                                Donor donor = new Donor();
-                                donor.setId(documentSnapshot.getId());
-                                donor.setName(documentSnapshot.get("FullName").toString());
-                                donor.setBloodType(documentSnapshot.get("blood type").toString());
-                                donor.setContact(documentSnapshot.get("phone number").toString());
-                                donor.setEmail(documentSnapshot.get("Email").toString());
+                                Donor donor = new Donor(documentSnapshot.getId(),
+                                documentSnapshot.get("FullName").toString(),
+                                documentSnapshot.get("phone number").toString(),
+                                documentSnapshot.get("Email").toString(),
+                                documentSnapshot.get("blood type").toString(),
+                                documentSnapshot.get("status").toString());
                                 mDonorList.add(donor);
                             }
                         }

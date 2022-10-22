@@ -37,7 +37,7 @@ public class Appointments extends AppCompatActivity {
         btnViewAppointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Appointments.this, ViewBooking.class);
+                Intent i = new Intent(Appointments.this, UserViewBooking.class);
                 startActivity(i);
                 finish();
             }

@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Activity.UserViewBooking">
+    tools:context=".Activity.UserViewEventBooking">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvViewBooking"
+        android:id="@+id/rvViewEventBooking"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>

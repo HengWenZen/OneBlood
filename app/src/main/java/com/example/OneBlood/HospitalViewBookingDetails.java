@@ -14,8 +14,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.OneBlood.Activity.HospitalViewBooking;
-import com.example.OneBlood.Activity.ViewBooking;
-import com.example.OneBlood.Models.TimeSlot;
+import com.example.OneBlood.Activity.UserViewBooking;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -99,7 +98,7 @@ public class HospitalViewBookingDetails extends AppCompatActivity {
                                     public void onSuccess(Void aVoid) {
                                         Toast.makeText(HospitalViewBookingDetails.this, "Appointment Cancelled Successfully!", Toast.LENGTH_SHORT).show();
                                         Log.d("Document ID", bookingId);
-                                        Intent i = new Intent(HospitalViewBookingDetails.this, ViewBooking.class);
+                                        Intent i = new Intent(HospitalViewBookingDetails.this, UserViewBooking.class);
                                         startActivity(i);
                                         finish();
                                     }

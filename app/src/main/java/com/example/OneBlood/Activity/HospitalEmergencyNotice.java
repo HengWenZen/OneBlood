@@ -3,6 +3,7 @@ package com.example.OneBlood.Activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -40,9 +41,10 @@ public class HospitalEmergencyNotice extends AppCompatActivity {
     private final String SHARED_PREFERENCE = "hospitalPreferences";
     private final String KEY_HOSPITAL_ID = "hospitalID";
     private final String KEY_HOSPITAL_NAME = "hospitalName";
+    private final String KEY_HOSPITAL_CONTACT = "hospitalContact";
     TextInputLayout etEmergencyDescription, etEmergencyTitle, etNameOfHospital, etEmergencyDate, etEmergencyBloodType;
     AutoCompleteTextView actvEmergencyBloodType;
-    String requiredBloodType, title, description, date, nameOfHospital, bloodType;
+    String requiredBloodType, title, description, date, nameOfHospital, hospitalContact, bloodType;
     Button btnHospitalPostEmergency;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -100,6 +102,7 @@ public class HospitalEmergencyNotice extends AppCompatActivity {
     private void submitEmergencyBloodRequest() {
         SharedPreferences prefs = getSharedPreferences(SHARED_PREFERENCE, MODE_PRIVATE);
         String hospital = prefs.getString(KEY_HOSPITAL_NAME, "");
+        hospitalContact = prefs.getString(KEY_HOSPITAL_CONTACT, "");
 
         title = etEmergencyTitle.getEditText().getText().toString();
         description = etEmergencyDescription.getEditText().getText().toString();
@@ -123,7 +126,8 @@ public class HospitalEmergencyNotice extends AppCompatActivity {
             data.put("description", description);
             data.put("blood type", requiredBloodType);
             data.put("postedBy", nameOfHospital);
-
+            data.put("location", nameOfHospital);
+            data.put("contact", hospitalContact);
 
             if(requiredBloodType.equals("A+")){
                 requiredBloodType = "A_Positive";
@@ -149,6 +153,9 @@ public class HospitalEmergencyNotice extends AppCompatActivity {
                 public void onSuccess(DocumentReference documentReference) {
                     Toast.makeText(HospitalEmergencyNotice.this, "Request Submitted Successfully!" + requiredBloodType, Toast.LENGTH_SHORT).show();
                     sentPush("Emergency Request");
+                    Intent intent = new Intent(HospitalEmergencyNotice.this, HospitalEmergencyNoticeMenu.class);
+                    startActivity(intent);
+                    finish();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -169,9 +176,9 @@ public class HospitalEmergencyNotice extends AppCompatActivity {
         try
         {
             // Set the topic, title and body of the notification //
-            json.put("to", "/topics/" + requiredBloodType);
+            json.put("to", "/topics/" + "user");
             JSONObject notificationObj = new JSONObject();
-            notificationObj.put("title", "Announcement From " + nameOfHospital);
+            notificationObj.put("title", "Emergency Request From " + nameOfHospital);
             notificationObj.put("body", title);
 
             json.put("notification", notificationObj);

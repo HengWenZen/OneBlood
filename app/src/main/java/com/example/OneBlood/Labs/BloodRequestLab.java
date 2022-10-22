@@ -30,7 +30,7 @@ public class BloodRequestLab {
         mBloodRequestList = new ArrayList<>();
         mBloodRequestList.clear();
 
-        db.collection("bloodRequest")
+        db.collection("emergencyRequest")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -45,12 +45,11 @@ public class BloodRequestLab {
                                     bloodRequest.setID(document.getId());
                                     bloodRequest.setTitle(document.get("title").toString());
                                     bloodRequest.setDescription(document.get("description").toString());
-                                    bloodRequest.setRecipient(document.get("recipient").toString());
+                                    bloodRequest.setRecipient(document.get("postedBy").toString());
                                     bloodRequest.setBloodType(document.get("blood type").toString());
                                     bloodRequest.setLocation(document.get("location").toString());
                                     bloodRequest.setDate(document.get("date").toString());
                                     bloodRequest.setContact(document.get("contact").toString());
-                                    bloodRequest.setEmail(document.get("email").toString());
                                     mBloodRequestList.add(bloodRequest);
                                 }
                             }

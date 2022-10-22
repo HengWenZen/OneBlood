@@ -10,7 +10,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -21,6 +23,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -51,11 +54,17 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -69,7 +78,9 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UserMainMenu extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, NavigationView.OnNavigationItemSelectedListener {
 
@@ -95,7 +106,7 @@ public class UserMainMenu extends AppCompatActivity implements OnMapReadyCallbac
     Toolbar mToolbar;
     StorageReference storageReference;
     ImageView mPopupImage;
-    String imageId, locationTitle, locationAddress, locationContact,locationOperationHrs;
+    String imageId, locationTitle, locationAddress, locationContact,locationOperationHrs, locationLongitude, locationLatitude, token;
     private List<DonateLocation> mDonateLocations = new ArrayList<>();
 
 
@@ -244,7 +255,7 @@ public class UserMainMenu extends AppCompatActivity implements OnMapReadyCallbac
 
                 PopupWindow popupWindow = new PopupWindow(popWindow);
                 popupWindow.setWidth(width-40);
-                popupWindow.setHeight(height/2-400);
+                popupWindow.setHeight(height/2-100);
                 popupWindow.setFocusable(true);
 
                 popupWindow.showAtLocation(popWindow, Gravity.BOTTOM, 0, 150);
@@ -263,6 +274,7 @@ public class UserMainMenu extends AppCompatActivity implements OnMapReadyCallbac
                 TextView mPopText = popWindow.findViewById(R.id.tvPopTitle);
                 TextView mPopAddress = popWindow.findViewById(R.id.tvPopAddress);
                 Button btnViewLocation = popWindow.findViewById(R.id.btnViewLocation);
+                Button btnGetDirection = popWindow.findViewById(R.id.btnGetDirection);
                 mPopupImage =  popWindow.findViewById(R.id.ivPopupImage);
 
                 for (DonateLocation location : mDonateLocations)
@@ -274,6 +286,8 @@ public class UserMainMenu extends AppCompatActivity implements OnMapReadyCallbac
                     locationAddress = location.getAddress();
                     locationContact = location.getContact();
                     locationOperationHrs = location.getOperationHrs();
+                    locationLongitude = location.getLongitude();
+                    locationLatitude = location.getLatitude();
                     imageId = location.getImageUrl();
                     }
                 }
@@ -290,6 +304,33 @@ public class UserMainMenu extends AppCompatActivity implements OnMapReadyCallbac
                         popupWindow.dismiss();
                     }
                 });
+
+                btnGetDirection.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String msg = "Open Google Map?";
+                        AlertDialog.Builder alert = new AlertDialog.Builder(UserMainMenu.this);
+                        alert.setTitle("Redirect to Google Map");
+                        alert.setMessage(msg);
+                        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Uri gmmIntentUri = Uri.parse("google.navigation:q="+locationLatitude+","+locationLongitude);
+                                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                                mapIntent.setPackage("com.google.android.apps.maps");
+                                startActivity(mapIntent);
+                                popupWindow.dismiss();
+                            }
+                        });
+                        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        });
+                        alert.show();
+                    }
+                });
+
 
                 storageReference = FirebaseStorage.getInstance().getReference();
                 StorageReference ref
@@ -400,6 +441,32 @@ public class UserMainMenu extends AppCompatActivity implements OnMapReadyCallbac
                 spEditor.clear();
                 spEditor.apply();
                 spEditor.commit();
+
+                FirebaseMessaging.getInstance().getToken()
+                        .addOnCompleteListener(new OnCompleteListener<String>() {
+                            @Override
+                            public void onComplete(@NonNull Task<String> task) {
+                                if(!task.isSuccessful()){
+                                    Log.d("FCM", "Failed to retrieve Token!");
+                                    return;
+                                }
+
+                                token = task.getResult();
+                                Log.d("FCM", "FCM Token : " + token);
+                            }
+                        });
+
+                FirebaseMessaging.getInstance().unsubscribeFromTopic("user").addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("TAG", "Unsubscribe Successfully!");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("TAG", "Fail to Subscribe ");
+                    }
+                });
                 Intent q = new Intent(UserMainMenu.this, UserLogin.class);
                 startActivity(q);
                 finish();

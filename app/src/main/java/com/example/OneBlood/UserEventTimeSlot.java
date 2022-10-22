@@ -139,6 +139,7 @@ public class UserEventTimeSlot extends AppCompatActivity implements DatePickerDi
 
                                 Map<String, Object> data = new HashMap<>();
                                 data.put("slot", slot);
+                                data.put("time", timeSlot(Integer.valueOf(slot)));
                                 data.put("user", user);
                                 data.put("date", dateSelected);
                                 data.put("location", eventLocation);
@@ -263,5 +264,119 @@ public class UserEventTimeSlot extends AppCompatActivity implements DatePickerDi
                         rv.setLayoutManager(new GridLayoutManager(UserEventTimeSlot.this, 3));
                     }
                 });
+    }
+
+    public String timeSlot(int position) {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        Calendar calendar = Calendar.getInstance();
+        String startTime, toTime;
+
+        //Set each slot has one hour duration
+        switch (position) {
+            case 0:
+                startTime = sdf.format(mStartTime);
+                calendar.setTime(mStartTime);
+                calendar.add(Calendar.HOUR, 1);
+                toTime = sdf.format(calendar.getTime());
+                return (startTime + "-" + toTime);
+
+            case 1:
+                calendar.setTime(mStartTime);
+                calendar.add(Calendar.HOUR, 2);
+                startTime = sdf.format(calendar.getTime());
+                calendar.add(Calendar.HOUR, 1);
+                toTime = sdf.format(calendar.getTime());
+                return (startTime + "-" + toTime);
+
+            case 2:
+                calendar.setTime(mStartTime);
+                calendar.add(Calendar.HOUR, 3);
+                startTime = sdf.format(calendar.getTime());
+                calendar.add(Calendar.HOUR, 1);
+                toTime = sdf.format(calendar.getTime());
+                return (startTime + "-" + toTime);
+
+            case 3:
+                calendar.setTime(mStartTime);
+                calendar.add(Calendar.HOUR, 4);
+                startTime = sdf.format(calendar.getTime());
+                calendar.add(Calendar.HOUR, 1);
+                toTime = sdf.format(calendar.getTime());
+                return (startTime + "-" + toTime);
+
+            case 4:
+                calendar.setTime(mStartTime);
+                calendar.add(Calendar.HOUR, 5);
+                startTime = sdf.format(calendar.getTime());
+                calendar.add(Calendar.HOUR, 1);
+                toTime = sdf.format(calendar.getTime());
+                return (startTime + "-" + toTime);
+
+            case 5:
+                calendar.setTime(mStartTime);
+                calendar.add(Calendar.HOUR, 6);
+                startTime = sdf.format(calendar.getTime());
+                calendar.add(Calendar.HOUR, 1);
+                toTime = sdf.format(calendar.getTime());
+                return (startTime + "-" + toTime);
+
+            case 6:
+                calendar.setTime(mStartTime);
+                calendar.add(Calendar.HOUR, 7);
+                startTime = sdf.format(calendar.getTime());
+                calendar.add(Calendar.HOUR, 1);
+                toTime = sdf.format(calendar.getTime());
+                return (startTime + "-" + toTime);
+
+            case 7:
+                calendar.setTime(mStartTime);
+                calendar.add(Calendar.HOUR, 8);
+                startTime = sdf.format(calendar.getTime());
+                calendar.add(Calendar.HOUR, 1);
+                toTime = sdf.format(calendar.getTime());
+                return (startTime + "-" + toTime);
+
+            case 8:
+                calendar.setTime(mStartTime);
+                calendar.add(Calendar.HOUR, 9);
+                startTime = sdf.format(calendar.getTime());
+                calendar.add(Calendar.HOUR, 1);
+                toTime = sdf.format(calendar.getTime());
+                return (startTime + "-" + toTime);
+
+            case 9:
+                calendar.setTime(mStartTime);
+                calendar.add(Calendar.HOUR, 10);
+                startTime = sdf.format(calendar.getTime());
+                calendar.add(Calendar.HOUR, 1);
+                toTime = sdf.format(calendar.getTime());
+                return (startTime + "-" + toTime);
+
+            case 10:
+                calendar.setTime(mStartTime);
+                calendar.add(Calendar.HOUR, 11);
+                startTime = sdf.format(calendar.getTime());
+                calendar.add(Calendar.HOUR, 1);
+                toTime = sdf.format(calendar.getTime());
+                return (startTime + "-" + toTime);
+            case 11:
+                calendar.setTime(mStartTime);
+                calendar.add(Calendar.HOUR, 12);
+                startTime = sdf.format(calendar.getTime());
+                calendar.add(Calendar.HOUR, 1);
+                toTime = sdf.format(calendar.getTime());
+                return (startTime + "-" + toTime);
+
+            case 12:
+                calendar.setTime(mStartTime);
+                calendar.add(Calendar.HOUR, 13);
+                startTime = sdf.format(calendar.getTime());
+                calendar.add(Calendar.HOUR, 1);
+                toTime = sdf.format(calendar.getTime());
+                return (startTime + "-" + toTime);
+
+            default:
+                return "Closed";
+        }
     }
 }

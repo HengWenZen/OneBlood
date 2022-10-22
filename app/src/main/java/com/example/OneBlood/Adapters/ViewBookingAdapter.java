@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.OneBlood.Activity.HospitalViewBooking;
-import com.example.OneBlood.Activity.ViewBooking;
+import com.example.OneBlood.Activity.UserViewBooking;
 import com.example.OneBlood.HospitalViewBookingDetails;
 import com.example.OneBlood.Activity.UserViewBookingDetails;
 import com.example.OneBlood.Models.Booking;
@@ -108,7 +108,7 @@ public class ViewBookingAdapter extends RecyclerView.Adapter<ViewBookingAdapter.
 
                     }
                     else{
-                        ((ViewBooking) mContext).adapterChange(getAdapterPosition());
+                        ((UserViewBooking) mContext).adapterChange(getAdapterPosition());
                         Intent i = new Intent(mContext, UserViewBookingDetails.class);
                         i.putExtra(EXTRA_BOOKING_HOSPITAL, bookingHospital);
                         i.putExtra(EXTRA_BOOKING_DATE, bookingDate);

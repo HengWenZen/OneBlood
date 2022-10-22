@@ -6,6 +6,17 @@ public class Donor {
     String mContact;
     String mEmail;
     String mBloodType;
+    String mUserStatus;
+    Boolean isDonor;
+
+    public Donor(String id, String name, String contact, String email, String bloodType, String userStatus) {
+        mId = id;
+        mName = name;
+        mContact = contact;
+        mEmail = email;
+        mBloodType = bloodType;
+        mUserStatus = userStatus;
+    }
 
     public Boolean getDonor() {
         return isDonor;
@@ -14,8 +25,6 @@ public class Donor {
     public void setDonor(Boolean donor) {
         isDonor = donor;
     }
-
-    Boolean isDonor;
 
     public String getBloodType() {
         return mBloodType;
@@ -55,5 +64,13 @@ public class Donor {
 
     public void setEmail(String email) {
         mEmail = email;
+    }
+
+    public String getUserStatus() {
+        return mUserStatus;
+    }
+
+    public void setUserStatus(String userStatus) {
+        this.mUserStatus = userStatus;
     }
 }

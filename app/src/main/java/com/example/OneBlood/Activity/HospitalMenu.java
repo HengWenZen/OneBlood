@@ -59,7 +59,7 @@ public class HospitalMenu extends AppCompatActivity {
         btnHospitalEmergency.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(HospitalMenu.this, HospitalEmergencyNotice.class);
+                Intent i = new Intent(HospitalMenu.this, HospitalEmergencyNoticeMenu.class);
                 startActivity(i);
                 finish();
             }

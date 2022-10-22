@@ -8,6 +8,7 @@ import androidx.fragment.app.DialogFragment;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -61,10 +62,14 @@ import static java.util.Calendar.*;
 
 public class HospitalEvents extends AppCompatActivity {
 
-   public static final String START_DATE = "startDate";
-   public static final String END_DATE = "endDate";
+    public static SharedPreferences hospitalPreferences;
+    private final String SHARED_PREFERENCE = "hospitalPreferences";
+    private final String KEY_HOSPITAL_ID = "hospitalID";
+    private final String KEY_HOSPITAL_NAME = "hospitalName";
 
-   private static int mYear1, mMonth1, mDay1, mYear2, mMonth2, mDay2;
+    public static final String START_DATE = "startDate";
+    public static final String END_DATE = "endDate";
+
     EditText etHospitalEventStartDate, etHospitalEventEndDate;
     TextInputLayout etHospitalEventTitle, etHospitalEventLocation, etHospitalEventDescription, etHospitalEventOperationHrs, etHospitalEventStartTime, etHospitalEventEndTime;
     TextInputEditText etStartTime, etEndTime;
@@ -100,6 +105,11 @@ public class HospitalEvents extends AppCompatActivity {
         ivEndDate = findViewById(R.id.ivEndDate);
         ivBackToHome = findViewById(R.id.ivBackToHome);
         ivEventPic= findViewById(R.id.ivEventPic);
+
+        SharedPreferences prefs = getSharedPreferences(SHARED_PREFERENCE, MODE_PRIVATE);
+        String hospital = prefs.getString(KEY_HOSPITAL_NAME, "");
+
+        etHospitalEventLocation.getEditText().setText(hospital);
 
         etHospitalEventStartDate.setCursorVisible(false);
         setListener();

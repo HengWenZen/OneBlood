@@ -14,15 +14,14 @@ public class ViewBloodRequestDetails extends AppCompatActivity {
     TextInputLayout etRequestTitle, etDateOfRequest, etNameOfRecipient, etRequestLocation, etRequestedBloodType, etRequestDescription, etRecipientContactDetail, etEmail;
     String RequestTitle, DateOfRequest, NameOfRecipient, RequestLocation, RequestedBloodType, RequestDescription;
 
-    public static final String EXTRA_REQUEST_TITLE = "request_title";
-    public static final String EXTRA_REQUEST_DATE = "request_date";
-    public static final String EXTRA_REQUEST_DESCRIPTION = "request_description";
+    public static final String EXTRA_EMERGENCY_NOTICE_TITLE = "noticeTitle";
+    public static final String EXTRA_EMERGENCY_NOTICE_DATE = "noticeDate";
+    public static final String EXTRA_EMERGENCY_NOTICE_DESCRIPTION = "noticeDescription";
+    public static final String EXTRA_EMERGENCY_NOTICE_LOCATION = "locationName";
+    public static final String EXTRA_EMERGENCY_NOTICE_ID = "noticeID";
+    public static final String EXTRA_EMERGENCY_NOTICE_NAME = "postedBy";
     public static final String EXTRA_REQUEST_BLOOD_TYPE = "request_blood_type";
-    public static final String EXTRA_REQUEST_ID = "request_id";
-    public static final String EXTRA_REQUEST_LOCATION = "request_location";
-    public static final String EXTRA_RECIPIENT_NAME = "recipient_name";
-    public static final String EXTRA_RECIPIENT_EMAIL = "recipient_email";
-    public static final String EXTRA_RECIPIENT_CONTACT = "recipient_contact";
+    public static final String EXTRA_EMERGENCY_NOTICE_CONTACT = "noticeContact";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,26 +35,23 @@ public class ViewBloodRequestDetails extends AppCompatActivity {
         etRequestedBloodType = findViewById(R.id.etRequestedBloodType);
         etRequestDescription = findViewById(R.id.etRequestDescription);
         etRecipientContactDetail = findViewById(R.id.etContact);
-        etEmail = findViewById(R.id.etEmailOfRecipient);
 
         Intent intent = getIntent();
         Bundle b = intent.getExtras();
 
-        etRequestTitle.getEditText().setText((String)b.get(EXTRA_REQUEST_TITLE));
+        etRequestTitle.getEditText().setText((String)b.get(EXTRA_EMERGENCY_NOTICE_TITLE));
         etRequestTitle.getEditText().setTextColor(ContextCompat.getColor(this, R.color.black));
-        etDateOfRequest.getEditText().setText((String)b.get(EXTRA_REQUEST_DATE));
+        etDateOfRequest.getEditText().setText((String)b.get(EXTRA_EMERGENCY_NOTICE_DATE));
         etDateOfRequest.getEditText().setTextColor(ContextCompat.getColor(this, R.color.black));
-        etNameOfRecipient.getEditText().setText((String)b.get(EXTRA_RECIPIENT_NAME));
+        etNameOfRecipient.getEditText().setText((String)b.get(EXTRA_EMERGENCY_NOTICE_NAME));
         etNameOfRecipient.getEditText().setTextColor(ContextCompat.getColor(this, R.color.black));
-        etRecipientContactDetail.getEditText().setText((String)b.get(EXTRA_RECIPIENT_CONTACT));
+        etRecipientContactDetail.getEditText().setText((String)b.get(EXTRA_EMERGENCY_NOTICE_CONTACT));
         etRecipientContactDetail.getEditText().setTextColor(ContextCompat.getColor(this, R.color.black));
-        etEmail.getEditText().setText((String)b.get(EXTRA_RECIPIENT_EMAIL));
-        etEmail.getEditText().setTextColor(ContextCompat.getColor(this, R.color.black));
-        etRequestLocation.getEditText().setText((String)b.get(EXTRA_REQUEST_LOCATION));
+        etRequestLocation.getEditText().setText((String)b.get(EXTRA_EMERGENCY_NOTICE_LOCATION));
         etRequestLocation.getEditText().setTextColor(ContextCompat.getColor(this, R.color.black));
         etRequestedBloodType.getEditText().setText((String)b.get(EXTRA_REQUEST_BLOOD_TYPE));
         etRequestedBloodType.getEditText().setTextColor(ContextCompat.getColor(this, R.color.black));
-        etRequestDescription.getEditText().setText((String)b.get(EXTRA_REQUEST_DESCRIPTION));
+        etRequestDescription.getEditText().setText((String)b.get(EXTRA_EMERGENCY_NOTICE_DESCRIPTION));
         etRequestDescription.getEditText().setTextColor(ContextCompat.getColor(this, R.color.black));
     }
 }

@@ -5,8 +5,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.widget.Button;
 
 import com.example.OneBlood.Adapters.EventsAdapter;
@@ -20,7 +22,7 @@ import java.util.List;
 public class UserEvent extends AppCompatActivity {
 
 
-    Button btnMakeAppointment;
+    Button btnViewEventAppointment;
     RecyclerView rv;
     EventsAdapter mEventsAdapter;
 
@@ -30,6 +32,17 @@ public class UserEvent extends AppCompatActivity {
         setContentView(R.layout.activity_user_event);
 
         rv = findViewById(R.id.rvEventList);
+        btnViewEventAppointment = findViewById(R.id.btnViewEventAppointment);
+
+        btnViewEventAppointment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(UserEvent.this, UserViewEventBooking.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
 
         EventLab eventLab = EventLab.get(this);
         List<Events> events = eventLab.getEventsList();
@@ -45,6 +58,7 @@ public class UserEvent extends AppCompatActivity {
                 rv.setAdapter(mEventsAdapter);
             }
         }, 2000);
+
 
 
 

@@ -49,6 +49,7 @@ public class UserLogin extends AppCompatActivity {
     private final String KEY_PASSWORD = "password";
     private final String KEY_USER_EMAIL = "userEmail";
     private final String KEY_USER_STATUS = "userStatus";
+    private final String KEY_USER_BLOOD_TYPE = "userStatus";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,9 +65,8 @@ public class UserLogin extends AppCompatActivity {
 
         mPreferences = getSharedPreferences("myPreferences", MODE_PRIVATE);
 
-        if (mPreferences.contains(KEY_USER_EMAIL) && mPreferences.contains(KEY_PASSWORD)) {
-            FirebaseMessaging.getInstance().deleteToken();
-            FirebaseMessaging.getInstance().subscribeToTopic(userBloodType);
+        if (mPreferences.contains(KEY_USER_EMAIL) && mPreferences.contains(KEY_PASSWORD) && mPreferences.contains(KEY_USER_BLOOD_TYPE)) {
+
             FirebaseMessaging.getInstance().getToken()
                     .addOnCompleteListener(new OnCompleteListener<String>() {
                         @Override
@@ -80,6 +80,7 @@ public class UserLogin extends AppCompatActivity {
                             Log.d("FCM", "FCM Token : " + token);
                         }
                     });
+            FirebaseMessaging.getInstance().subscribeToTopic("user");
             Intent i = new Intent(UserLogin.this, UserDashBoard.class);
             startActivity(i);
             finish();
@@ -165,19 +166,6 @@ public class UserLogin extends AppCompatActivity {
                                             userBloodType = "O_Negative";
                                         }
 
-                                        FirebaseMessaging.getInstance().deleteToken();
-                                        FirebaseMessaging.getInstance().subscribeToTopic(userBloodType).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
-                                                Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_LONG).show();
-                                            }
-                                        }).addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Toast.makeText(getApplicationContext(),"Fail to Subscribe " + e.getMessage(),Toast.LENGTH_LONG).show();
-                                            }
-                                        });
-
                                         FirebaseMessaging.getInstance().getToken()
                                                 .addOnCompleteListener(new OnCompleteListener<String>() {
                                                     @Override
@@ -191,6 +179,8 @@ public class UserLogin extends AppCompatActivity {
                                                         Log.d("FCM", "FCM Token : " + token);
                                                     }
                                                 });
+
+                                        FirebaseMessaging.getInstance().subscribeToTopic("user");
                                         Toast.makeText(UserLogin.this, userBloodType + token, Toast.LENGTH_SHORT).show();
 
                                         Toast.makeText(UserLogin.this, "Logged in Successfully!", Toast.LENGTH_SHORT).show();
@@ -204,6 +194,7 @@ public class UserLogin extends AppCompatActivity {
                                         editor.putString(KEY_USER_ID, userId);
                                         editor.putString(KEY_USER_NAME, userName);
                                         editor.putString(KEY_USER_STATUS, userStatus);
+                                        editor.putString(KEY_USER_BLOOD_TYPE, userBloodType);
                                         editor.apply();
                                         editor.commit();
                                     }
