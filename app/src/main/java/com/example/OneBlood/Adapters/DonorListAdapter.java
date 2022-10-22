@@ -32,11 +32,6 @@ public class DonorListAdapter extends RecyclerView.Adapter<DonorListAdapter.Dono
         mContext = context;
     }
 
-    public void addNewList(List<Donor>donors){
-        mDonorList = donors;
-        notifyDataSetChanged();
-    }
-
 
     @NonNull
     @Override
@@ -51,12 +46,6 @@ public class DonorListAdapter extends RecyclerView.Adapter<DonorListAdapter.Dono
     public void onBindViewHolder(@NonNull DonorListAdapter.DonorListHolder holder, int position) {
         Donor donor = mDonorList.get(position);
         String status = donor.getUserStatus();
-
-        if (status.equals("inactive")){
-            holder.itemView.setVisibility(View.GONE);
-        }else{
-            holder.itemView.setVisibility(View.VISIBLE);
-        }
         holder.bindDonor(donor);
     }
 

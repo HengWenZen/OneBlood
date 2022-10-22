@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -30,16 +31,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HospitalEmergencyNoticeMenu extends AppCompatActivity {
+
+    public static SharedPreferences hospitalPreferences;
+    private final String SHARED_PREFERENCE = "hospitalPreferences";
+    private final String KEY_HOSPITAL_ID = "hospitalID";
+    private final String KEY_HOSPITAL_NAME = "hospitalName";
+
     RecyclerView rv;
     EmergencyNoticeAdapters mEmergencyNoticeAdapters;
     Button btnViewOwnEmergencyNotice;
     List<EmergencyNotice> mEmergencyNotices;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    String postedBy, hospital;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hospital_emergency_notice_menu);
+
+        SharedPreferences prefs = getSharedPreferences(SHARED_PREFERENCE, MODE_PRIVATE);
+        hospital = prefs.getString(KEY_HOSPITAL_NAME, "");
 
         rv = findViewById(R.id.rvEmergencyNoticeList);
         btnViewOwnEmergencyNotice = findViewById(R.id.btnViewOwnEmergencyNotice);
@@ -72,16 +83,20 @@ public class HospitalEmergencyNoticeMenu extends AppCompatActivity {
                             QuerySnapshot result = task.getResult();
                             if (!result.isEmpty()) {
                                 for (QueryDocumentSnapshot document : result) {
-                                    EmergencyNotice emergencyNotice = new EmergencyNotice(
-                                            document.get("description").toString(),
-                                            document.get("title").toString(),
-                                            document.get("postedBy").toString(),
-                                            document.get("date").toString(),
-                                            document.getId(),
-                                            document.get("blood type").toString(),
-                                            document.get("contact").toString(),
-                                            document.get("location").toString());
-                                    mEmergencyNotices.add(emergencyNotice);
+                                    postedBy = document.get("postedBy").toString();
+
+                                    if(!postedBy.equals(hospital)) {
+                                        EmergencyNotice emergencyNotice = new EmergencyNotice(
+                                                document.get("description").toString(),
+                                                document.get("title").toString(),
+                                                document.get("postedBy").toString(),
+                                                document.get("date").toString(),
+                                                document.getId(),
+                                                document.get("blood type").toString(),
+                                                document.get("contact").toString(),
+                                                document.get("location").toString());
+                                        mEmergencyNotices.add(emergencyNotice);
+                                    }
                                 }
                             }
                         }
@@ -96,7 +111,7 @@ public class HospitalEmergencyNoticeMenu extends AppCompatActivity {
                     Toast.makeText(HospitalEmergencyNoticeMenu.this, "No Requests Found.", Toast.LENGTH_SHORT).show();
                 }
                 rv.setLayoutManager(new LinearLayoutManager(HospitalEmergencyNoticeMenu.this));
-                mEmergencyNoticeAdapters = new EmergencyNoticeAdapters(mEmergencyNotices,HospitalEmergencyNoticeMenu.this, false);
+                mEmergencyNoticeAdapters = new EmergencyNoticeAdapters(mEmergencyNotices,HospitalEmergencyNoticeMenu.this, true, postedBy);
                 rv.setAdapter(mEmergencyNoticeAdapters);
             }
         }, 1000);

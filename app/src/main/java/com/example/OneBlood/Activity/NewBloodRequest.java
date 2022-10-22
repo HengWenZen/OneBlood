@@ -3,6 +3,7 @@ package com.example.OneBlood.Activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -39,6 +40,11 @@ import java.util.Map;
 
 public class NewBloodRequest extends AppCompatActivity {
 
+    public static SharedPreferences mPreferences;
+    private final String SHARED_PREF = "myPreferences";
+    private final String KEY_USER = "user";
+    private final String KEY_USER_NAME = "userName";
+
     TextView tvRequestDate;
     TextInputLayout etRecipientName, etDescription, etLocation, etTitle, etRequiredBloodType, etRecipientContact, etRecipientEmail;
     AutoCompleteTextView actvRequiredBloodType;
@@ -62,6 +68,11 @@ public class NewBloodRequest extends AppCompatActivity {
         etRequiredBloodType = findViewById(R.id.etRequiredBloodType);
         actvRequiredBloodType = findViewById(R.id.actvRequiredBloodType);
         btnSubmit = findViewById(R.id.btnSubmit);
+
+        SharedPreferences prefs = getSharedPreferences("myPreferences", MODE_PRIVATE);
+        recipientName = prefs.getString(KEY_USER_NAME, null);
+
+        etRecipientName.getEditText().setText(recipientName);
 
         int year = Calendar.getInstance().get(Calendar.YEAR);
         int month = Calendar.getInstance().get(Calendar.MONTH);
@@ -100,7 +111,6 @@ public class NewBloodRequest extends AppCompatActivity {
     }
 
     private void submitBloodRequest() {
-        recipientName = etRecipientName.getEditText().getText().toString().trim();
         recipientContact = etRecipientContact.getEditText().getText().toString().trim();
         recipientEmail = etRecipientEmail.getEditText().getText().toString().trim();
         requestDescription = etDescription.getEditText().getText().toString().trim();

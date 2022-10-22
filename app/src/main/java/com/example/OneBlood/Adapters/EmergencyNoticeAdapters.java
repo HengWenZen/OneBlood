@@ -35,12 +35,13 @@ public class EmergencyNoticeAdapters extends RecyclerView.Adapter<EmergencyNotic
     public static final String EXTRA_REQUEST_BLOOD_TYPE = "request_blood_type";
     public static final String EXTRA_EMERGENCY_NOTICE_CONTACT = "noticeContact";
 
-    String title, bloodType;
+    String ownerOfRequest;
 
-    public EmergencyNoticeAdapters(List<EmergencyNotice> emergencyNotices, Context context, boolean hospital){
+    public EmergencyNoticeAdapters(List<EmergencyNotice> emergencyNotices, Context context, boolean hospital, String postedBy){
         mEmergencyNotice = emergencyNotices;
         mContext = context;
         isHospital = hospital;
+        ownerOfRequest = postedBy;
     }
 
     @NonNull
@@ -93,7 +94,7 @@ public class EmergencyNoticeAdapters extends RecyclerView.Adapter<EmergencyNotic
                     i.putExtra(EXTRA_EMERGENCY_NOTICE_LOCATION, mEmergencyNotice.getLocation());
                     i.putExtra(EXTRA_EMERGENCY_NOTICE_ID, mEmergencyNotice.getId());
                     i.putExtra(EXTRA_REQUEST_BLOOD_TYPE, mEmergencyNotice.getRequiredBloodType());
-                    i.putExtra(EXTRA_EMERGENCY_NOTICE_NAME, mEmergencyNotice.getHospitalName());
+                    i.putExtra(EXTRA_EMERGENCY_NOTICE_NAME, mEmergencyNotice.getPostedBy());
                     i.putExtra(EXTRA_EMERGENCY_NOTICE_CONTACT, mEmergencyNotice.getContact());
                     mContext.startActivity(i);
                 }

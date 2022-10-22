@@ -1,12 +1,12 @@
 package com.example.OneBlood.Models;
 
 public class EmergencyNotice {
-    String mDescription, mTitle, mHospitalName, mDate, mId, requiredBloodType ,mContact ,mLocation;
+    String mDescription, mTitle, mPostedBy, mDate, mId, requiredBloodType ,mContact ,mLocation;
 
-    public EmergencyNotice(String description, String title, String hospitalName, String date, String id, String requiredBloodType, String contact, String location) {
+    public EmergencyNotice(String description, String title, String postedBy, String date, String id, String requiredBloodType, String contact, String location) {
         mDescription = description;
         mTitle = title;
-        mHospitalName = hospitalName;
+        mPostedBy = postedBy;
         mDate = date;
         mId = id;
         this.requiredBloodType = requiredBloodType;
@@ -30,12 +30,12 @@ public class EmergencyNotice {
         mTitle = title;
     }
 
-    public String getHospitalName() {
-        return mHospitalName;
+    public String getPostedBy() {
+        return mPostedBy;
     }
 
-    public void setHospitalName(String hospitalName) {
-        mHospitalName = hospitalName;
+    public void setPostedBy(String hospitalName) {
+        mPostedBy = hospitalName;
     }
 
     public String getDate() {

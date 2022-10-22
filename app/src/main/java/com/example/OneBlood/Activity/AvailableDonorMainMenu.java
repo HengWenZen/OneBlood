@@ -1,6 +1,7 @@
 package com.example.OneBlood.Activity;
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -33,11 +34,17 @@ import java.util.List;
 
 public class AvailableDonorMainMenu extends AppCompatActivity {
 
+    public static SharedPreferences mPreferences;
+    private final String SHARED_PREF = "myPreferences";
+    private final String KEY_USER = "user";
+    private final String KEY_USER_NAME = "userName";
+    private final String KEY_USER_STATUS = "userStatus";
+
     RecyclerView rvDonorList;
     Button btnFilter;
     DonorListAdapter mDonorListAdapter;
     Spinner spinnerBloodType;
-    String selectedBloodType;
+    String selectedBloodType, user, userStatus;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     List<Donor> mDonors = new ArrayList<>();
     ArrayList<Donor> allDonorList = new ArrayList<>();
@@ -53,6 +60,9 @@ public class AvailableDonorMainMenu extends AppCompatActivity {
         rvDonorList = findViewById(R.id.rvDonorList);
         spinnerBloodType = findViewById(R.id.spinnerBloodType);
         btnFilter = findViewById(R.id.btnFilter);
+
+        SharedPreferences prefs = getSharedPreferences("myPreferences", MODE_PRIVATE);
+        user = prefs.getString(KEY_USER_NAME, null);
 
         loadBloodTypeList();
         loadDonorList();
@@ -107,17 +117,21 @@ public class AvailableDonorMainMenu extends AppCompatActivity {
                             QuerySnapshot result = task.getResult();
                             if (!result.isEmpty()) {
                                 for (QueryDocumentSnapshot document : result) {
+                                    String userName = document.get("FullName").toString();
+                                    String status = document.get("status").toString();
+
+                                    if(!user.equals(userName) && status.equals("active")) {
                                         Donor donor = new Donor(document.getId(),
-                                             document.get("FullName").toString(),
-                                             document.get("phone number").toString(),
-                                             document.get("Email").toString(),
-                                             document.get("blood type").toString(),
-                                             document.get("status").toString());
+                                                document.get("FullName").toString(),
+                                                document.get("phone number").toString(),
+                                                document.get("Email").toString(),
+                                                document.get("blood type").toString(),
+                                                document.get("status").toString());
 
-                                    String bloodType = document.get("FullName").toString();
-                                    Log.d("TAG", "onComplete: " + bloodType);
-                                    donors.add(donor);
-
+                                        String bloodType = document.get("FullName").toString();
+                                        Log.d("TAG", "onComplete: " + bloodType);
+                                        donors.add(donor);
+                                    }
                                 }
 
                                 Handler handler = new Handler();

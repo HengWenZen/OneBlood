@@ -5,23 +5,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.OneBlood.Adapters.BloodRequestAdapter;
 import com.example.OneBlood.Adapters.EmergencyNoticeAdapters;
-import com.example.OneBlood.Firebase;
-import com.example.OneBlood.Labs.BloodRequestLab;
-import com.example.OneBlood.Models.BloodRequest;
+import com.example.OneBlood.Adapters.ViewBloodRequestAdapter;
 import com.example.OneBlood.Models.EmergencyNotice;
+import com.example.OneBlood.Models.ViewBloodRequest;
 import com.example.OneBlood.R;
-import com.example.OneBlood.UserDashBoard;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -31,55 +28,38 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BloodRequestMainMenu extends AppCompatActivity {
+public class UserViewBloodRequest extends AppCompatActivity {
 
     public static SharedPreferences mPreferences;
     private final String SHARED_PREF = "myPreferences";
     private final String KEY_USER = "user";
     private final String KEY_USER_NAME = "userName";
 
-    Button btnViewYourRequest, btnNewRequest;
+
     RecyclerView rv;
-    EmergencyNoticeAdapters mEmergencyNoticeAdapters;
-    List<EmergencyNotice> mEmergencyNotices;
+    List<ViewBloodRequest> mViewBloodRequests;
+    ViewBloodRequestAdapter mViewBloodRequestAdapter;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String postedBy ,user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_blood_request_main_menu);
+        setContentView(R.layout.activity_user_view_blood_request);
 
-        btnNewRequest = findViewById(R.id.btnNewRequest);
-        btnViewYourRequest = findViewById(R.id.btnViewYourRequest);
-        rv = findViewById(R.id.rvBloodRequestList);
+        rv = findViewById(R.id.rvUserRequest);
 
         SharedPreferences prefs = getSharedPreferences("myPreferences", MODE_PRIVATE);
         user = prefs.getString(KEY_USER_NAME, null);
 
         loadRequestList();
 
-        btnNewRequest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(BloodRequestMainMenu.this, NewBloodRequest.class);
-                startActivity(i);
-            }
-        });
-
-        btnViewYourRequest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(BloodRequestMainMenu.this, UserViewBloodRequest.class);
-                startActivity(i);
-            }
-        });
     }
 
     private void loadRequestList() {
-        mEmergencyNotices = new ArrayList<>();
+        mViewBloodRequests = new ArrayList<>();
 
-        ProgressDialog dialog = ProgressDialog.show(com.example.OneBlood.Activity.BloodRequestMainMenu.this, "",
+        ProgressDialog dialog = ProgressDialog.show(UserViewBloodRequest.this, "",
                 "Loading. Please wait...", true);   //show loading dialog
 
 
@@ -94,18 +74,16 @@ public class BloodRequestMainMenu extends AppCompatActivity {
                                 for (QueryDocumentSnapshot document : result) {
                                     postedBy = document.get("postedBy").toString();
 
-                                    if(!postedBy.equals(user)) {
-                                        EmergencyNotice emergencyNotice = new EmergencyNotice(
-                                                document.get("description").toString(),
+                                    if(postedBy.equals(user)) {
+                                        ViewBloodRequest viewBloodRequest = new ViewBloodRequest(document.getId(),
                                                 document.get("title").toString(),
-                                                document.get("postedBy").toString(),
-                                                document.get("date").toString(),
-                                                document.getId(),
                                                 document.get("blood type").toString(),
+                                                document.get("location").toString(),
+                                                document.get("description").toString(),
+                                                document.get("postedBy").toString(),
                                                 document.get("contact").toString(),
-                                                document.get("location").toString());
-                                        mEmergencyNotices.add(emergencyNotice);
-
+                                                document.get("date").toString());
+                                        mViewBloodRequests.add(viewBloodRequest);
                                     }
                                 }
                             }
@@ -117,19 +95,41 @@ public class BloodRequestMainMenu extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             public void run() {
                 dialog.dismiss();   //remove loading Dialog
-                if (mEmergencyNotices.size() == 0) {
-                    Toast.makeText(BloodRequestMainMenu.this, "No Requests Found.", Toast.LENGTH_SHORT).show();
+                if (mViewBloodRequests.size() == 0) {
+                    alertDataEmpty();
+                } else {
+                    rv.setLayoutManager(new LinearLayoutManager(UserViewBloodRequest.this));
+                    mViewBloodRequestAdapter = new ViewBloodRequestAdapter(mViewBloodRequests, UserViewBloodRequest.this, true);
+                    rv.setAdapter(mViewBloodRequestAdapter);
                 }
-                rv.setLayoutManager(new LinearLayoutManager(BloodRequestMainMenu.this));
-                mEmergencyNoticeAdapters = new EmergencyNoticeAdapters(mEmergencyNotices, BloodRequestMainMenu.this, true, postedBy);
-                rv.setAdapter(mEmergencyNoticeAdapters);
             }
         }, 1000);
     }
 
+    public void adapterChange(int position){
+        mViewBloodRequests.remove(position);
+        mViewBloodRequestAdapter.notifyItemRemoved(position);
+        if(mViewBloodRequests.size() == 0) {
+            finish();
+        }
+    }
+
+    private void alertDataEmpty() {
+        new AlertDialog.Builder(this)
+                .setMessage("No Existing Appointment Made..")
+                .setPositiveButton("Return", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent y = new Intent(UserViewBloodRequest.this, BloodRequestMainMenu.class);
+                        startActivity(y);
+                        finish();
+                    }
+                }).create().show();
+    }
+
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(BloodRequestMainMenu.this, UserDashBoard.class);
+        Intent intent = new Intent(UserViewBloodRequest.this, BloodRequestMainMenu.class);
         startActivity(intent);
         finish();
     }

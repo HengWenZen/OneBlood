@@ -14,11 +14,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MainActivity">
-        <activity android:name=".Activity.HospitalEmergencyNoticeDetail"></activity>
+        <activity android:name=".Activity.BloodRequestDetails"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+        <activity android:name=".Activity.UserViewBloodRequest" />
+        <activity android:name=".Activity.HospitalEmergencyNoticeDetail" />
         <activity android:name=".Activity.HospitalEmergencyNoticeMenu" />
         <activity android:name=".Activity.HospitalViewEventBookingDetails" />
-        <activity android:name=".Activity.UserViewEventBookingDetails"
-        android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"/>
+        <activity
+            android:name=".Activity.UserViewEventBookingDetails"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity android:name=".Activity.HospitalViewEventBooking" />
         <activity android:name=".Activity.UserViewEventBooking" />
         <activity
