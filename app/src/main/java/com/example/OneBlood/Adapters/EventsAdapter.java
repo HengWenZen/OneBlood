@@ -33,6 +33,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventHolde
     public static final String EXTRA_EVENT_END_TIME = "endTime";
     public static final String EXTRA_EVENT_POSTED_BY = "postedBy";
     public static final String EXTRA_EVENT_ID = "eventId";
+    public static final String EXTRA_EVENT_IMAGE_URI = "eventImageUri";
 
     public static SharedPreferences mPreferences;
     private final String SHARED_PREF = "myPreferences";
@@ -98,6 +99,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventHolde
                         i.putExtra(EXTRA_EVENT_END_TIME, mEvents.getEndTime());
                         i.putExtra(EXTRA_EVENT_POSTED_BY, mEvents.getPostedBy());
                         i.putExtra(EXTRA_EVENT_ID, mEvents.getId());
+                        i.putExtra(EXTRA_EVENT_IMAGE_URI, mEvents.getImageURL());
                         mContext.startActivity(i);
 
                     }else{
@@ -111,6 +113,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventHolde
                         intent.putExtra(EXTRA_EVENT_END_TIME, mEvents.getEndTime());
                         intent.putExtra(EXTRA_EVENT_POSTED_BY, mEvents.getPostedBy());
                         intent.putExtra(EXTRA_EVENT_ID, mEvents.getId());
+                        intent.putExtra(EXTRA_EVENT_IMAGE_URI, mEvents.getImageURL());
                         mContext.startActivity(intent);
                     }
                 }

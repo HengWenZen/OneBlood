@@ -2,6 +2,7 @@ package com.example.OneBlood;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,6 +12,8 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,7 +33,12 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -48,11 +56,13 @@ public class UserEventTimeSlot extends AppCompatActivity implements DatePickerDi
     public static final String EXTRA_EVENT_TITLE = "title";
     public static final String EXTRA_EVENT_LOCATION = "location";
     public static final String EXTRA_EVENT_DESCRIPTION = "description";
-    public static final String EXTRA_EVENT_OPERATION_HOUR = "time";
     public static final String EXTRA_EVENT_START_DATE = "startDate";
     public static final String EXTRA_EVENT_END_DATE = "endDate";
     public static final String EXTRA_EVENT_START_TIME = "startTime";
     public static final String EXTRA_EVENT_END_TIME = "endTime";
+    public static final String EXTRA_EVENT_POSTED_BY = "postedBy";
+    public static final String EXTRA_EVENT_ID = "eventId";
+    public static final String EXTRA_EVENT_IMAGE_URI = "eventImageUri";
 
     public static SharedPreferences mPreferences;
     private final String SHARED_PREF = "myPreferences";
@@ -66,16 +76,17 @@ public class UserEventTimeSlot extends AppCompatActivity implements DatePickerDi
     private EventTimeSlotAdapter mEventTimeSlotAdapter;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     Firebase mFirebase = new Firebase();
-    TextInputLayout etEventTitle, etEventDescription, etEventLocation, etEventStartDate, etEventEndDate, etEventOperationHrs;
+    TextInputLayout etEventTitle, etEventDescription, etEventLocation, etEventStartDate, etEventEndDate, etEventStartTime, etEventEndTime, etEventPostedBy;
     ImageView ivBackToList, ivChooseDate, ivViewEventPic;
     TextView tvCheckBookingStatus;
     TextView tvShowEventDate;
     Button btnBookEventTimeSlot;
     RecyclerView rv;
     Date mStartDate, mEndDate, mStartTime, mEndTime;
-    String dateSelected, eventTitle, eventLocation, eventStartDate, eventEndDate, eventStartTime, eventEndTime;
+    String dateSelected, eventTitle, eventLocation, eventStartDate, eventEndDate, eventStartTime, eventEndTime, eventImageID, eventDescription, eventPostedBy, eventId;
     String userStatus, bookingDate, user, appointmentStatus;
     Date completeDate;
+    StorageReference storageReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +98,9 @@ public class UserEventTimeSlot extends AppCompatActivity implements DatePickerDi
         etEventLocation = findViewById(R.id.etEventLocation);
         etEventStartDate = findViewById(R.id.etEventStartDate);
         etEventEndDate = findViewById(R.id.etEventEndDate);
+        etEventStartTime = findViewById(R.id.etEventStartTime);
+        etEventEndTime = findViewById(R.id.etEventEndTime);
+        etEventPostedBy = findViewById(R.id.etEventPostedBy);
         tvShowEventDate = findViewById(R.id.tvShowEventDate);
         btnBookEventTimeSlot = findViewById(R.id.btnBookEventTimeSlot);
         tvCheckBookingStatus = findViewById(R.id.tvCheckBookingStatus);
@@ -102,6 +116,53 @@ public class UserEventTimeSlot extends AppCompatActivity implements DatePickerDi
         eventTitle = getIntent().getStringExtra(EXTRA_EVENT_TITLE);
         eventStartTime = getIntent().getStringExtra(EXTRA_EVENT_START_TIME);
         eventEndTime = getIntent().getStringExtra(EXTRA_EVENT_END_TIME);
+        eventDescription = getIntent().getStringExtra(EXTRA_EVENT_DESCRIPTION);
+        eventLocation = getIntent().getStringExtra(EXTRA_EVENT_LOCATION);
+        eventImageID = getIntent().getStringExtra(EXTRA_EVENT_IMAGE_URI);
+        eventPostedBy = getIntent().getStringExtra(EXTRA_EVENT_POSTED_BY);
+        eventId = getIntent().getStringExtra(EXTRA_EVENT_ID);
+
+        etEventDescription.getEditText().setText(eventDescription);
+        etEventDescription.getEditText().setTextColor(ContextCompat.getColor(this, R.color.black));
+        etEventTitle.getEditText().setText(eventTitle);
+        etEventTitle.getEditText().setTextColor(ContextCompat.getColor(this, R.color.black));
+        etEventStartDate.getEditText().setText(eventStartDate);
+        etEventStartDate.getEditText().setTextColor(ContextCompat.getColor(this, R.color.black));
+        etEventEndDate.getEditText().setText(eventEndDate);
+        etEventEndDate.getEditText().setTextColor(ContextCompat.getColor(this, R.color.black));
+        etEventStartTime.getEditText().setText(eventStartTime);
+        etEventStartTime.getEditText().setTextColor(ContextCompat.getColor(this, R.color.black));
+        etEventEndTime.getEditText().setText(eventEndTime);
+        etEventEndTime.getEditText().setTextColor(ContextCompat.getColor(this, R.color.black));
+        etEventLocation.getEditText().setText(eventLocation);
+        etEventLocation.getEditText().setTextColor(ContextCompat.getColor(this, R.color.black));
+        etEventPostedBy.getEditText().setText(eventPostedBy);
+        etEventPostedBy.getEditText().setTextColor(ContextCompat.getColor(this, R.color.black));
+
+        storageReference = FirebaseStorage.getInstance().getReference();
+        StorageReference ref
+                = storageReference
+                .child(
+                        "images/"
+                                + eventImageID);
+        try {
+            File localfile = File.createTempFile("tempfile", ".jpg");
+            ref.getFile(localfile)
+                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                            Bitmap bitmap = BitmapFactory.decodeFile(localfile.getAbsolutePath());
+                            ivViewEventPic.setImageBitmap(bitmap);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         db.collection("latestAppointment")
                 .whereEqualTo("user", user)

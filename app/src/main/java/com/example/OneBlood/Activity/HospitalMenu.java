@@ -14,7 +14,7 @@ import com.example.OneBlood.R;
 
 public class HospitalMenu extends AppCompatActivity {
     TextView tvTextView;
-    Button btnHospitalNotice, btnHospitalEmergency, btnHospitalEvents, btnHospitalAppointments, btnLogOut;
+    Button btnHospitalNotice, btnHospitalEmergency, btnHospitalEvents, btnHospitalAppointments, btnLogOut, btnAvailableDonor;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -25,12 +25,22 @@ public class HospitalMenu extends AppCompatActivity {
         btnHospitalNotice = findViewById(R.id.btnHospitalNotice);
         btnHospitalEmergency = findViewById(R.id.btnHospitalEmergency);
         btnHospitalEvents = findViewById(R.id.btnHospitalNewNotice);
+        btnAvailableDonor = findViewById(R.id.btnAvailableDonors);
         btnLogOut = findViewById(R.id.btnHospitalLogOut);
 
         btnHospitalEvents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(HospitalMenu.this, HospitalViewEvent.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
+        btnAvailableDonor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(HospitalMenu.this, HospitalDonorList.class);
                 startActivity(i);
                 finish();
             }

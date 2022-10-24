@@ -7,10 +7,14 @@ import androidx.core.content.ContextCompat;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.OneBlood.R;
@@ -22,6 +26,12 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.File;
+import java.io.IOException;
 
 public class HospitalViewEventDetails extends AppCompatActivity {
     public static final String EXTRA_EVENT_TITLE = "title";
@@ -33,10 +43,13 @@ public class HospitalViewEventDetails extends AppCompatActivity {
     public static final String EXTRA_EVENT_END_TIME = "endTime";
     public static final String EXTRA_EVENT_POSTED_BY = "postedBy";
     public static final String EXTRA_EVENT_ID = "eventId";
+    public static final String EXTRA_EVENT_IMAGE_URI = "eventImageUri";
 
     TextInputLayout etHospitalViewTitle, etHospitalViewDescription, etHospitalViewLocation, etHospitalViewStartDate, etHospitalViewEndDate, etHospitalViewStartTime,etHospitalViewEndTime, etHospitalViewPostedBy;
     Button btnDeleteEvent;
-    String  eventTitle, eventLocation, eventStartDate, eventEndDate, eventStartTime, eventEndTime, eventPostedBy, eventDescription, eventId;
+    ImageView ivHospitalViewEventPic;
+    StorageReference storageReference;
+    String  eventTitle, eventLocation, eventStartDate, eventEndDate, eventStartTime, eventEndTime, eventPostedBy, eventDescription, eventId, eventImageId;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
@@ -52,6 +65,7 @@ public class HospitalViewEventDetails extends AppCompatActivity {
         etHospitalViewStartTime = findViewById(R.id.etHospitalViewStartTime);
         etHospitalViewEndTime = findViewById(R.id.etHospitalViewEndTime);
         etHospitalViewPostedBy = findViewById(R.id.etHospitalViewPostedBy);
+        ivHospitalViewEventPic = findViewById(R.id.ivHospitalViewEventPic);
         btnDeleteEvent = findViewById(R.id.btnDeleteEvent);
 
         eventEndDate = getIntent().getStringExtra(EXTRA_EVENT_END_DATE);
@@ -63,6 +77,7 @@ public class HospitalViewEventDetails extends AppCompatActivity {
         eventLocation = getIntent().getStringExtra(EXTRA_EVENT_LOCATION);
         eventDescription= getIntent().getStringExtra(EXTRA_EVENT_DESCRIPTION);
         eventId = getIntent().getStringExtra(EXTRA_EVENT_ID);
+        eventImageId = getIntent().getStringExtra(EXTRA_EVENT_IMAGE_URI);
 
         etHospitalViewDescription.getEditText().setText(eventDescription);
         etHospitalViewDescription.getEditText().setTextColor(ContextCompat.getColor(this, R.color.black));
@@ -80,6 +95,32 @@ public class HospitalViewEventDetails extends AppCompatActivity {
         etHospitalViewLocation.getEditText().setTextColor(ContextCompat.getColor(this, R.color.black));
         etHospitalViewPostedBy.getEditText().setText(eventPostedBy);
         etHospitalViewPostedBy.getEditText().setTextColor(ContextCompat.getColor(this, R.color.black));
+
+        storageReference = FirebaseStorage.getInstance().getReference();
+        StorageReference ref
+                = storageReference
+                .child(
+                        "images/"
+                                + eventImageId);
+        try {
+            File localfile = File.createTempFile("tempfile", ".jpg");
+            ref.getFile(localfile)
+                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                            Bitmap bitmap = BitmapFactory.decodeFile(localfile.getAbsolutePath());
+                            ivHospitalViewEventPic.setImageBitmap(bitmap);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
         btnDeleteEvent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,6 +172,14 @@ public class HospitalViewEventDetails extends AppCompatActivity {
                                         }
                                     }
                                 });
+
+                        storageReference = FirebaseStorage.getInstance().getReference();
+                        StorageReference ref
+                                = storageReference
+                                .child(
+                                        "images/"
+                                                + eventImageId);
+                        ref.delete();
 
                         db.collection("events").document(eventId).delete()
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {

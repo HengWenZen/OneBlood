@@ -233,7 +233,6 @@ public class TimeSlotBooking extends AppCompatActivity implements DatePickerDial
                                 data.put("status", "confirmed");
                                 data.put("userStatus", "active");
 
-
                                 db.collection("latestAppointment")
                                         .whereEqualTo("user", userName)
                                         .get()

@@ -1,7 +1,12 @@
-package com.example.OneBlood;
+package com.example.OneBlood.Activity;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -11,14 +16,11 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.OneBlood.Labs.DonorLab;
 import com.example.OneBlood.Adapters.DonorListAdapter;
+import com.example.OneBlood.Labs.DonorLab;
 import com.example.OneBlood.Models.Donor;
+import com.example.OneBlood.R;
+import com.example.OneBlood.UserAvailableDonorMainMenu;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -28,13 +30,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserAvailableDonorMainMenu extends AppCompatActivity {
-
-    public static SharedPreferences mPreferences;
-    private final String SHARED_PREF = "myPreferences";
-    private final String KEY_USER = "user";
-    private final String KEY_USER_NAME = "userName";
-    private final String KEY_USER_STATUS = "userStatus";
+public class HospitalDonorList extends AppCompatActivity {
 
     RecyclerView rvDonorList;
     Button btnFilter;
@@ -46,18 +42,14 @@ public class UserAvailableDonorMainMenu extends AppCompatActivity {
     ArrayList<Donor> allDonorList = new ArrayList<>();
     List<Donor> donors;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_available_donor_main_menu);
+        setContentView(R.layout.activity_hospital_donor_list);
 
-        rvDonorList = findViewById(R.id.rvDonorList);
-        spinnerBloodType = findViewById(R.id.spinnerBloodType);
-        btnFilter = findViewById(R.id.btnFilter);
-
-        SharedPreferences prefs = getSharedPreferences("myPreferences", MODE_PRIVATE);
-        user = prefs.getString(KEY_USER_NAME, null);
+        rvDonorList = findViewById(R.id.rvHospitalDonorList);
+        spinnerBloodType = findViewById(R.id.spinnerHospitalFilterBloodType);
+        btnFilter = findViewById(R.id.btnHospitalFilter);
 
         loadBloodTypeList();
         loadDonorList();
@@ -79,20 +71,15 @@ public class UserAvailableDonorMainMenu extends AppCompatActivity {
                 }
                 mDonorListAdapter.notifyDataSetChanged();
                 if (donors.size() == 0){
-                    Toast.makeText(UserAvailableDonorMainMenu.this, "No User found" , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(HospitalDonorList.this, "No User found" , Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
     }
 
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
     private void loadBloodTypeList(){
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(UserAvailableDonorMainMenu.this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.filterBloodType));
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(HospitalDonorList.this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.hospitalFilterBloodType));
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerBloodType.setAdapter(arrayAdapter);
     }
@@ -100,7 +87,7 @@ public class UserAvailableDonorMainMenu extends AppCompatActivity {
     private void loadDonorList(){
         donors = new ArrayList<>();
 
-        ProgressDialog dialog = ProgressDialog.show(UserAvailableDonorMainMenu.this, "",
+        ProgressDialog dialog = ProgressDialog.show(HospitalDonorList.this, "",
                 "Loading. Please wait...", true);   //show loading dialog
 
         db.collection("users")
@@ -115,7 +102,7 @@ public class UserAvailableDonorMainMenu extends AppCompatActivity {
                                     String userName = document.get("FullName").toString();
                                     String status = document.get("status").toString();
 
-                                    if(!user.equals(userName) && status.equals("active")) {
+                                    if(status.equals("active")) {
                                         Donor donor = new Donor(document.getId(),
                                                 document.get("FullName").toString(),
                                                 document.get("phone number").toString(),
@@ -134,8 +121,8 @@ public class UserAvailableDonorMainMenu extends AppCompatActivity {
                                     public void run() {
                                         dialog.dismiss();   //remove loading Dialog
                                         allDonorList.addAll(donors);
-                                        rvDonorList.setLayoutManager(new LinearLayoutManager(UserAvailableDonorMainMenu.this));
-                                        mDonorListAdapter = new DonorListAdapter(donors, UserAvailableDonorMainMenu.this);
+                                        rvDonorList.setLayoutManager(new LinearLayoutManager(HospitalDonorList.this));
+                                        mDonorListAdapter = new DonorListAdapter(donors, HospitalDonorList.this);
                                         rvDonorList.setAdapter(mDonorListAdapter);
                                     }
                                 }, 1000);
@@ -145,4 +132,10 @@ public class UserAvailableDonorMainMenu extends AppCompatActivity {
                 });
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(HospitalDonorList.this, HospitalMenu.class);
+        startActivity(i);
+        finish();
+    }
 }
