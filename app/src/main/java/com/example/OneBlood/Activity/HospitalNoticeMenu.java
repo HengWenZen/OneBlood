@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.OneBlood.Adapters.NoticeAdapter;
-import com.example.OneBlood.HospitalNewNotice;
 import com.example.OneBlood.Labs.NoticeLab;
 import com.example.OneBlood.Models.Notice;
 import com.example.OneBlood.R;
@@ -55,5 +54,12 @@ public class HospitalNoticeMenu extends AppCompatActivity {
                 rv.setAdapter(mNoticeAdapter);
             }
         }, 2000);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(HospitalNoticeMenu.this, HospitalMenu.class);
+        startActivity(i);
+        finish();
     }
 }

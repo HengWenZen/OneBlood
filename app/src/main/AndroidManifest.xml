@@ -14,59 +14,68 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MainActivity">
-        <activity android:name=".Activity.BloodRequestDetails"
+        <activity android:name=".Activity.HospitalViewOwnBloodRequestDetails"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
-        <activity android:name=".Activity.UserViewBloodRequest" />
-        <activity android:name=".Activity.HospitalEmergencyNoticeDetail" />
-        <activity android:name=".Activity.HospitalEmergencyNoticeMenu" />
-        <activity android:name=".Activity.HospitalViewEventBookingDetails" />
+        <activity android:name=".Activity.HospitalViewOwnBloodRequest" />
         <activity
-            android:name=".Activity.UserViewEventBookingDetails"
+            android:name=".Activity.HospitalViewEventDetails"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+        <activity android:name=".Activity.HospitalViewEvent" />
+        <activity
+            android:name=".UserBloodRequestDetails"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+        <activity android:name=".UserViewBloodRequest" />
+        <activity android:name=".Activity.HospitalBloodRequestMenu" />
+        <activity
+            android:name=".Activity.HospitalViewEventBookingDetails"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+        <activity
+            android:name=".UserViewEventBookingDetails"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity android:name=".Activity.HospitalViewEventBooking" />
-        <activity android:name=".Activity.UserViewEventBooking" />
+        <activity android:name=".UserViewEventBooking" />
         <activity
-            android:name=".HospitalViewBookingDetails"
+            android:name=".Activity.HospitalViewBookingDetails"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity
-            android:name=".Activity.UserViewBookingDetails"
+            android:name=".UserViewBookingDetails"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity
-            android:name=".Activity.HospitalEmergencyNotice"
+            android:name=".Activity.HospitalNewBloodRequest"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity android:name=".Activity.HospitalViewBooking" />
-        <activity android:name=".Activity.UserViewBooking" />
-        <activity android:name=".Activity.PassTest" />
-        <activity android:name=".Activity.FailTest" />
-        <activity android:name=".Activity.TestQuestion" />
-        <activity android:name=".Activity.SelfEvaluation" />
+        <activity android:name=".UserViewBooking" />
+        <activity android:name=".PassTest" />
+        <activity android:name=".FailTest" />
+        <activity android:name=".TestQuestion" />
+        <activity android:name=".SelfEvaluation" />
         <activity android:name=".UserNoticeMenu" />
         <activity
             android:name=".ViewNoticeDetails"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity
-            android:name=".HospitalNewNotice"
+            android:name=".Activity.HospitalNewNotice"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity android:name=".Activity.HospitalNoticeMenu" />
         <activity
             android:name=".UserEventTimeSlot"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
-        <activity android:name=".Activity.UserEvent" />
+        <activity android:name=".UserEvent" />
         <activity
-            android:name=".HospitalEvents"
+            android:name=".Activity.HospitalNewEvent"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity android:name=".UserChatBox" />
         <activity
             android:name=".ViewDonorDetails"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
-        <activity android:name=".Activity.BloodDonationInfo" />
+        <activity android:name=".UserBloodDonationInfoPage" />
         <activity
             android:name=".ViewBloodRequestDetails"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity
-            android:name=".Activity.NewBloodRequest"
+            android:name=".UserNewBloodRequest"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
-        <activity android:name=".Activity.BloodRequestMainMenu" />
+        <activity android:name=".UserBloodRequestMainMenu" />
         <activity android:name=".Activity.AdminMenu" />
         <activity
             android:name=".UserRegister3"
@@ -103,19 +112,19 @@
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />
 
-        <activity android:name=".HospitalLogin" />
+        <activity android:name=".Activity.HospitalLogin" />
         <activity android:name=".Activity.HospitalMenu" />
         <activity android:name=".UserType" />
         <activity android:name=".AdminLogin" />
         <activity
             android:name=".EditProfile"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
-        <activity android:name=".Activity.Appointments" />
+        <activity android:name=".UserAppointmentsMenu" />
         <activity
             android:name=".TimeSlotBooking"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity android:name=".UserDashBoard" />
-        <activity android:name=".Activity.AvailableDonorMainMenu" />
+        <activity android:name=".UserAvailableDonorMainMenu" />
 
         <meta-data
             android:name="com.google.android.gms.version"

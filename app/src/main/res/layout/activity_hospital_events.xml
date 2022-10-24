@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
-    tools:context=".TimeSlotBooking"
+    tools:context=".Activity.HospitalNewEvent"
     android:orientation="vertical">
 
     <LinearLayout

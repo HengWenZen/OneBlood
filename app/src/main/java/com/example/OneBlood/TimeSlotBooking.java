@@ -69,7 +69,7 @@ public class TimeSlotBooking extends AppCompatActivity implements DatePickerDial
     TextInputLayout etLocationTitle, etLocationAddress, etLocationContact, etLocationOperationHours;
     String LocationContact, LocationOperationHours, userStatus, bookingDate, user, appointmentStatus;
     String dateSelected;
-    Date completeDate;
+    Date completeDate, selectedDate;
     TextView tvDateViewed,tvShowLocation, tvBookingStatus;
     ImageButton mDatePicker;
     private RecyclerView rv;
@@ -101,7 +101,6 @@ public class TimeSlotBooking extends AppCompatActivity implements DatePickerDial
         String locationOperationHrs = getIntent().getStringExtra(EXTRA_LOCATION_OPERATION_HOUR);
 
         setListener();
-        tvDateViewed.setText("Select A Date");
 
         Date currentDate = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -148,30 +147,38 @@ public class TimeSlotBooking extends AppCompatActivity implements DatePickerDial
                                 Log.d("Day Difference", "onComplete: " + dayDiff);
 
                                 if (userStatus.equals("inactive") || appointmentStatus.equals("confirmed")){
-                                    btnBook.setEnabled(false);
                                     tvDateViewed.setClickable(false);
+                                    tvDateViewed.setText("Not Available");
                                     tvBookingStatus.setVisibility(View.VISIBLE);
 
-                                }else if(dayDiff > 1){
-                                    btnBook.setEnabled(true);
-                                    tvDateViewed.setClickable(true);
-                                    tvBookingStatus.setVisibility(View.INVISIBLE);
+                                    if((dayDiff >= 90)){
+                                        mFirebase.getData("latestAppointment", null, new MyCallback() {
+                                            @Override
+                                            public void returnData(ArrayList<Map<String, Object>> docList) {
+                                                Log.d("firebase example", docList.toString());
+                                                ArrayList<String> list = new ArrayList<>();
 
-                                    mFirebase.getData("latestAppointment", null, new MyCallback() {
-                                        @Override
-                                        public void returnData(ArrayList<Map<String, Object>> docList) {
-                                            Log.d("firebase example", docList.toString());
-                                            ArrayList<String> list = new ArrayList<>();
-
-                                            for (Map<String, Object> map : docList) {
-                                                if(map.get("user").toString().equals(user)) {
-                                                    Map<String, Object> user = new HashMap<>();
-                                                    user.put("userStatus", "active");
-                                                    mFirebase.updData("latestAppointment", user, map.get("id").toString());
+                                                for (Map<String, Object> map : docList) {
+                                                    if (map.get("user").toString().equals(user)) {
+                                                        Map<String, Object> user = new HashMap<>();
+                                                        user.put("userStatus", "active");
+                                                        mFirebase.updData("latestAppointment", user, map.get("id").toString());
+                                                        Log.d("TAG", "returnData: User Status Changed to Active");
+                                                    }
                                                 }
                                             }
-                                        }
-                                    });
+                                        });
+                                        btnBook.setEnabled(true);
+                                        tvDateViewed.setClickable(true);
+                                        tvBookingStatus.setVisibility(View.INVISIBLE);
+                                    }
+
+                                }else{
+                                    btnBook.setEnabled(true);
+                                    tvDateViewed.setClickable(true);
+                                    tvDateViewed.setText("Click Me to Choose A Date");
+                                    tvBookingStatus.setVisibility(View.INVISIBLE);
+
                                 }
                             }
                         }
@@ -192,90 +199,92 @@ public class TimeSlotBooking extends AppCompatActivity implements DatePickerDial
             @Override
             public void onClick(View v) {
 
-                    //Validate if date is null
-                    if (dateSelected == null) {
+                //Validate if date is null
+                if (dateSelected == null) {
 
-                        Toast.makeText(TimeSlotBooking.this, "Please select a date...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TimeSlotBooking.this, "Please select a date...", Toast.LENGTH_SHORT).show();
 
+                } else {
+
+                    String locationName = getIntent().getStringExtra(EXTRA_LOCATION_TITLE);
+                    String slot = String.valueOf(mTimeSlotAdapter.selectedSlot);
+
+                    //Validate if there is any slot selected
+                    if (slot == "") {
+                        Toast.makeText(TimeSlotBooking.this, "Please select available time slot", Toast.LENGTH_SHORT).show();
                     } else {
+                        //Toast alert dialog
+                        String msg = "Confirm Booking" + locationName + " on " + dateSelected + " " + mTimeSlotAdapter.timeSlot(Integer.valueOf(slot));
+                        AlertDialog.Builder alert = new AlertDialog.Builder(TimeSlotBooking.this);
+                        alert.setTitle("Booking Confirmation");
+                        alert.setMessage(msg);
+                        alert.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                SharedPreferences prefs = getSharedPreferences("myPreferences", MODE_PRIVATE);
+                                String userName = prefs.getString(KEY_USER_NAME, null);
 
-                        String locationName = getIntent().getStringExtra(EXTRA_LOCATION_TITLE);
-                        String slot = String.valueOf(mTimeSlotAdapter.selectedSlot);
-                        //Validate if there is any slot selected
-                        if (slot == "") {
-                            Toast.makeText(TimeSlotBooking.this, "Please select available time slot", Toast.LENGTH_SHORT).show();
-                        } else {
-                            //Toast alert dialog
-                            String msg = "Confirm Booking" + locationName + " on " + dateSelected + " " + mTimeSlotAdapter.timeSlot(Integer.valueOf(slot));
-                            AlertDialog.Builder alert = new AlertDialog.Builder(TimeSlotBooking.this);
-                            alert.setTitle("Booking Confirmation");
-                            alert.setMessage(msg);
-                            alert.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    SharedPreferences prefs = getSharedPreferences("myPreferences", MODE_PRIVATE);
-                                    String userName = prefs.getString(KEY_USER_NAME, null);
+                                //Put data into hash map
+                                Map<String, Object> data = new HashMap<>();
+                                data.put("slot", slot);
+                                data.put("user", userName);
+                                data.put("date", dateSelected);
+                                data.put("location", locationName);
+                                data.put("status", "confirmed");
+                                data.put("userStatus", "active");
 
-                                    //Put data into hash map
-                                    Map<String, Object> data = new HashMap<>();
-                                    data.put("slot", slot);
-                                    data.put("user", userName);
-                                    data.put("date", dateSelected);
-                                    data.put("location", locationName);
-                                    data.put("status", "confirmed");
-                                    data.put("userStatus", "active");
 
-                                    db.collection("latestAppointment")
-                                            .whereEqualTo("user", userName)
-                                            .get()
-                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                    QuerySnapshot queryDocumentSnapshots = task.getResult();
-                                                    if (queryDocumentSnapshots.isEmpty()){
-                                                        db.collection("latestAppointment").add(data).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                                            @Override
-                                                            public void onSuccess(DocumentReference documentReference) {
-                                                            }
-                                                        }).addOnFailureListener(new OnFailureListener() {
-                                                            @Override
-                                                            public void onFailure(@NonNull Exception e) {
-                                                            }
-                                                        });
-
-                                                    }else if(!queryDocumentSnapshots.isEmpty()){
-                                                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                                                            Log.d("Document ID:", document.getId() + " => " + document.getData());
-                                                            db.collection("latestAppointment").document(document.getId()).update(data);
-
+                                db.collection("latestAppointment")
+                                        .whereEqualTo("user", userName)
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                QuerySnapshot queryDocumentSnapshots = task.getResult();
+                                                if (queryDocumentSnapshots.isEmpty()) {
+                                                    db.collection("latestAppointment").add(data).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                        @Override
+                                                        public void onSuccess(DocumentReference documentReference) {
                                                         }
+                                                    }).addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                        }
+                                                    });
+
+                                                } else if (!queryDocumentSnapshots.isEmpty()) {
+                                                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                                                        Log.d("Document ID:", document.getId() + " => " + document.getData());
+                                                        db.collection("latestAppointment").document(document.getId()).update(data);
+
                                                     }
                                                 }
-                                            });
+                                            }
+                                        });
 
-                                    //Add Confirmed Appointment into userBooking document in Firebase
-                                    db.collection("userBooking").add(data).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                        @Override
-                                        public void onSuccess(DocumentReference documentReference) {
-                                            Toast.makeText(TimeSlotBooking.this, "Booking Success", Toast.LENGTH_SHORT).show();
-                                            finish();
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Toast.makeText(TimeSlotBooking.this, "Booking Failure", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                }
-                            });
-                            alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                }
-                            });
-                            alert.show();
-                        }
+                                //Add Confirmed Appointment into userBooking document in Firebase
+                                db.collection("userBooking").add(data).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                    @Override
+                                    public void onSuccess(DocumentReference documentReference) {
+                                        Toast.makeText(TimeSlotBooking.this, "Booking Success", Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(TimeSlotBooking.this, "Booking Failure", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        });
+                        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        });
+                        alert.show();
                     }
+                }
             }
         });
     }

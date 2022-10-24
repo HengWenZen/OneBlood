@@ -36,11 +36,6 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.OneBlood.Activity.Appointments;
-import com.example.OneBlood.Activity.AvailableDonorMainMenu;
-import com.example.OneBlood.Activity.BloodDonationInfo;
-import com.example.OneBlood.Activity.BloodRequestMainMenu;
-import com.example.OneBlood.Activity.UserEvent;
 import com.example.OneBlood.Labs.LocationLab;
 import com.example.OneBlood.Models.DonateLocation;
 import com.google.android.gms.common.ConnectionResult;
@@ -60,10 +55,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
@@ -78,9 +70,7 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class UserMainMenu extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, NavigationView.OnNavigationItemSelectedListener {
 
@@ -400,19 +390,19 @@ public class UserMainMenu extends AppCompatActivity implements OnMapReadyCallbac
                 break;
 
             case R.id.nav_appointment:
-                Intent x = new Intent(UserMainMenu.this, Appointments.class);
+                Intent x = new Intent(UserMainMenu.this, UserAppointmentsMenu.class);
                 startActivity(x);
                 finish();
                 break;
 
             case R.id.nav_available_donors:
-                Intent y = new Intent(UserMainMenu.this, AvailableDonorMainMenu.class);
+                Intent y = new Intent(UserMainMenu.this, UserAvailableDonorMainMenu.class);
                 startActivity(y);
                 finish();
                 break;
 
             case R.id.nav_request:
-                Intent a = new Intent(UserMainMenu.this, BloodRequestMainMenu.class);
+                Intent a = new Intent(UserMainMenu.this, UserBloodRequestMainMenu.class);
                 startActivity(a);
                 finish();
                 break;
@@ -430,7 +420,7 @@ public class UserMainMenu extends AppCompatActivity implements OnMapReadyCallbac
                 break;
 
             case R.id.nav_info:
-                Intent f = new Intent(UserMainMenu.this, BloodDonationInfo.class);
+                Intent f = new Intent(UserMainMenu.this, UserBloodDonationInfoPage.class);
                 startActivity(f);
                 finish();
                 break;
@@ -475,4 +465,6 @@ public class UserMainMenu extends AppCompatActivity implements OnMapReadyCallbac
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 }

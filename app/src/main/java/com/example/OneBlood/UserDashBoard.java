@@ -17,11 +17,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 
-import com.example.OneBlood.Activity.Appointments;
-import com.example.OneBlood.Activity.AvailableDonorMainMenu;
-import com.example.OneBlood.Activity.BloodDonationInfo;
-import com.example.OneBlood.Activity.BloodRequestMainMenu;
-import com.example.OneBlood.Activity.UserEvent;
 import com.google.android.material.navigation.NavigationView;
 
 public class UserDashBoard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -98,19 +93,19 @@ public class UserDashBoard extends AppCompatActivity implements NavigationView.O
                 break;
 
             case R.id.nav_appointment:
-                Intent x = new Intent(UserDashBoard.this, Appointments.class);
+                Intent x = new Intent(UserDashBoard.this, UserAppointmentsMenu.class);
                 startActivity(x);
                 finish();
                 break;
 
             case R.id.nav_available_donors:
-                Intent y = new Intent(UserDashBoard.this, AvailableDonorMainMenu.class);
+                Intent y = new Intent(UserDashBoard.this, UserAvailableDonorMainMenu.class);
                 startActivity(y);
                 finish();
                 break;
 
             case R.id.nav_request:
-                Intent a = new Intent(UserDashBoard.this, BloodRequestMainMenu.class);
+                Intent a = new Intent(UserDashBoard.this, UserBloodRequestMainMenu.class);
                 startActivity(a);
                 finish();
                 break;
@@ -128,7 +123,7 @@ public class UserDashBoard extends AppCompatActivity implements NavigationView.O
                 break;
 
             case R.id.nav_info:
-                Intent f = new Intent(UserDashBoard.this, BloodDonationInfo.class);
+                Intent f = new Intent(UserDashBoard.this, UserBloodDonationInfoPage.class);
                 startActivity(f);
                 finish();
                 break;

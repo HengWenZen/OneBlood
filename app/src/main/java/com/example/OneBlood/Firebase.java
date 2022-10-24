@@ -18,10 +18,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-interface MyCallback {
-    void returnData(ArrayList<Map<String, Object>> docList);
-}
-
 public class Firebase {
     private ArrayList<Map<String, Object>> docList = new ArrayList<>();
     FirebaseFirestore db = FirebaseFirestore.getInstance();

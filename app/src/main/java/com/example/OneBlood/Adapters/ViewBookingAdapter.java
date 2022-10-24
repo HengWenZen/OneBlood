@@ -12,9 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.OneBlood.Activity.HospitalViewBooking;
-import com.example.OneBlood.Activity.UserViewBooking;
-import com.example.OneBlood.HospitalViewBookingDetails;
-import com.example.OneBlood.Activity.UserViewBookingDetails;
+import com.example.OneBlood.UserViewBooking;
+import com.example.OneBlood.Activity.HospitalViewBookingDetails;
+import com.example.OneBlood.UserViewBookingDetails;
 import com.example.OneBlood.Models.Booking;
 import com.example.OneBlood.R;
 

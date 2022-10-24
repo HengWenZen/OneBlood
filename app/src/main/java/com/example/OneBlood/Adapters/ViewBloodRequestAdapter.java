@@ -11,18 +11,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.OneBlood.Activity.BloodRequestDetails;
-import com.example.OneBlood.Activity.HospitalViewBooking;
-import com.example.OneBlood.Activity.UserViewBloodRequest;
-import com.example.OneBlood.Activity.UserViewBooking;
-import com.example.OneBlood.Activity.UserViewBookingDetails;
-import com.example.OneBlood.HospitalViewBookingDetails;
-import com.example.OneBlood.Models.BloodRequest;
-import com.example.OneBlood.Models.Booking;
+import com.example.OneBlood.UserBloodRequestDetails;
+import com.example.OneBlood.Activity.HospitalViewOwnBloodRequestDetails;
+import com.example.OneBlood.Activity.HospitalViewOwnBloodRequest;
+import com.example.OneBlood.UserViewBloodRequest;
 import com.example.OneBlood.Models.ViewBloodRequest;
 import com.example.OneBlood.R;
-import com.example.OneBlood.ViewBloodRequestDetails;
-import com.google.firebase.firestore.auth.User;
 
 import java.util.List;
 
@@ -98,8 +92,11 @@ public class ViewBloodRequestAdapter extends RecyclerView.Adapter<ViewBloodReque
             btnViewOwnRequest.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    if(isHospital == false) {
+
                         ((UserViewBloodRequest) mContext).adapterChange(getAdapterPosition());
-                        Intent y = new Intent(mContext, BloodRequestDetails.class);
+                        Intent y = new Intent(mContext, UserBloodRequestDetails.class);
                         y.putExtra(EXTRA_OWN_REQUEST_ID, requestId);
                         y.putExtra(EXTRA_OWN_REQUEST_DATE, requestDate);
                         y.putExtra(EXTRA_OWN_REQUEST_TITLE, requestTitle);
@@ -109,7 +106,23 @@ public class ViewBloodRequestAdapter extends RecyclerView.Adapter<ViewBloodReque
                         y.putExtra(EXTRA_OWN_REQUEST_CONTACT, requestContact);
                         y.putExtra(EXTRA_OWN_REQUEST_POSTED_BY, requestPostedBy);
                         mContext.startActivity(y);
+
+                    }else{
+
+                        ((HospitalViewOwnBloodRequest) mContext).adapterChange(getAdapterPosition());
+                        Intent intent = new Intent(mContext, HospitalViewOwnBloodRequestDetails.class);
+                        intent.putExtra(EXTRA_OWN_REQUEST_ID, requestId);
+                        intent.putExtra(EXTRA_OWN_REQUEST_DATE, requestDate);
+                        intent.putExtra(EXTRA_OWN_REQUEST_TITLE, requestTitle);
+                        intent.putExtra(EXTRA_OWN_REQUEST_DESCRIPTION, requestDescription);
+                        intent.putExtra(EXTRA_OWN_REQUEST_LOCATION, requestLocation);
+                        intent.putExtra(EXTRA_OWN_REQUEST_BLOOD, requestBloodType);
+                        intent.putExtra(EXTRA_OWN_REQUEST_CONTACT, requestContact);
+                        intent.putExtra(EXTRA_OWN_REQUEST_POSTED_BY, requestPostedBy);
+                        mContext.startActivity(intent);
+
                     }
+                }
 
             });
         }

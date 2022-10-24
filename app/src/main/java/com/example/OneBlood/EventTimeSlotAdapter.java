@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -14,9 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.OneBlood.Models.EventTimeSlot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -46,7 +43,7 @@ public class EventTimeSlotAdapter extends RecyclerView.Adapter<EventTimeSlotAdap
     @Override
     public EventsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
-        View view = layoutInflater.inflate(R.layout.list_time_slot, parent,false);
+        View view = layoutInflater.inflate(R.layout.list_event_time_slot, parent,false);
         return new EventsHolder(view);
     }
 

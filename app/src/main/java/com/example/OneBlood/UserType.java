@@ -2,7 +2,6 @@ package com.example.OneBlood;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -11,6 +10,8 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.OneBlood.Activity.HospitalLogin;
 
 public class UserType extends AppCompatActivity {
 

@@ -11,14 +11,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.OneBlood.Activity.HospitalViewBooking;
 import com.example.OneBlood.Activity.HospitalViewEventBooking;
 import com.example.OneBlood.Activity.HospitalViewEventBookingDetails;
-import com.example.OneBlood.Activity.UserViewBookingDetails;
-import com.example.OneBlood.Activity.UserViewBooking;
-import com.example.OneBlood.Activity.UserViewEventBooking;
-import com.example.OneBlood.Activity.UserViewEventBookingDetails;
-import com.example.OneBlood.HospitalViewBookingDetails;
+import com.example.OneBlood.UserViewEventBooking;
+import com.example.OneBlood.UserViewEventBookingDetails;
 import com.example.OneBlood.Models.BookingEvent;
 import com.example.OneBlood.R;
 
@@ -101,7 +97,7 @@ public class ViewEventBookingAdapter extends RecyclerView.Adapter<ViewEventBooki
 
                     if(isHospital == true) {
 
-                        //((HospitalViewEventBooking) mContext).adapterChange(getAdapterPosition());
+                        ((HospitalViewEventBooking) mContext).adapterChange(getAdapterPosition());
                         Intent y = new Intent(mContext, HospitalViewEventBookingDetails.class);
                         y.putExtra(EXTRA_USER_NAME, bookingUser);
                         y.putExtra(EXTRA_EVENT_BOOKING_DATE, bookingDate);

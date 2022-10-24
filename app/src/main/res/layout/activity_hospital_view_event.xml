@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/peach"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteY="656dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/ivBackToHome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_back"
+                android:padding="5dp"
+                android:layout_marginTop="15dp"/>
+
+            <TextView
+                android:id="@+id/tvViewMyEvents"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/baloo"
+                android:padding="5dp"
+                android:textColor="@color/black"
+                android:text="My Events"
+                android:textSize="24dp" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvMyEventList"
+            android:layout_width="match_parent"
+            android:layout_height="550dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="0.5" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btnPostNewEvent"
+            android:layout_width="190dp"
+            android:layout_height="wrap_content"
+            android:text="Post New Event"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:background="@color/red"/>
+
+        <Button
+            android:id="@+id/btnMyEvents"
+            android:layout_width="190dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/btnPostNewEvent"
+            android:text="My Events"
+            android:background="@color/red"/>
+
+    </RelativeLayout>
+
+
+</LinearLayout>

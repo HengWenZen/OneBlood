@@ -2,7 +2,20 @@ package com.example.OneBlood.Models;
 
 public class Events {
 
-    String mStartDate, mEndDate, mLocation, imageURL, mId, mTitle, mDescription, mStartTime, mEndTime;
+    String mStartDate, mEndDate, mLocation, imageURL, mId, mTitle, mDescription, mStartTime, mEndTime, mPostedBy;
+
+    public Events(String startDate, String endDate, String location, String imageURL, String id, String title, String description, String startTime, String endTime, String postedBy) {
+        mStartDate = startDate;
+        mEndDate = endDate;
+        mLocation = location;
+        this.imageURL = imageURL;
+        mId = id;
+        mTitle = title;
+        mDescription = description;
+        mStartTime = startTime;
+        mEndTime = endTime;
+        mPostedBy = postedBy;
+    }
 
     public String getStartDate() {
         return mStartDate;
@@ -74,5 +87,13 @@ public class Events {
 
     public void setEndTime(String endTime) {
         mEndTime = endTime;
+    }
+
+    public String getPostedBy() {
+        return mPostedBy;
+    }
+
+    public void setPostedBy(String postedBy) {
+        mPostedBy = postedBy;
     }
 }

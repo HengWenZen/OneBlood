@@ -10,8 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.OneBlood.HospitalEvents;
-import com.example.OneBlood.HospitalLogin;
 import com.example.OneBlood.R;
 
 public class HospitalMenu extends AppCompatActivity {
@@ -32,7 +30,7 @@ public class HospitalMenu extends AppCompatActivity {
         btnHospitalEvents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(HospitalMenu.this, HospitalEvents.class);
+                Intent i = new Intent(HospitalMenu.this, HospitalViewEvent.class);
                 startActivity(i);
                 finish();
             }
@@ -59,7 +57,7 @@ public class HospitalMenu extends AppCompatActivity {
         btnHospitalEmergency.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(HospitalMenu.this, HospitalEmergencyNoticeMenu.class);
+                Intent i = new Intent(HospitalMenu.this, HospitalBloodRequestMenu.class);
                 startActivity(i);
                 finish();
             }

@@ -43,16 +43,16 @@ public class EventLab {
                                 Log.d("Data Retrieved", result.toString());
                                 for (QueryDocumentSnapshot document : result) {
                                     Log.d("Document ID:", document.getId() + " => " + document.getData());
-                                    Events events = new Events();
-                                    events.setId(document.getId());
-                                    events.setTitle(document.get("title").toString());
-                                    events.setDescription(document.get("description").toString());
-                                    events.setStartTime(document.get("startTime").toString());
-                                    events.setEndTime(document.get("endTime").toString());
-                                    events.setImageURL(document.get("imageUri").toString());
-                                    events.setLocation(document.get("location").toString());
-                                    events.setStartDate(document.get("startDate").toString());
-                                    events.setEndDate(document.get("endDate").toString());
+                                    Events events = new Events(document.get("startDate").toString(),
+                                            document.get("endDate").toString(),
+                                            document.get("location").toString(),
+                                            document.get("imageUri").toString(),
+                                            document.getId(),
+                                            document.get("title").toString(),
+                                            document.get("description").toString(),
+                                            document.get("startTime").toString(),
+                                            document.get("endTime").toString(),
+                                            document.get("postedBy").toString());
                                     mEventsList.add(events);
                                 }
                             }

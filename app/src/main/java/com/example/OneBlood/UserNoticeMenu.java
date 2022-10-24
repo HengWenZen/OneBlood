@@ -5,13 +5,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.widget.Button;
 import android.widget.ImageView;
 
-import com.example.OneBlood.Activity.BloodRequestMainMenu;
-import com.example.OneBlood.Adapters.BloodRequestAdapter;
 import com.example.OneBlood.Adapters.NoticeAdapter;
 import com.example.OneBlood.Labs.NoticeLab;
 import com.example.OneBlood.Models.Notice;
@@ -46,5 +44,12 @@ public class UserNoticeMenu extends AppCompatActivity {
                 rv.setAdapter(mNoticeAdapter);
             }
         }, 2000);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(UserNoticeMenu.this, UserDashBoard.class);
+        startActivity(intent);
+        finish();
     }
 }

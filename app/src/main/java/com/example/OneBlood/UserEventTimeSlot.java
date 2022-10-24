@@ -9,6 +9,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -52,20 +53,29 @@ public class UserEventTimeSlot extends AppCompatActivity implements DatePickerDi
     public static final String EXTRA_EVENT_END_DATE = "endDate";
     public static final String EXTRA_EVENT_START_TIME = "startTime";
     public static final String EXTRA_EVENT_END_TIME = "endTime";
+
     public static SharedPreferences mPreferences;
     private final String SHARED_PREF = "myPreferences";
     private final String KEY_USER = "user";
+    private final String KEY_USER_NAME = "userName";
+    private final String KEY_PASSWORD = "password";
+    private final String KEY_USER_EMAIL = "userEmail";
+    private final String KEY_USER_STATUS = "userStatus";
 
     List<EventTimeSlot> mEventTimeSlots;
     private EventTimeSlotAdapter mEventTimeSlotAdapter;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    Firebase mFirebase = new Firebase();
     TextInputLayout etEventTitle, etEventDescription, etEventLocation, etEventStartDate, etEventEndDate, etEventOperationHrs;
     ImageView ivBackToList, ivChooseDate, ivViewEventPic;
+    TextView tvCheckBookingStatus;
     TextView tvShowEventDate;
     Button btnBookEventTimeSlot;
     RecyclerView rv;
     Date mStartDate, mEndDate, mStartTime, mEndTime;
     String dateSelected, eventTitle, eventLocation, eventStartDate, eventEndDate, eventStartTime, eventEndTime;
+    String userStatus, bookingDate, user, appointmentStatus;
+    Date completeDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,17 +89,90 @@ public class UserEventTimeSlot extends AppCompatActivity implements DatePickerDi
         etEventEndDate = findViewById(R.id.etEventEndDate);
         tvShowEventDate = findViewById(R.id.tvShowEventDate);
         btnBookEventTimeSlot = findViewById(R.id.btnBookEventTimeSlot);
+        tvCheckBookingStatus = findViewById(R.id.tvCheckBookingStatus);
         ivBackToList = findViewById(R.id.ivBackToEventList);
         ivViewEventPic = findViewById(R.id.ivViewEventPic);
         rv = findViewById(R.id.rvEventTimeSlot);
+
+        SharedPreferences prefs = getSharedPreferences("myPreferences", MODE_PRIVATE);
+        user = prefs.getString(KEY_USER_NAME, null);
 
         eventEndDate = getIntent().getStringExtra(EXTRA_EVENT_END_DATE);
         eventStartDate = getIntent().getStringExtra(EXTRA_EVENT_START_DATE);
         eventTitle = getIntent().getStringExtra(EXTRA_EVENT_TITLE);
         eventStartTime = getIntent().getStringExtra(EXTRA_EVENT_START_TIME);
         eventEndTime = getIntent().getStringExtra(EXTRA_EVENT_END_TIME);
-        tvShowEventDate.setText("Select Date");
 
+        db.collection("latestAppointment")
+                .whereEqualTo("user", user)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        QuerySnapshot queryDocumentSnapshots = task.getResult();
+                        if (!queryDocumentSnapshots.isEmpty()){
+                            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                                Log.d("Document ID:", document.getId() + " => " + document.getData());
+                                userStatus = document.get("userStatus").toString();
+                                bookingDate = document.get("date").toString();
+                                appointmentStatus = document.get("status").toString();
+                                Log.d("Booking Status", "onComplete: " + userStatus + bookingDate + appointmentStatus);
+
+                                Date currentDate = new Date();
+                                SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+                                try {
+                                    completeDate = df.parse(bookingDate);
+
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+
+                                long diff = currentDate.getTime() - completeDate.getTime();
+                                long days = TimeUnit.MILLISECONDS.toDays(diff);
+                                int dayDiff = (int) days;
+                                Log.d("Day Difference", "onComplete: " + dayDiff);
+
+                                if (userStatus.equals("inactive") || appointmentStatus.equals("confirmed")){
+                                   tvShowEventDate.setClickable(false);
+                                   tvShowEventDate.setText("Not Available");
+                                   btnBookEventTimeSlot.setEnabled(false);
+                                   tvCheckBookingStatus.setVisibility(View.VISIBLE);
+
+                                    if((dayDiff >= 90)){
+                                        tvShowEventDate.setText("Click Me to Choose A Date");
+                                        mFirebase.getData("latestAppointment", null, new MyCallback() {
+                                            @Override
+                                            public void returnData(ArrayList<Map<String, Object>> docList) {
+                                                Log.d("firebase example", docList.toString());
+                                                ArrayList<String> list = new ArrayList<>();
+
+                                                for (Map<String, Object> map : docList) {
+                                                    if (map.get("user").toString().equals(user)) {
+                                                        Map<String, Object> user = new HashMap<>();
+                                                        user.put("userStatus", "active");
+                                                        mFirebase.updData("latestAppointment", user, map.get("id").toString());
+                                                        Log.d("TAG", "returnData: User Status Changed to Active");
+                                                    }
+                                                }
+                                            }
+                                        });
+                                        btnBookEventTimeSlot.setEnabled(true);
+                                        tvShowEventDate.setClickable(true);
+                                        tvCheckBookingStatus.setVisibility(View.INVISIBLE);
+                                    }
+
+                                }else{
+                                    tvShowEventDate.setText("Click Me to Choose A Date");
+                                    btnBookEventTimeSlot.setEnabled(true);
+                                    tvShowEventDate.setClickable(true);
+                                    tvCheckBookingStatus.setVisibility(View.INVISIBLE);
+                                }
+                            }
+                        }
+                    }
+                });
+
+        tvShowEventDate.setText("Click Me to Choose A Date");
 
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         try {
@@ -143,18 +226,59 @@ public class UserEventTimeSlot extends AppCompatActivity implements DatePickerDi
                                 data.put("user", user);
                                 data.put("date", dateSelected);
                                 data.put("location", eventLocation);
+                                data.put("title", eventTitle);
+
+                                Map<String, Object> appointment = new HashMap<>();
+                                appointment.put("slot", slot);
+                                appointment.put("user", user);
+                                appointment.put("date", dateSelected);
+                                appointment.put("location", eventLocation);
+                                appointment.put("status", "confirmed");
+                                appointment.put("userStatus", "active");
+
+                                db.collection("latestAppointment")
+                                        .whereEqualTo("user", user)
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                QuerySnapshot queryDocumentSnapshots = task.getResult();
+                                                if (queryDocumentSnapshots.isEmpty()) {
+                                                    db.collection("latestAppointment").add(appointment).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                        @Override
+                                                        public void onSuccess(DocumentReference documentReference) {
+                                                            Log.d("TAG", "onComplete: Appointment added to latestAppointment Successfully");
+                                                        }
+                                                    }).addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                        }
+                                                    });
+
+                                                } else if (!queryDocumentSnapshots.isEmpty()) {
+                                                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                                                        Log.d("Document ID:", document.getId() + " => " + document.getData());
+                                                        db.collection("latestAppointment").document(document.getId()).update(appointment);
+                                                        Log.d("TAG", "onComplete: latestAppointment Updated Successfully");
+
+                                                    }
+                                                }
+                                            }
+                                        });
 
                                 db.collection("userEventBooking").add(data)
                                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                             @Override
                                             public void onSuccess(DocumentReference documentReference) {
                                                 Toast.makeText(UserEventTimeSlot.this, "Slot booked successfully !", Toast.LENGTH_SHORT).show();
+                                                Intent i = new Intent(UserEventTimeSlot.this, UserEvent.class);
+                                                startActivity(i);
                                                 finish();
                                             }
                                         }).addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(UserEventTimeSlot.this, "Error, Please Try Again..", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(UserEventTimeSlot.this, "Error, Please Try Again! " + e.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 });
                             }
@@ -378,5 +502,12 @@ public class UserEventTimeSlot extends AppCompatActivity implements DatePickerDi
             default:
                 return "Closed";
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(UserEventTimeSlot.this, UserEvent.class);
+        startActivity(i);
+        finish();
     }
 }

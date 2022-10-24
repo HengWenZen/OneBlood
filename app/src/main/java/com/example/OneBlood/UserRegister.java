@@ -37,7 +37,7 @@ public class UserRegister extends AppCompatActivity {
 
     Button btnRegisterAcc;
     Button btnExistingUser;
-    TextInputLayout etFullName, etUserPhone, etUserEmail, etUserPassword,etUserRace;
+    TextInputLayout etFullName, etUserPhone, etUserEmail, etUserPassword;
     String userName, userEmail, userPhone, userPassword,userRace, token;
     ImageView ivBack;
     boolean loginSuccess = false;
@@ -55,7 +55,6 @@ public class UserRegister extends AppCompatActivity {
         etUserEmail =  findViewById(R.id.etUserEmail);
         etUserPhone =  findViewById(R.id.etUserPhone);
         etUserPassword =findViewById(R.id.etUserPassword);
-        etUserRace = findViewById(R.id.etUserRace);
         btnExistingUser = (Button) findViewById(R.id.btnExistingUser);
 
         mAuth = FirebaseAuth.getInstance();
@@ -87,7 +86,6 @@ public class UserRegister extends AppCompatActivity {
         userName = etFullName.getEditText().getText().toString().trim();
         userEmail = etUserEmail.getEditText().getText().toString().trim();
         userPassword = etUserPassword.getEditText().getText().toString().trim();
-        userRace = etUserRace.getEditText().getText().toString().trim();
 
 
         if (TextUtils.isEmpty(userName)) {
@@ -99,9 +97,6 @@ public class UserRegister extends AppCompatActivity {
         }else if (TextUtils.isEmpty(userPassword)) {
             etUserPassword.setError("Please fill in Password!");
             etUserPassword.requestFocus();
-        }else if(TextUtils.isEmpty(userRace)){
-            etUserRace.setError("Please fill in Race!");
-            etUserRace.requestFocus();
         } else {
             FirebaseMessaging.getInstance().getToken()
                     .addOnCompleteListener(new OnCompleteListener<String>() {
@@ -126,7 +121,6 @@ public class UserRegister extends AppCompatActivity {
                         user.put("FullName", userName);
                         user.put("Email", userEmail);
                         user.put("Password", userPassword);
-                        user.put("Race", userRace);
                         user.put("Token", token);
 
                         db.collection("users")

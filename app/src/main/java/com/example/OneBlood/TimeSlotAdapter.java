@@ -33,7 +33,7 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.Bookin
     @Override
     public BookingHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View view = layoutInflater.inflate(R.layout.activity_time_slot,parent,false);
+        View view = layoutInflater.inflate(R.layout.list_time_slot,parent,false);
         return new BookingHolder(view);
     }
 
