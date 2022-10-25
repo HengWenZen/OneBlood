@@ -69,7 +69,7 @@
             app:endIconMode="clear_text"
             app:endIconTint="@color/black"
             app:hintTextColor="@color/black"
-            app:startIconDrawable="@drawable/ic_menu"
+            app:startIconDrawable="@drawable/ic_title"
             app:startIconTint="@color/black">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -93,7 +93,7 @@
             app:endIconMode="clear_text"
             app:endIconTint="@color/black"
             app:hintTextColor="@color/black"
-            app:startIconDrawable="@drawable/ic_menu"
+            app:startIconDrawable="@drawable/ic_posted_by"
             app:startIconTint="@color/black">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -109,7 +109,7 @@
             android:layout_marginTop="6dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:hint="@string/request_description"
+            android:hint="Description"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:startIconTint="@color/black"
             app:hintTextColor="@color/black"
@@ -141,6 +141,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:background="@color/red"
+        android:backgroundTint="@color/red"
         android:text="Submit"/>
 </LinearLayout>

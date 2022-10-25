@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.OneBlood.Activity.HospitalLogin;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -28,8 +29,8 @@ import java.util.Map;
 
 public class UserLogin extends AppCompatActivity {
 
-    EditText etEmail;
-    EditText etPassword;
+    TextInputLayout etEmail;
+    TextInputLayout etPassword;
     Button btnLogin;
     Button btnRegister;
     TextView tvAdminLogin;
@@ -53,12 +54,12 @@ public class UserLogin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_login);
 
-        btnLogin = (Button) findViewById(R.id.btnLogin);
-        btnRegister = (Button) findViewById(R.id.btnRegister);
-        etEmail = (EditText) findViewById(R.id.etEmail);
-        etPassword = (EditText) findViewById(R.id.etPassword);
-        tvAdminLogin = (TextView) findViewById(R.id.tvAdminLogin);
-        tvHospitalLogin = (TextView) findViewById(R.id.tvHospitalLogin);
+        btnLogin =  findViewById(R.id.btnLogin);
+        btnRegister = findViewById(R.id.btnRegister);
+        etEmail = findViewById(R.id.etEmail);
+        etPassword = findViewById(R.id.etPassword);
+        tvAdminLogin = findViewById(R.id.tvAdminLogin);
+        tvHospitalLogin = findViewById(R.id.tvHospitalLogin);
 
         mPreferences = getSharedPreferences("myPreferences", MODE_PRIVATE);
 
@@ -118,8 +119,8 @@ public class UserLogin extends AppCompatActivity {
     }
 
     private void loginUser() {
-        userEmail = etEmail.getText().toString();
-        userPassword = etPassword.getText().toString();
+        userEmail = etEmail.getEditText().getText().toString();
+        userPassword = etPassword.getEditText().getText().toString();
 
         if (TextUtils.isEmpty(userEmail)) {
             etEmail.setError("Please fill in Email!");
@@ -186,8 +187,8 @@ public class UserLogin extends AppCompatActivity {
                                         finish();
 
                                         SharedPreferences.Editor editor = mPreferences.edit();
-                                        editor.putString(KEY_USER_EMAIL, etEmail.getText().toString());
-                                        editor.putString(KEY_PASSWORD, etPassword.getText().toString());
+                                        editor.putString(KEY_USER_EMAIL, etEmail.getEditText().getText().toString());
+                                        editor.putString(KEY_PASSWORD, etPassword.getEditText().getText().toString());
                                         editor.putString(KEY_USER_ID, userId);
                                         editor.putString(KEY_USER_NAME, userName);
                                         editor.putString(KEY_USER_STATUS, userStatus);

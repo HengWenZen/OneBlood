@@ -49,10 +49,13 @@
             </LinearLayout>
 
             <ImageView
-                android:layout_width="360dp"
+                android:id="@+id/ivLocationImage"
+                android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"/>
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/background_image_border"
+                android:src="@android:drawable/ic_menu_report_image"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/etHospitalTitle"
@@ -61,8 +64,8 @@
                 android:layout_marginTop="6dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:hint="@string/location_name"
-                app:startIconDrawable="@drawable/ic_menu"
+                android:hint="Name of Hospital"
+                app:startIconDrawable="@drawable/ic_hospital"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:startIconTint="@color/black"
                 app:hintTextColor="@color/black"
@@ -87,7 +90,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:hint="@string/location_address"
-                app:startIconDrawable="@drawable/ic_menu"
+                app:startIconDrawable="@drawable/ic_location"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:startIconTint="@color/black"
                 app:hintTextColor="@color/black"
@@ -112,7 +115,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:hint="@string/location_contact"
-                app:startIconDrawable="@drawable/ic_menu"
+                app:startIconDrawable="@drawable/ic_contact"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:startIconTint="@color/black"
                 app:hintTextColor="@color/black"
@@ -137,7 +140,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:hint="@string/location_operation_hours"
-                app:startIconDrawable="@drawable/ic_menu"
+                app:startIconDrawable="@drawable/ic_clock"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:startIconTint="@color/black"
                 app:hintTextColor="@color/black"

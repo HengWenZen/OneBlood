@@ -179,6 +179,8 @@ public class UserNewBloodRequest extends AppCompatActivity {
                 public void onSuccess(DocumentReference documentReference) {
                     Toast.makeText(UserNewBloodRequest.this, "Request Submitted Successfully!", Toast.LENGTH_SHORT).show();
                     sentPush(requestTitle);
+                    Intent intent = new Intent(UserNewBloodRequest.this, UserViewBloodRequest.class);
+                    startActivity(intent);
                     finish();
                 }
             }).addOnFailureListener(new OnFailureListener() {

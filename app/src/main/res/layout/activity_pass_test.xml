@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:text="Close"
             android:layout_weight="1"
-            android:background="@color/red"/>
+            android:backgroundTint="@color/red"/>
 
         <Space
             android:layout_width="wrap_content"
@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Act Now"
-            android:background="@color/red"/>
+            android:backgroundTint="@color/red"/>
 
         <Space
             android:layout_width="wrap_content"

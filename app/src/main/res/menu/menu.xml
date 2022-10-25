@@ -6,35 +6,40 @@
         <item
             android:id="@+id/nav_home"
             android:title="Home"
-            android:icon="@drawable/ic_menu"/>
+            android:icon="@drawable/ic_home"/>
 
         <item
             android:id="@+id/map_view"
             android:title="Map View"
-            android:icon="@drawable/ic_menu"/>
+            android:icon="@drawable/ic_map"/>
 
         <item
             android:id="@+id/nav_available_donors"
             android:title="Available Donors"
-            android:icon="@drawable/ic_menu"/>
+            android:icon="@drawable/ic_donors"/>
         <item
             android:id="@+id/nav_appointment"
             android:title="Make Appointment"
-            android:icon="@drawable/ic_menu"/>
+            android:icon="@drawable/ic_appointment"/>
         <item
             android:id="@+id/nav_request"
             android:title="Blood Request"
-            android:icon="@drawable/ic_menu"/>
+            android:icon="@drawable/ic_request"/>
 
         <item
             android:id="@+id/nav_events"
             android:title="Events"
-            android:icon="@drawable/ic_menu"/>
+            android:icon="@drawable/ic_events"/>
 
         <item
             android:id="@+id/nav_notice"
             android:title="Notice"
-            android:icon="@drawable/ic_menu"/>
+            android:icon="@drawable/ic_notice"/>
+
+        <item
+            android:id="@+id/nav_info"
+            android:title="Info"
+            android:icon="@drawable/ic_info"/>
     </group>
 
 
@@ -45,17 +50,12 @@
                 <item
                     android:id="@+id/nav_profile"
                     android:title="Edit Profile"
-                    android:icon="@drawable/ic_menu"/>
-
-                <item
-                        android:id="@+id/nav_info"
-                        android:title="Info"
-                        android:icon="@drawable/ic_menu"/>
+                    android:icon="@drawable/ic_edit"/>
 
                 <item
                     android:id="@+id/nav_logout"
                     android:title="Logout"
-                    android:icon="@drawable/ic_menu"/>
+                    android:icon="@drawable/ic_logout"/>
                 </group>
             </menu>
         </item>

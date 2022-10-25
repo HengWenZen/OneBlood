@@ -1,47 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/available_donors_drawer_layout"
+    android:fitsSystemWindows="true"
     tools:context=".UserBloodRequestMainMenu">
 
+    <com.google.android.material.navigation.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/available_donors_navigation_view"
+        app:headerLayout="@layout/header"
+        app:menu="@menu/menu"
+        android:layout_gravity = "start">
+    </com.google.android.material.navigation.NavigationView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="5dp">
+        android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="wrap_content"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/available_donors_toolbar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_back"
-            android:padding="5dp"
-            android:layout_margin="12dp"/>
-
-        <TextView
-            android:id="@+id/tvNewRequest"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:layout_weight="1"
-            android:fontFamily="@font/baloo"
-            android:padding="5dp"
-            android:text="New Request"
-            android:textSize="24dp" />
-
-    </LinearLayout>
+            android:background="@color/red"
+            android:elevation="8dp"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:navigationIcon="@drawable/ic_menu" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
+        android:elevation="7dp"
         android:layout_weight="0.5"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteY="656dp">
+        android:orientation="vertical">
 
         <Spinner
             android:id="@+id/spinnerBloodType"
@@ -58,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/spinnerBloodType"
             android:text="Search"
-            android:background="@color/red"/>
+            android:backgroundTint="@color/red"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvDonorList"
@@ -69,5 +68,5 @@
             android:layout_weight="0.5" />
 
     </RelativeLayout>
-
-</LinearLayout>
+    </LinearLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

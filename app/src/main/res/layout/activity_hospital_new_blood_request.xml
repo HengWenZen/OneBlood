@@ -51,14 +51,14 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="6dp"
             android:layout_marginEnd="16dp"
-            android:hint="@string/request_title"
+            android:hint="@string/request_date"
             android:textColorHint="@color/black"
             app:boxStrokeColor="@color/black"
             app:boxStrokeWidthFocused="2dp"
             app:endIconMode="clear_text"
             app:endIconTint="@color/black"
             app:hintTextColor="@color/black"
-            app:startIconDrawable="@drawable/ic_menu"
+            app:startIconDrawable="@drawable/ic_calendar"
             app:startIconTint="@color/black">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -82,7 +82,7 @@
             app:endIconMode="clear_text"
             app:endIconTint="@color/black"
             app:hintTextColor="@color/black"
-            app:startIconDrawable="@drawable/ic_menu"
+            app:startIconDrawable="@drawable/ic_title"
             app:startIconTint="@color/black">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -106,7 +106,7 @@
             app:endIconMode="clear_text"
             app:endIconTint="@color/black"
             app:hintTextColor="@color/black"
-            app:startIconDrawable="@drawable/ic_menu"
+            app:startIconDrawable="@drawable/ic_posted_by"
             app:startIconTint="@color/black">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -122,7 +122,7 @@
             android:layout_marginTop="6dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:hint="@string/request_description"
+            android:hint="Description"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:startIconTint="@color/black"
             app:hintTextColor="@color/black"
@@ -152,6 +152,12 @@
             android:layout_marginTop="6dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
+            app:startIconTint="@color/black"
+            app:startIconDrawable="@drawable/ic_blood_type"
+            app:hintTextColor="@color/black"
+            app:boxStrokeWidthFocused="2dp"
+            app:boxStrokeColor="@color/black"
+            android:textColorHint="@color/black"
             android:hint="@string/select_bloodType"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu">
 
@@ -162,6 +168,7 @@
                 android:id="@+id/actvEmergencyBloodType"
                 android:inputType="" />
         </com.google.android.material.textfield.TextInputLayout>
+
     </LinearLayout>
     <Button
         android:id="@+id/btnHospitalPostEmergency"
@@ -170,6 +177,6 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="100dp"
-        android:background="@color/red"
+        android:backgroundTint="@color/red"
         android:text="Submit"/>
 </LinearLayout>

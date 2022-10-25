@@ -47,7 +47,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:hint="@string/donor_name"
-            app:startIconDrawable="@drawable/ic_menu"
+            app:startIconDrawable="@drawable/ic_posted_by"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:startIconTint="@color/black"
             app:hintTextColor="@color/black"
@@ -72,7 +72,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:hint="@string/donor_contact"
-            app:startIconDrawable="@drawable/ic_menu"
+            app:startIconDrawable="@drawable/ic_contact"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:startIconTint="@color/black"
             app:hintTextColor="@color/black"
@@ -97,7 +97,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:hint="@string/donor_email"
-            app:startIconDrawable="@drawable/ic_menu"
+            app:startIconDrawable="@drawable/ic_email"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:startIconTint="@color/black"
             app:hintTextColor="@color/black"
@@ -122,7 +122,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:hint="@string/donor_blood_type"
-            app:startIconDrawable="@drawable/ic_menu"
+            app:startIconDrawable="@drawable/ic_blood_type"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:startIconTint="@color/black"
             app:hintTextColor="@color/black"
@@ -146,9 +146,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:layout_marginTop="20dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="20dp"
-        android:text="Chat Now" />
+        android:backgroundTint="@color/red"
+        android:text="Call Now" />
 
 </LinearLayout>

@@ -1,16 +1,26 @@
 package com.example.OneBlood;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,7 +36,9 @@ public class UserRegister2 extends AppCompatActivity {
     RadioButton selectedGender;
     RadioGroup radioGroup;
     DatePicker datePicker;
+    ImageView ivBack;
     Firebase db = new Firebase();
+    FirebaseFirestore mFirebase = FirebaseFirestore.getInstance();
     String userName;
 
 
@@ -38,6 +50,7 @@ public class UserRegister2 extends AppCompatActivity {
         btnNext = findViewById(R.id.btnNext);
         radioGroup = findViewById(R.id.rgUserGender);
         datePicker = findViewById(R.id.dpDateOfBirth);
+        ivBack = findViewById(R.id.ivBack2);
 
         Intent intent = getIntent();
         Bundle b = intent.getExtras();
@@ -48,6 +61,45 @@ public class UserRegister2 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 RegisterUser();
+            }
+        });
+
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(UserRegister2.this)
+                        .setMessage("Cancel Registration?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                mFirebase.collection("users")
+                                        .whereEqualTo("FullName", userName)
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                QuerySnapshot queryDocumentSnapshots = task.getResult();
+                                                if (!queryDocumentSnapshots.isEmpty()) {
+                                                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                                                        Log.d("Document ID:", document.getId() + " => " + document.getData());
+                                                        Map<String, Object> users = new HashMap<>();
+                                                        mFirebase.collection("users").document(document.getId()).delete();
+
+                                                    }
+                                                }
+                                            }
+                                        });
+
+                                Intent intent = new Intent(UserRegister2.this, UserRegister.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                }).create().show();
             }
         });
     }
@@ -129,5 +181,42 @@ public class UserRegister2 extends AppCompatActivity {
 
             return true;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(UserRegister2.this)
+                .setMessage("Cancel Registration?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        mFirebase.collection("users")
+                                .whereEqualTo("FullName", userName)
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        QuerySnapshot queryDocumentSnapshots = task.getResult();
+                                        if (!queryDocumentSnapshots.isEmpty()) {
+                                            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                                                Log.d("Document ID:", document.getId() + " => " + document.getData());
+                                                Map<String, Object> users = new HashMap<>();
+                                                mFirebase.collection("users").document(document.getId()).delete();
+
+                                            }
+                                        }
+                                    }
+                                });
+
+                        Intent intent = new Intent(UserRegister2.this, UserRegister.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        }).create().show();
     }
 }

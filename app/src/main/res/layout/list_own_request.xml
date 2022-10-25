@@ -55,7 +55,7 @@
             android:layout_marginEnd="15dp"
             android:layout_marginBottom="20dp"
             android:text="View"
-            android:background="@color/red"/>
+            android:backgroundTint="@color/red"/>
     </RelativeLayout>
 
 

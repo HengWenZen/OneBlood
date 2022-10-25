@@ -3,6 +3,8 @@ package com.example.OneBlood;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,6 +39,7 @@ public class UserRegister3 extends AppCompatActivity {
     Button btnRegisterUser3;
     TextInputLayout etUserPhone, etBloodType;
     AutoCompleteTextView actvBloodType;
+    ImageView ivBack;
     String userPhoneNo, getUserPhoneNo, getSelectedBloodType, userName;
     Firebase db = new Firebase();
     FirebaseFirestore mFirebase = FirebaseFirestore.getInstance();
@@ -49,6 +53,7 @@ public class UserRegister3 extends AppCompatActivity {
         etUserPhone = findViewById(R.id.etUserPhone);
         etBloodType = findViewById(R.id.spBloodType);
         actvBloodType = findViewById(R.id.actvBloodType);
+        ivBack = findViewById(R.id.ivBack3);
         final String[] bloodType = getResources().getStringArray(R.array.bloodType);
 
         userName = getIntent().getStringExtra(EXTRA_USER_NAME);
@@ -73,6 +78,45 @@ public class UserRegister3 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 RegisterUser();
+            }
+        });
+
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(UserRegister3.this)
+                        .setMessage("You will need to input the credentials again if you wish to register new account. \n Cancel Registration?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                mFirebase.collection("users")
+                                        .whereEqualTo("FullName", userName)
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                QuerySnapshot queryDocumentSnapshots = task.getResult();
+                                                if (!queryDocumentSnapshots.isEmpty()) {
+                                                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                                                        Log.d("Document ID:", document.getId() + " => " + document.getData());
+                                                        Map<String, Object> users = new HashMap<>();
+                                                        mFirebase.collection("users").document(document.getId()).delete();
+
+                                                    }
+                                                }
+                                            }
+                                        });
+
+                                Intent intent = new Intent(UserRegister3.this, UserRegister.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                }).create().show();
             }
         });
     }
@@ -197,5 +241,42 @@ public class UserRegister3 extends AppCompatActivity {
             }
             return true;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(UserRegister3.this)
+                .setMessage("You will need to input the credentials again if you wish to register new account. \n Cancel Registration?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        mFirebase.collection("users")
+                                .whereEqualTo("FullName", userName)
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        QuerySnapshot queryDocumentSnapshots = task.getResult();
+                                        if (!queryDocumentSnapshots.isEmpty()) {
+                                            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                                                Log.d("Document ID:", document.getId() + " => " + document.getData());
+                                                Map<String, Object> users = new HashMap<>();
+                                                mFirebase.collection("users").document(document.getId()).delete();
+
+                                            }
+                                        }
+                                    }
+                                });
+
+                        Intent intent = new Intent(UserRegister3.this, UserRegister.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        }).create().show();
     }
 }

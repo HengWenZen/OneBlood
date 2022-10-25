@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/spinnerHospitalFilterBloodType"
             android:text="Search"
-            android:background="@color/red"/>
+            android:backgroundTint="@color/red"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvHospitalDonorList"

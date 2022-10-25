@@ -40,7 +40,7 @@
         android:layout_marginStart="40dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/red"
+        android:backgroundTint="@color/red"
         android:text="Notice"/>
 
     <Button
@@ -49,18 +49,18 @@
         android:layout_marginEnd="40dp"
         android:layout_marginStart="40dp"
         android:text="Emergency"
-        android:background="@color/red"
+        android:backgroundTint="@color/red"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/btnAvailableDonors"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="40dp"
         android:layout_marginStart="40dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/red"
+        android:backgroundTint="@color/red"
         android:text="Donor List"/>
 
     <Button
@@ -70,7 +70,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:background="@color/red"
+        android:backgroundTint="@color/red"
         android:text="Appointments"/>
 
     <Button
@@ -81,16 +81,16 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="Events"
-        android:background="@color/red"/>
+        android:backgroundTint="@color/red"/>
 
     <Button
         android:id="@+id/btnHospitalLogOut"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="40dp"
         android:layout_marginStart="40dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/red"
+        android:backgroundTint="@color/red"
         android:text="Log Out"/>
 
 </LinearLayout>

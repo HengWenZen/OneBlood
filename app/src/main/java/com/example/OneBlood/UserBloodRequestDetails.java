@@ -72,8 +72,6 @@ public class UserBloodRequestDetails extends AppCompatActivity {
                 cancelBooking();
             }
         });
-
-
     }
 
     private void cancelBooking() {
@@ -109,4 +107,10 @@ public class UserBloodRequestDetails extends AppCompatActivity {
                 }).create().show();
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(UserBloodRequestDetails.this, UserViewBloodRequest.class);
+        startActivity(i);
+        finish();
+    }
 }

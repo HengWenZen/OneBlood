@@ -46,8 +46,8 @@
             android:layout_marginTop="6dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:hint="@string/request_date"
-            app:startIconDrawable="@drawable/ic_menu"
+            android:hint="Date of Appointment"
+            app:startIconDrawable="@drawable/ic_calendar"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:startIconTint="@color/black"
             app:hintTextColor="@color/black"
@@ -71,8 +71,8 @@
             android:layout_marginTop="6dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:hint="@string/request_title"
-            app:startIconDrawable="@drawable/ic_menu"
+            android:hint="Title of Event"
+            app:startIconDrawable="@drawable/ic_title"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:startIconTint="@color/black"
             app:hintTextColor="@color/black"
@@ -96,8 +96,8 @@
             android:layout_marginTop="6dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:hint="@string/recipient_name"
-            app:startIconDrawable="@drawable/ic_menu"
+            android:hint="Booked By"
+            app:startIconDrawable="@drawable/ic_posted_by"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:startIconTint="@color/black"
             app:hintTextColor="@color/black"
@@ -127,7 +127,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:background="@color/red"
+            android:backgroundTint="@color/red"
             android:text="Cancel Appointment" />
 
         <Button
@@ -137,7 +137,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="16dp"
-            android:background="@color/red"
+            android:backgroundTint="@color/red"
             android:text="Mark as Complete" />
 
     </LinearLayout>

@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.OneBlood.Firebase;
 import com.example.OneBlood.R;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import java.util.Map;
 
 public class HospitalLogin extends AppCompatActivity {
 
-    EditText etPassword;
+    TextInputLayout etPassword;
     Spinner spHospital;
     Button btnLogin;
     TextView tvAdminLogin;
@@ -68,7 +69,7 @@ public class HospitalLogin extends AppCompatActivity {
                     ArrayList<String> list = new ArrayList<>();
 
                     for(Map<String, Object> map : docList){
-                        if (map.get("name").toString().equals(spHospital.getSelectedItem().toString()) && map.get("password").toString().equals(etPassword.getText().toString())) {
+                        if (map.get("name").toString().equals(spHospital.getSelectedItem().toString()) && map.get("password").toString().equals(etPassword.getEditText().getText().toString())) {
                             Toast.makeText(HospitalLogin.this, "Login Successful", Toast.LENGTH_SHORT).show();
                             hospitalContact = map.get("contact").toString();
                             hospitalName = spHospital.getSelectedItem().toString();

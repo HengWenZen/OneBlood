@@ -63,7 +63,7 @@
             android:text="Post New Event"
             android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
-            android:background="@color/red"/>
+            android:backgroundTint="@color/red"/>
 
         <Button
             android:id="@+id/btnMyEvents"
@@ -71,7 +71,8 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/btnPostNewEvent"
             android:text="My Events"
-            android:background="@color/red"/>
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="@color/red"/>
 
     </RelativeLayout>
 

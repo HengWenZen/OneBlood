@@ -57,9 +57,9 @@ public class HospitalNewEvent extends AppCompatActivity {
     public static final String START_DATE = "startDate";
     public static final String END_DATE = "endDate";
 
-    EditText etHospitalEventStartDate, etHospitalEventEndDate;
+    TextInputLayout etHospitalEventStartDate, etHospitalEventEndDate;
     TextInputLayout etHospitalEventTitle, etHospitalEventLocation, etHospitalEventDescription, etHospitalEventOperationHrs, etHospitalEventStartTime, etHospitalEventEndTime;
-    TextInputEditText etStartTime, etEndTime;
+    TextInputEditText etStartTime, etEndTime, etStartDate, etEndDate;
     Button btnPostEvent, btnChoosePic;
     ImageView ivBackToHome, ivEventPic, ivStartDate, ivEndDate;
     String randomNum, generatedFilePath, hospital;
@@ -75,21 +75,21 @@ public class HospitalNewEvent extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hospital_events);
+        setContentView(R.layout.activity_hospital_new_event);
 
         etHospitalEventLocation = findViewById(R.id.etHospitalEventLocation);
-        etHospitalEventStartDate = findViewById(R.id.etEventStartDate);
-        etHospitalEventEndDate = findViewById(R.id.etEventEndDate);
+        etHospitalEventStartDate = findViewById(R.id.etHospitalEventStartDate);
+        etHospitalEventEndDate = findViewById(R.id.etHospitalEventEndDate);
         etHospitalEventTitle = findViewById(R.id.etHospitalEventTitle);
         etHospitalEventDescription = findViewById(R.id.etHospitalEventDescription);
         etHospitalEventStartTime = findViewById(R.id.etHospitalEventStartTime);
         etHospitalEventEndTime = findViewById(R.id.etHospitalEventEndTime);
+        etStartDate = findViewById(R.id.startDate);
+        etEndDate = findViewById(R.id.endDate);
         etStartTime = findViewById(R.id.startTime);
         etEndTime = findViewById(R.id.endTime);
         btnPostEvent = findViewById(R.id.btnPostEvent);
         btnChoosePic = findViewById(R.id.btnChoosePic);
-        ivStartDate = findViewById(R.id.ivStartDate);
-        ivEndDate = findViewById(R.id.ivEndDate);
         ivBackToHome = findViewById(R.id.ivBackToHome);
         ivEventPic= findViewById(R.id.ivEventPic);
 
@@ -98,7 +98,6 @@ public class HospitalNewEvent extends AppCompatActivity {
 
         etHospitalEventLocation.getEditText().setText(hospital);
 
-        etHospitalEventStartDate.setCursorVisible(false);
         setListener();
 
        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
@@ -111,7 +110,7 @@ public class HospitalNewEvent extends AppCompatActivity {
             }
         };
 
-       etHospitalEventStartDate.setOnClickListener(new View.OnClickListener() {
+       etStartDate.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
                clickedEditText = (EditText) v;
@@ -131,7 +130,7 @@ public class HospitalNewEvent extends AppCompatActivity {
            }
        });
 
-       etHospitalEventEndDate.setOnClickListener(new View.OnClickListener() {
+       etEndDate.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
                clickedEditText = (EditText) v;
@@ -214,8 +213,8 @@ public class HospitalNewEvent extends AppCompatActivity {
         eventDescription = etHospitalEventDescription.getEditText().getText().toString().trim();
         eventStartTime = etHospitalEventStartTime.getEditText().getText().toString().trim();
         eventEndTime = etHospitalEventEndTime.getEditText().getText().toString().trim();
-        eventStartDate = etHospitalEventStartDate.getText().toString().trim();
-        eventEndDate = etHospitalEventEndDate.getText().toString().trim();
+        eventStartDate = etStartDate.getText().toString().trim();
+        eventEndDate = etEndDate.getText().toString().trim();
 
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         try {
@@ -258,6 +257,7 @@ public class HospitalNewEvent extends AppCompatActivity {
                 etHospitalEventEndTime.setError("Please fill in Start Time!");
                 etHospitalEventEndTime.requestFocus();
             } else {
+
                 long diff = mEndDate.getTime() - mStartDate.getTime();
                 long days = TimeUnit.MILLISECONDS.toDays(diff);
                 int numberOfDays = (int) days;

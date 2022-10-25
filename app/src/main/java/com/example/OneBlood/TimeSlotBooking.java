@@ -5,6 +5,8 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,7 +35,12 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -61,6 +68,7 @@ public class TimeSlotBooking extends AppCompatActivity implements DatePickerDial
     public static final String EXTRA_LOCATION_ADDRESS = "location_address";
     public static final String EXTRA_LOCATION_CONTACT = "location_contact";
     public static final String EXTRA_LOCATION_OPERATION_HOUR = "location_operation_hours";
+    public static final String EXTRA_LOCATION_IMAGE_URI = "imageUri";
 
     private List<TimeSlot> mTimeSlots;
     private TimeSlotAdapter mTimeSlotAdapter;
@@ -68,14 +76,16 @@ public class TimeSlotBooking extends AppCompatActivity implements DatePickerDial
     ImageView ivBackToLocation;
     TextInputLayout etLocationTitle, etLocationAddress, etLocationContact, etLocationOperationHours;
     String LocationContact, LocationOperationHours, userStatus, bookingDate, user, appointmentStatus;
-    String dateSelected;
+    String dateSelected, locationImageUri;
     Date completeDate, selectedDate;
     TextView tvDateViewed,tvShowLocation, tvBookingStatus;
+    ImageView ivLocationImage;
     ImageButton mDatePicker;
     private RecyclerView rv;
     List<TimeSlot> mTimeSlotList;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     Firebase mFirebase = new Firebase();
+    StorageReference storageReference;
 
 
     @Override
@@ -94,11 +104,39 @@ public class TimeSlotBooking extends AppCompatActivity implements DatePickerDial
         etLocationContact = findViewById(R.id.etHospitalContact);
         etLocationOperationHours = findViewById(R.id.etOperationHours);
         ivBackToLocation = findViewById(R.id.ivBackToLocation);
+        ivLocationImage = findViewById(R.id.ivLocationImage);
 
         String locationName = getIntent().getStringExtra(EXTRA_LOCATION_TITLE);
         String LocationAddress = getIntent().getStringExtra(EXTRA_LOCATION_ADDRESS);
         String locationContact = getIntent().getStringExtra(EXTRA_LOCATION_CONTACT);
         String locationOperationHrs = getIntent().getStringExtra(EXTRA_LOCATION_OPERATION_HOUR);
+        locationImageUri = getIntent().getStringExtra(EXTRA_LOCATION_IMAGE_URI);
+        Log.d("TAG", "onCreate: " + locationImageUri);
+
+        storageReference = FirebaseStorage.getInstance().getReference();
+        StorageReference ref
+                = storageReference
+                .child(
+                        "images/"
+                                + locationImageUri);
+        try {
+            File localfile = File.createTempFile("tempfile", ".jpg");
+            ref.getFile(localfile)
+                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                            Bitmap bitmap = BitmapFactory.decodeFile(localfile.getAbsolutePath());
+                            ivLocationImage.setImageBitmap(bitmap);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         setListener();
 

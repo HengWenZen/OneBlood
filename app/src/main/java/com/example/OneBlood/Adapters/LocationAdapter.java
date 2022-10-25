@@ -26,6 +26,8 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
     public static final String EXTRA_LOCATION_ADDRESS = "location_address";
     public static final String EXTRA_LOCATION_CONTACT = "location_contact";
     public static final String EXTRA_LOCATION_OPERATION_HOUR = "location_operation_hours";
+    public static final String EXTRA_LOCATION_IMAGE_URI = "imageUri";
+
     public static SharedPreferences mPreferences;
     private final String SHARED_PREF = "myPreferences";
     private final String KEY_USER = "user";
@@ -76,10 +78,11 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(mContext, TimeSlotBooking.class);
-                    i.putExtra(EXTRA_LOCATION_TITLE,mDonateLocations.getTitle());
-                    i.putExtra(EXTRA_LOCATION_ADDRESS,mDonateLocations.getAddress());
-                    i.putExtra(EXTRA_LOCATION_CONTACT,mDonateLocations.getContact());
-                    i.putExtra(EXTRA_LOCATION_OPERATION_HOUR,mDonateLocations.getOperationHrs());
+                    i.putExtra(EXTRA_LOCATION_TITLE, mDonateLocations.getTitle());
+                    i.putExtra(EXTRA_LOCATION_ADDRESS, mDonateLocations.getAddress());
+                    i.putExtra(EXTRA_LOCATION_CONTACT, mDonateLocations.getContact());
+                    i.putExtra(EXTRA_LOCATION_OPERATION_HOUR, mDonateLocations.getOperationHrs());
+                    i.putExtra(EXTRA_LOCATION_IMAGE_URI, mDonateLocations.getImageUrl());
                     mContext.startActivity(i);
                 }
             });
@@ -92,6 +95,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
                     i.putExtra(EXTRA_LOCATION_ADDRESS,mDonateLocations.getAddress());
                     i.putExtra(EXTRA_LOCATION_CONTACT,mDonateLocations.getContact());
                     i.putExtra(EXTRA_LOCATION_OPERATION_HOUR,mDonateLocations.getOperationHrs());
+                    i.putExtra(EXTRA_LOCATION_IMAGE_URI,mDonateLocations.getImageUrl());
                     mContext.startActivity(i);
                 }
             });

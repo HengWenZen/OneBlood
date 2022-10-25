@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
@@ -29,6 +32,7 @@ public class UserDashBoard extends AppCompatActivity implements NavigationView.O
     private final String KEY_USER_EMAIL = "userEmail";
     DrawerLayout mDrawerLayout;
     NavigationView mNavigationView;
+    RelativeLayout cardViewRequest, cardViewAppointment, cardViewDonors, cardViewEvents;
     ImageView ivLogout;
     TextView tvSearch;
     Toolbar mToolbar;
@@ -41,6 +45,10 @@ public class UserDashBoard extends AppCompatActivity implements NavigationView.O
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
         mNavigationView = findViewById(R.id.navigation_view);
+        cardViewRequest = findViewById(R.id.cardViewBloodRequest);
+        cardViewAppointment = findViewById(R.id.cardViewAppointment);
+        cardViewEvents = findViewById(R.id.cardViewUpcomingEvents);
+        cardViewDonors = findViewById(R.id.cardViewAvailableDonors);
         mToolbar = findViewById(R.id.toolbar);
         ivLogout = findViewById(R.id.ivLogout);
         tvSearch = findViewById(R.id.tvSearch);
@@ -50,6 +58,7 @@ public class UserDashBoard extends AppCompatActivity implements NavigationView.O
         tvSearch.setText(user);
 
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("Home");
 
         mNavigationView.bringToFront();
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
@@ -67,6 +76,42 @@ public class UserDashBoard extends AppCompatActivity implements NavigationView.O
                 Editor.clear();
                 Editor.apply();
                 Intent i = new Intent(UserDashBoard.this, UserLogin.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
+        cardViewAppointment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(UserDashBoard.this, UserAppointmentsMenu.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
+        cardViewDonors.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(UserDashBoard.this, UserAvailableDonorMainMenu.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
+        cardViewEvents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(UserDashBoard.this, UserEvent.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
+        cardViewRequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(UserDashBoard.this, UserBloodRequestMainMenu.class);
                 startActivity(i);
                 finish();
             }
@@ -142,6 +187,22 @@ public class UserDashBoard extends AppCompatActivity implements NavigationView.O
 
     @Override
     public void onBackPressed() {
-        finish();
+
+        new AlertDialog.Builder(this)
+                .setMessage("Log Out?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        SharedPreferences.Editor spEditor = UserLogin.mPreferences.edit();
+                        spEditor.clear().commit();
+                        Intent intent = new Intent(UserDashBoard.this, UserLogin.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        }).create().show();
     }
 }

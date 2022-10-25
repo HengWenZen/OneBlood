@@ -45,32 +45,34 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvEmergencyNoticeList"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:layout_marginTop="20dp"/>
+            android:layout_height="577dp"
+            android:layout_marginTop="20dp"
+            android:layout_weight="0.5" />
 
         <LinearLayout
             android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
-            android:layout_height="75dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btnViewOwnEmergencyNotice"
-                android:layout_width="wrap_content"
-                android:layout_height="35dp"
+                android:layout_width="200dp"
+                android:layout_height="60dp"
                 android:layout_margin="20dp"
                 android:layout_weight="1"
-                android:background="@drawable/card_view2"
-                android:text="View My Notice" />
+                android:backgroundTint="@color/red"
+                android:text="View My Request"
+                android:textAlignment="center" />
 
             <Button
                 android:id="@+id/btnNewEmergencyNotice"
-                android:layout_width="wrap_content"
-                android:layout_height="35dp"
+                android:layout_width="200dp"
+                android:layout_height="60dp"
                 android:layout_margin="20dp"
                 android:layout_weight="1"
-                android:background="@drawable/card_view2"
+                android:backgroundTint="@color/red"
                 android:text="New Request" />
 
 

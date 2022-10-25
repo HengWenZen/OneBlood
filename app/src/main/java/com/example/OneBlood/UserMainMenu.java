@@ -85,6 +85,7 @@ public class UserMainMenu extends AppCompatActivity implements OnMapReadyCallbac
     public static final String EXTRA_LOCATION_ADDRESS = "location_address";
     public static final String EXTRA_LOCATION_CONTACT = "location_contact";
     public static final String EXTRA_LOCATION_OPERATION_HOUR = "location_operation_hours";
+    public static final String EXTRA_LOCATION_IMAGE_URI = "imageUri";
 
     boolean isPermissionGranted;
     GoogleMap mGoogleMap;
@@ -117,6 +118,7 @@ public class UserMainMenu extends AppCompatActivity implements OnMapReadyCallbac
         mPreferences = getSharedPreferences("myPreferences", MODE_PRIVATE);
 
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("Map View");
 
         mNavigationView.bringToFront();
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
@@ -290,6 +292,7 @@ public class UserMainMenu extends AppCompatActivity implements OnMapReadyCallbac
                         i.putExtra(EXTRA_LOCATION_ADDRESS, locationAddress);
                         i.putExtra(EXTRA_LOCATION_CONTACT, locationContact);
                         i.putExtra(EXTRA_LOCATION_OPERATION_HOUR, locationOperationHrs);
+                        i.putExtra(EXTRA_LOCATION_IMAGE_URI, imageId);
                         startActivity(i);
                         popupWindow.dismiss();
                     }

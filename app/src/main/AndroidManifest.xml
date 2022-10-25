@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.OneBlood">
 
@@ -14,76 +15,156 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MainActivity">
-        <activity android:name=".Activity.HospitalDonorList"></activity>
+
+        <activity
+            android:name=".Activity.HospitalDonorList"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
         <activity
             android:name=".Activity.HospitalViewOwnBloodRequestDetails"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
-        <activity android:name=".Activity.HospitalViewOwnBloodRequest" />
+
+        <activity
+            android:name=".Activity.HospitalViewOwnBloodRequest"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
         <activity
             android:name=".Activity.HospitalViewEventDetails"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
-        <activity android:name=".Activity.HospitalViewEvent" />
+
+        <activity
+            android:name=".Activity.HospitalViewEvent"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
         <activity
             android:name=".UserBloodRequestDetails"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
-        <activity android:name=".UserViewBloodRequest" />
-        <activity android:name=".Activity.HospitalBloodRequestMenu" />
+
+        <activity
+            android:name=".UserViewBloodRequest"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
+        <activity
+            android:name=".Activity.HospitalBloodRequestMenu"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
         <activity
             android:name=".Activity.HospitalViewEventBookingDetails"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
         <activity
             android:name=".UserViewEventBookingDetails"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
-        <activity android:name=".Activity.HospitalViewEventBooking" />
-        <activity android:name=".UserViewEventBooking" />
+
+        <activity
+            android:name=".Activity.HospitalViewEventBooking"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
+        <activity
+            android:name=".UserViewEventBooking"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
         <activity
             android:name=".Activity.HospitalViewBookingDetails"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
         <activity
             android:name=".UserViewBookingDetails"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
         <activity
             android:name=".Activity.HospitalNewBloodRequest"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
-        <activity android:name=".Activity.HospitalViewBooking" />
-        <activity android:name=".UserViewBooking" />
-        <activity android:name=".PassTest" />
-        <activity android:name=".FailTest" />
-        <activity android:name=".TestQuestion" />
-        <activity android:name=".SelfEvaluation" />
-        <activity android:name=".UserNoticeMenu" />
+
+        <activity
+            android:name=".Activity.HospitalViewBooking"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
+        <activity
+            android:name=".UserViewBooking"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
+        <activity
+            android:name=".PassTest"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
+        <activity
+            android:name=".FailTest"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
+        <activity
+            android:name=".TestQuestion"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
+        <activity
+            android:name=".SelfEvaluation"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
+        <activity
+            android:name=".UserNoticeMenu"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity
             android:name=".ViewNoticeDetails"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
         <activity
             android:name=".Activity.HospitalNewNotice"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
-        <activity android:name=".Activity.HospitalNoticeMenu" />
+
+        <activity
+            android:name=".Activity.HospitalNoticeMenu"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
         <activity
             android:name=".UserEventTimeSlot"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
-        <activity android:name=".UserEvent" />
+
+        <activity
+            android:name=".UserEvent"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
         <activity
             android:name=".Activity.HospitalNewEvent"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
-        <activity android:name=".UserChatBox" />
+
+        <activity android:name=".UserChatBox"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
         <activity
             android:name=".ViewDonorDetails"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
-        <activity android:name=".UserBloodDonationInfoPage" />
+
+        <activity
+            android:name=".UserBloodDonationInfoPage"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity
             android:name=".ViewBloodRequestDetails"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
         <activity
             android:name=".UserNewBloodRequest"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
-        <activity android:name=".UserBloodRequestMainMenu" />
-        <activity android:name=".Activity.AdminMenu" />
+
+        <activity
+            android:name=".UserBloodRequestMainMenu"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
+        <activity
+            android:name=".Activity.AdminMenu"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
         <activity
             android:name=".UserRegister3"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
-        <activity android:name=".UserRegister2" />
-        <activity android:name=".MyProfile" />
+
+        <activity
+            android:name=".UserRegister2"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
+        <activity
+            android:name=".MyProfile"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
         <activity
             android:name=".OnStart"
             android:exported="true">
@@ -93,11 +174,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UserLogin" />
+        <activity
+            android:name=".UserLogin"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
         <activity
             android:name=".UserRegister"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
-        <activity android:name=".UserMainMenu" />
+
+        <activity
+            android:name=".UserMainMenu"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
 
         <service
             android:name=".PushNotification"
@@ -114,19 +201,41 @@
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />
 
-        <activity android:name=".Activity.HospitalLogin" />
-        <activity android:name=".Activity.HospitalMenu" />
-        <activity android:name=".UserType" />
-        <activity android:name=".AdminLogin" />
+        <activity
+            android:name=".Activity.HospitalLogin"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
+        <activity
+            android:name=".Activity.HospitalMenu"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
+        <activity
+            android:name=".UserType"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
+        <activity
+            android:name=".AdminLogin"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
         <activity
             android:name=".EditProfile"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
-        <activity android:name=".UserAppointmentsMenu" />
+
+        <activity
+            android:name=".UserAppointmentsMenu"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
         <activity
             android:name=".TimeSlotBooking"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
-        <activity android:name=".UserDashBoard" />
-        <activity android:name=".UserAvailableDonorMainMenu" />
+
+        <activity
+            android:name=".UserDashBoard"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
+        <activity
+            android:name=".UserAvailableDonorMainMenu"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
 
         <meta-data
             android:name="com.google.android.gms.version"
