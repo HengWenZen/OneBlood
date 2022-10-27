@@ -3,6 +3,14 @@ package com.example.OneBlood.Models;
 public class Notice {
     String mDescription, mTitle, mHospitalName, mDate, mId;
 
+    public Notice(String id, String title, String description, String hospitalName, String date) {
+        mId = id;
+        mTitle = title;
+        mDescription = description;
+        mHospitalName = hospitalName;
+        mDate = date;
+    }
+
     public String getDescription() {
         return mDescription;
     }

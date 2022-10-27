@@ -72,7 +72,7 @@ public class UserNoticeMenu extends AppCompatActivity implements NavigationView.
             public void run() {
                 dialog.dismiss();   //remove loading Dialog
                 rv.setLayoutManager(new LinearLayoutManager(UserNoticeMenu.this));
-                mNoticeAdapter = new NoticeAdapter(notice, UserNoticeMenu.this);
+                mNoticeAdapter = new NoticeAdapter(notice, UserNoticeMenu.this, false);
                 rv.setAdapter(mNoticeAdapter);
             }
         }, 2000);

@@ -366,6 +366,7 @@ public class UserEventTimeSlot extends AppCompatActivity implements DatePickerDi
 
             Calendar cal = Calendar.getInstance();
             Date currentDate = new Date();
+            // Compare current date with the first date of event
             long startDate = mStartDate.getTime() - currentDate.getTime();
             long diff = mEndDate.getTime() - mStartDate.getTime();
             long initialDay = TimeUnit.MILLISECONDS.toDays(startDate);
@@ -383,8 +384,9 @@ public class UserEventTimeSlot extends AppCompatActivity implements DatePickerDi
             Date eventDate = cal.getTime();
             cal.add(Calendar.DAY_OF_MONTH, numberOfDays);
             Date newDate = cal.getTime();
+            //Set the datePicker dialog to display start date to end date only
             datePickerDialog.getDatePicker().setMinDate(eventDate.getTime());
-            datePickerDialog.getDatePicker().setMaxDate(newDate.getTime());//set only can choose next 7 days
+            datePickerDialog.getDatePicker().setMaxDate(newDate.getTime());
             datePickerDialog.show();
 
         } catch (ParseException e) {

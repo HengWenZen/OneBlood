@@ -13,10 +13,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class UserViewBookingDetails extends AppCompatActivity {
     public static final String EXTRA_BOOKING_DATE = "noticeDate";
@@ -27,7 +34,7 @@ public class UserViewBookingDetails extends AppCompatActivity {
 
     TextInputLayout etBookingDate, etBookingSlot, etBookingHospital;
     Button btnCancelBooking;
-    String bookingId, bookingSlot;
+    String bookingId, bookingSlot, userName;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
@@ -43,6 +50,7 @@ public class UserViewBookingDetails extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle b = intent.getExtras();
 
+        userName = (String)b.get(EXTRA_USER_NAME);
         bookingId = (String)b.get(EXTRA_BOOKING_ID);
         bookingSlot = (timeSlot(Integer.valueOf((String)b.get(EXTRA_BOOKING_TIME))));
         etBookingDate.getEditText().setText((String)b.get(EXTRA_BOOKING_DATE));
@@ -84,7 +92,30 @@ public class UserViewBookingDetails extends AppCompatActivity {
                                         Toast.makeText(UserViewBookingDetails.this, "Fail to Cancel Appointment! " + e.getMessage() , Toast.LENGTH_SHORT).show();
                                     }
                                 });
-                    }
+
+                        db.collection("latestAppointment")
+                                .whereEqualTo("user", userName)
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task< QuerySnapshot > task) {
+                                        Map<String, Object> latest = new HashMap<>();
+                                        latest.put("userStatus", "active");
+                                        latest.put("status", "available");
+
+                                        if (task.isSuccessful()) {
+                                            QuerySnapshot result = task.getResult();
+                                            if (!result.isEmpty()) {
+                                                Log.d("Data Retrieved", result.toString());
+                                                for (QueryDocumentSnapshot document : result) {
+                                                    Log.d("Document ID:", document.getId() + " => " + document.getData());
+                                                    db.collection("latestAppointment").document(document.getId()).update(latest);
+                                                }
+                                            }
+                                        }
+                                    }
+                                });
+                        }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override

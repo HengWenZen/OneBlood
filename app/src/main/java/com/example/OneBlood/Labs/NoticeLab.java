@@ -44,12 +44,11 @@ public class NoticeLab {
                                 Log.d("Data Retrieved", result.toString());
                                 for (QueryDocumentSnapshot document : result) {
                                     Log.d("Document ID:", document.getId() + " => " + document.getData());
-                                    Notice notice = new Notice();
-                                    notice.setId(document.getId());
-                                    notice.setTitle(document.get("title").toString());
-                                    notice.setDescription(document.get("description").toString());
-                                    notice.setDate(document.get("date").toString());
-                                    notice.setHospitalName(document.get("hospitalName").toString());
+                                    Notice notice = new Notice(document.getId(),
+                                            document.get("title").toString(),
+                                            document.get("description").toString(),
+                                            document.get("hospitalName").toString(),
+                                            document.get("date").toString());
                                     mNoticeList.add(notice);
                                 }
                             }

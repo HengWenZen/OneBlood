@@ -32,9 +32,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
                 android:layout_weight="1"
-                android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:text="New Notice"
+                android:backgroundTint="@color/red"/>
+
+            <Button
+                android:id="@+id/btnMyNotice"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:text="My Notice"
                 android:backgroundTint="@color/red"/>
 
         </LinearLayout>

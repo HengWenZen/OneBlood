@@ -76,7 +76,7 @@ public class UserBloodRequestDetails extends AppCompatActivity {
 
     private void cancelBooking() {
         new AlertDialog.Builder(UserBloodRequestDetails.this)
-                .setMessage("Confirm Appointment Cancellation?")
+                .setMessage("Delete Request?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -98,7 +98,7 @@ public class UserBloodRequestDetails extends AppCompatActivity {
                                         Toast.makeText(UserBloodRequestDetails.this, "Fail to Delete Request ! " + e.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 });
-                    }
+                        }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override

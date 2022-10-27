@@ -106,7 +106,6 @@ public class HospitalViewEventBooking extends AppCompatActivity {
                 }
             }
         }, 1000);
-
     }
 
     private void alertDataEmpty() {

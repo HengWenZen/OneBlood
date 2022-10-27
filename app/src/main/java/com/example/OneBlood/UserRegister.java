@@ -149,11 +149,11 @@ public class UserRegister extends AppCompatActivity {
                                 }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(UserRegister.this, "Error" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(UserRegister.this, "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
                     } else {
-                        Toast.makeText(UserRegister.this, "Error" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UserRegister.this, "Error " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });

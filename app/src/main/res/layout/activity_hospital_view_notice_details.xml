@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".Activity.HospitalViewNotice"
     android:orientation="vertical">
 
     <LinearLayout
@@ -12,6 +13,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            android:id="@+id/backToHospitalMenu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_back"
@@ -19,14 +21,14 @@
             android:layout_margin="12dp"/>
 
         <TextView
-            android:id="@+id/tvBookingDetail"
+            android:id="@+id/tvHospitalNotice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:layout_weight="1"
             android:fontFamily="@font/baloo"
             android:padding="5dp"
-            android:text="Appointment Details"
+            android:text="Notice Detail"
             android:textSize="24dp" />
     </LinearLayout>
 
@@ -39,13 +41,63 @@
         android:focusableInTouchMode="true">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/etBookingDate"
+            android:id="@+id/etHospitalViewNoticeTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="10dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:hint="@string/request_date"
+            android:hint="Title"
+            app:startIconDrawable="@drawable/ic_title"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:startIconTint="@color/black"
+            app:hintTextColor="@color/black"
+            android:textColorHint="@color/black"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/black"
+            app:boxStrokeWidthFocused="2dp"
+            app:boxStrokeColor="@color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="none"
+                android:enabled="false"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/etHospitalName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:hint="Name Of Hospital"
+            app:startIconDrawable="@drawable/ic_hospital"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:startIconTint="@color/black"
+            app:hintTextColor="@color/black"
+            android:textColorHint="@color/black"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/black"
+            app:boxStrokeWidthFocused="2dp"
+            app:boxStrokeColor="@color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="none"
+                android:enabled="false"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/etHospitalViewNoticeDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:hint="Date"
             app:startIconDrawable="@drawable/ic_calendar"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:startIconTint="@color/black"
@@ -64,14 +116,13 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/etBookingSlot"
+            android:id="@+id/etHospitalViewNoticeDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="10dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:hint="Time"
-            app:startIconDrawable="@drawable/ic_clock"
+            android:hint="Description"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:startIconTint="@color/black"
             app:hintTextColor="@color/black"
@@ -83,45 +134,27 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top"
                 android:inputType="none"
-                android:enabled="false"/>
+                android:enabled="false"
+                android:lines="6"
+                android:overScrollMode="always"
+                android:scrollbarStyle="insideInset"
+                android:scrollbars="vertical"
+                android:scrollHorizontally="false"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/etBookingHospital"
+        <Button
+            android:id="@+id/btnDeleteNotice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:layout_marginStart="16dp"
+            android:text="DELETE"
+            android:backgroundTint="@color/red"
             android:layout_marginEnd="16dp"
-            android:hint="Location"
-            app:startIconDrawable="@drawable/ic_location"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:startIconTint="@color/black"
-            app:hintTextColor="@color/black"
-            android:textColorHint="@color/black"
-            app:endIconMode="clear_text"
-            app:endIconTint="@color/black"
-            app:boxStrokeWidthFocused="2dp"
-            app:boxStrokeColor="@color/black">
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="50dp"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="none"
-                android:enabled="false"/>
-        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
-
-    <Button
-        android:id="@+id/btnCancelBooking"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="350dp"
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="@color/red"
-        android:text="Cancel Appointment" />
 
 </LinearLayout>

@@ -144,6 +144,7 @@ public class UserNewBloodRequest extends AppCompatActivity {
         }else if (getRequiredBloodType == null) {
             etRequiredBloodType.setError("Please Select Required Blood Type!");
             etRequiredBloodType.requestFocus();
+
         }else{
 
             Map<String, Object> data = new HashMap<>();
@@ -195,7 +196,6 @@ public class UserNewBloodRequest extends AppCompatActivity {
     public void sentPush(String title){
 
         RequestQueue mRequestQue = Volley.newRequestQueue(this);
-
         // Create the json object to store the notification details //
         JSONObject json = new JSONObject();
         try
@@ -239,7 +239,7 @@ public class UserNewBloodRequest extends AppCompatActivity {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent intent = new Intent(UserNewBloodRequest.this, UserViewBloodRequest.class);
+                        Intent intent = new Intent(UserNewBloodRequest.this, UserBloodRequestMainMenu.class);
                         startActivity(intent);
                         finish();
                     }

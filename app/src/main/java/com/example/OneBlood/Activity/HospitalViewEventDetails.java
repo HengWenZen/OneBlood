@@ -133,7 +133,7 @@ public class HospitalViewEventDetails extends AppCompatActivity {
 
     private void deleteEvent() {
         new AlertDialog.Builder(HospitalViewEventDetails.this)
-                .setMessage("Confirm Appointment Cancellation?")
+                .setMessage("Cancel Event?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

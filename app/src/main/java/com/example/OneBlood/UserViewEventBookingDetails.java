@@ -13,10 +13,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class UserViewEventBookingDetails extends AppCompatActivity {
 
@@ -27,7 +34,7 @@ public class UserViewEventBookingDetails extends AppCompatActivity {
     public static final String EXTRA_EVENT_BOOKING_ID = "eventBookingId";
 
     TextInputLayout etBookingEventDate, etBookingEventSlot, etBookingEventHospital;
-    String bookingId, bookingSlot;
+    String bookingId, bookingSlot, userName;
     Button btnCancelBooking;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -47,6 +54,7 @@ public class UserViewEventBookingDetails extends AppCompatActivity {
 
         bookingId = (String)b.get(EXTRA_EVENT_BOOKING_ID);
         bookingSlot = ((String)b.get(EXTRA_EVENT_BOOKING_TIME));
+        userName = ((String)b.get(EXTRA_USER_NAME));
 
         etBookingEventDate.getEditText().setText((String)b.get(EXTRA_EVENT_BOOKING_DATE));
         etBookingEventDate.getEditText().setTextColor(ContextCompat.getColor(this, R.color.black));
@@ -87,6 +95,29 @@ public class UserViewEventBookingDetails extends AppCompatActivity {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
                                         Toast.makeText(UserViewEventBookingDetails.this, "Fail to Cancel Appointment! " + e.getMessage() , Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                        db.collection("latestAppointment")
+                                .whereEqualTo("user", userName)
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task< QuerySnapshot > task) {
+                                        Map<String, Object> latest = new HashMap<>();
+                                        latest.put("userStatus", "active");
+                                        latest.put("status", "available");
+
+                                        if (task.isSuccessful()) {
+                                            QuerySnapshot result = task.getResult();
+                                            if (!result.isEmpty()) {
+                                                Log.d("Data Retrieved", result.toString());
+                                                for (QueryDocumentSnapshot document : result) {
+                                                    Log.d("Document ID:", document.getId() + " => " + document.getData());
+                                                    db.collection("latestAppointment").document(document.getId()).update(latest);
+                                                }
+                                            }
+                                        }
                                     }
                                 });
                     }

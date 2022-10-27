@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -25,8 +26,8 @@ public class ViewDonorDetails extends AppCompatActivity {
     private List<Donor> mDonorList = new ArrayList<>();
 
     TextInputLayout etNameOfDonor, etDonorContact, etDonorEmail, etDonorBloodType;
-    String userName, userId;
-    Button btnChat;
+    String userContact;
+    Button btnCallDonor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,9 @@ public class ViewDonorDetails extends AppCompatActivity {
         etDonorBloodType = findViewById(R.id.etDonorBloodType);
         etDonorContact = findViewById(R.id.etDonorContact);
         etDonorEmail = findViewById(R.id.etDonorEmail);
-        btnChat = findViewById(R.id.btnMessage);
+        btnCallDonor = findViewById(R.id.btnCallDonor);
+
+        userContact = getIntent().getStringExtra(EXTRA_DONOR_CONTACT);
 
         Intent intent = getIntent();
         Bundle b = intent.getExtras();
@@ -54,16 +57,13 @@ public class ViewDonorDetails extends AppCompatActivity {
         etDonorBloodType.getEditText().setText((String)b.get(EXTRA_DONOR_BLOOD_TYPE));
         etDonorBloodType.getEditText().setTextColor(ContextCompat.getColor(this, R.color.black));
 
-        /*btnChat.setOnClickListener(new View.OnClickListener() {
+        btnCallDonor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(ViewDonorDetails.this, UserChatBox.class);
-                userName = (String)b.get(EXTRA_DONOR_NAME);
-                userId = (String)b.get(EXTRA_DONOR_ID);
-                i.putExtra(EXTRA_DONOR_NAME, userName);
-                i.putExtra(EXTRA_DONOR_ID, userId);
-                startActivity(i);
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:" + userContact));
+                startActivity(intent);
             }
-        });*/
+        });
     }
 }

@@ -11,6 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.OneBlood.Activity.HospitalViewNotice;
+import com.example.OneBlood.Activity.HospitalViewNoticeDetails;
+import com.example.OneBlood.Activity.HospitalViewOwnBloodRequest;
 import com.example.OneBlood.ViewNoticeDetails;
 import com.example.OneBlood.Models.Notice;
 import com.example.OneBlood.R;
@@ -26,10 +29,12 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.NoticeHold
     public static final String EXTRA_NOTICE_DESCRIPTION = "noticeDescription";
     public static final String EXTRA_NOTICE_HOSPITAL = "hospitalName";
     public static final String EXTRA_NOTICE_ID = "noticeID";
+    boolean isHospital;
 
-    public NoticeAdapter(List<Notice> notice, Context context){
+    public NoticeAdapter(List<Notice> notice, Context context, boolean isHospital){
         mNotices = notice;
         mContext = context;
+        this.isHospital = isHospital;
     }
 
     @NonNull
@@ -72,12 +77,26 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.NoticeHold
             btnViewNotice.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(mContext, ViewNoticeDetails.class);
-                    i.putExtra(EXTRA_NOTICE_TITLE, mNotice.getTitle());
-                    i.putExtra(EXTRA_NOTICE_DATE, mNotice.getDate());
-                    i.putExtra(EXTRA_NOTICE_DESCRIPTION, mNotice.getDescription());
-                    i.putExtra(EXTRA_NOTICE_HOSPITAL, mNotice.getHospitalName());
-                    mContext.startActivity(i);
+
+                    if(isHospital == true){
+                        ((HospitalViewNotice) mContext).adapterChange(getAdapterPosition());
+                        Intent intent = new Intent(mContext, HospitalViewNoticeDetails.class);
+                        intent.putExtra(EXTRA_NOTICE_TITLE, mNotice.getTitle());
+                        intent.putExtra(EXTRA_NOTICE_DATE, mNotice.getDate());
+                        intent.putExtra(EXTRA_NOTICE_DESCRIPTION, mNotice.getDescription());
+                        intent.putExtra(EXTRA_NOTICE_HOSPITAL, mNotice.getHospitalName());
+                        intent.putExtra(EXTRA_NOTICE_ID , mNotice.getId());
+                        mContext.startActivity(intent);
+
+                    }else{
+
+                        Intent i = new Intent(mContext, ViewNoticeDetails.class);
+                        i.putExtra(EXTRA_NOTICE_TITLE, mNotice.getTitle());
+                        i.putExtra(EXTRA_NOTICE_DATE, mNotice.getDate());
+                        i.putExtra(EXTRA_NOTICE_DESCRIPTION, mNotice.getDescription());
+                        i.putExtra(EXTRA_NOTICE_HOSPITAL, mNotice.getHospitalName());
+                        mContext.startActivity(i);
+                    }
                 }
             });
 

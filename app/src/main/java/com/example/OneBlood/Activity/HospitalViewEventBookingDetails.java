@@ -133,7 +133,6 @@ public class HospitalViewEventBookingDetails extends AppCompatActivity {
                                         Toast.makeText(HospitalViewEventBookingDetails.this, "Fail to Cancel Appointment! " + e.getMessage() , Toast.LENGTH_SHORT).show();
                                     }
                                 });
-
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {

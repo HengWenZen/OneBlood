@@ -13,7 +13,7 @@
         <TextView
             android:id="@+id/event_time_slot"
             android:text="9:00 -10:00"
-            android:textSize="18sp"
+            android:textSize="15sp"
             android:textStyle="bold"
             android:gravity="center_horizontal"
             android:layout_width="match_parent"

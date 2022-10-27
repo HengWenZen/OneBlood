@@ -40,7 +40,9 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.Bookin
     @Override
     public void onBindViewHolder(@NonNull BookingHolder holder, int position) {
         holder.txt_time_slot.setText(new StringBuilder(timeSlot(position)));
-        if(mTimeSlotList.size() == 0) // Show List if All slot is available
+
+        // Show List if All slot is available
+        if(mTimeSlotList.size() == 0)
         {
             holder.txt_time_slot_status.setText("Available");
             holder.txt_time_slot_status.setTextColor(context.getResources().getColor(android.R.color.black));

@@ -219,6 +219,11 @@ public class TimeSlotBooking extends AppCompatActivity implements DatePickerDial
 
                                 }
                             }
+                        }else if(queryDocumentSnapshots.isEmpty()){
+                            btnBook.setEnabled(true);
+                            tvDateViewed.setClickable(true);
+                            tvDateViewed.setText("Click Me to Choose A Date");
+                            tvBookingStatus.setVisibility(View.INVISIBLE);
                         }
                     }
                 });
@@ -339,9 +344,10 @@ public class TimeSlotBooking extends AppCompatActivity implements DatePickerDial
         Date minDate = calendar.getTime();
         calendar.add(Calendar.DAY_OF_YEAR, +30);
         Date newDate = calendar.getTime();
-//        mDateView.setText(year +"\n " + day +" " + new DateFormatSymbols().getMonths()[month]);
+
+        //Set minimum date for date picker dialog
         datePickerDialog.getDatePicker().setMinDate(minDate.getTime());
-        datePickerDialog.getDatePicker().setMaxDate(newDate.getTime());//set only can choose next 7 days
+        datePickerDialog.getDatePicker().setMaxDate(newDate.getTime());
         datePickerDialog.show();
     }
 

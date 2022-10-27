@@ -5,34 +5,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".UserViewBooking">
+    tools:context=".UserViewEventBooking">
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ImageView
+            android:id="@+id/ivBackToNoticeList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_back"
             android:padding="5dp"
-            android:layout_margin="12dp"/>
+            android:layout_marginTop="15dp"/>
 
         <TextView
-            android:id="@+id/tvNewRequest"
+            android:id="@+id/tvMakeAppointment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:layout_weight="1"
             android:fontFamily="@font/baloo"
             android:padding="5dp"
-            android:text="My Appointment"
+            android:textColor="@color/black"
+            android:text="My Notice"
             android:textSize="24dp" />
     </LinearLayout>
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvViewBooking"
-        android:layout_marginTop="20dp"
+        android:id="@+id/rvHospitalViewNotice"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="578dp"
+        android:layout_marginBottom="10dp" />
+
 </LinearLayout>
