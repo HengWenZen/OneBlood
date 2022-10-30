@@ -5,6 +5,8 @@ import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.example.OneBlood.R;
 import com.google.android.material.textfield.TextInputLayout;
@@ -18,6 +20,7 @@ public class ViewNoticeDetails extends AppCompatActivity {
     public static final String EXTRA_NOTICE_ID = "noticeID";
 
     TextInputLayout etViewNoticeTitle, etViewNoticeDescription, etViewHospitalName, etNoticeDate;
+    ImageView backToNoticeMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +31,15 @@ public class ViewNoticeDetails extends AppCompatActivity {
         etViewNoticeDescription = findViewById(R.id.etViewNoticeDescription);
         etViewNoticeTitle = findViewById(R.id.etViewNoticeTitle);
         etNoticeDate = findViewById(R.id.etViewDateOfNotice);
+        backToNoticeMenu = findViewById(R.id.backToNoticeMenu);
+
+        
+        backToNoticeMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
 
         Intent intent = getIntent();
@@ -42,5 +54,10 @@ public class ViewNoticeDetails extends AppCompatActivity {
         etViewHospitalName.getEditText().setText((String)b.get(EXTRA_NOTICE_HOSPITAL));
         etViewHospitalName.getEditText().setTextColor(ContextCompat.getColor(this, R.color.black));
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

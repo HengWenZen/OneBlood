@@ -9,7 +9,7 @@
     <gradient
         android:angle='225'
         android:endColor='@color/white'
-        android:startColor='@color/peach' />
+        android:startColor='@color/white' />
 
     <corners
         android:bottomLeftRadius='20dp'

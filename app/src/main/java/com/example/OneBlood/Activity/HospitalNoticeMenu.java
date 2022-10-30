@@ -97,12 +97,15 @@ public class HospitalNoticeMenu extends AppCompatActivity {
                             QuerySnapshot result = task.getResult();
                             if (!result.isEmpty()) {
                                 for (QueryDocumentSnapshot document : result) {
-                                    Notice notice = new Notice(document.getId(),
-                                            document.get("title").toString(),
-                                            document.get("description").toString(),
-                                            document.get("hospitalName").toString(),
-                                            document.get("date").toString());
-                                    mNotices.add(notice);
+                                    String noticeHospital = document.get("hospitalName").toString();
+                                    if(!hospital.equals(noticeHospital)) {
+                                        Notice notice = new Notice(document.getId(),
+                                                document.get("title").toString(),
+                                                document.get("description").toString(),
+                                                document.get("hospitalName").toString(),
+                                                document.get("date").toString());
+                                        mNotices.add(notice);
+                                    }
                                 }
                             }
                             Log.d("data", mNotices.toString());
@@ -114,7 +117,7 @@ public class HospitalNoticeMenu extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             public void run() {
                 dialog.dismiss();
-                    mNoticeAdapter = new NoticeAdapter(mNotices, HospitalNoticeMenu.this, true);
+                    mNoticeAdapter = new NoticeAdapter(mNotices, HospitalNoticeMenu.this, false);
                     rv.setLayoutManager(new LinearLayoutManager(HospitalNoticeMenu.this));
                     rv.setAdapter(mNoticeAdapter);
                 }

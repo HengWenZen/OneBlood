@@ -7,10 +7,13 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -19,8 +22,25 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.OneBlood.Adapters.DashboardEventAdapter;
+import com.example.OneBlood.Adapters.ViewBloodRequestAdapter;
+import com.example.OneBlood.Models.Booking;
+import com.example.OneBlood.Models.DashboardEvents;
+import com.example.OneBlood.Models.ViewBloodRequest;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.auth.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDashBoard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -30,17 +50,25 @@ public class UserDashBoard extends AppCompatActivity implements NavigationView.O
     private final String KEY_USER_NAME = "userName";
     private final String KEY_PASSWORD = "password";
     private final String KEY_USER_EMAIL = "userEmail";
+    private final String KEY_USER_BLOOD_TYPE = "userStatus";
+
     DrawerLayout mDrawerLayout;
+    RecyclerView rv;
+    List<DashboardEvents> mDashboardEvents;
+    DashboardEventAdapter mDashboardEventsAdapter;
     NavigationView mNavigationView;
     RelativeLayout cardViewRequest, cardViewAppointment, cardViewDonors, cardViewEvents;
     ImageView ivLogout;
-    TextView tvSearch;
+    TextView tvSearch, nextAppointment, bloodType, liveSaved;
     Toolbar mToolbar;
+    int counter = 0;
+    int livesSaved = 0;
+    String user, userName, userBloodType, livesCounter, nextDate,status;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_user_dash_board);
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
@@ -49,16 +77,21 @@ public class UserDashBoard extends AppCompatActivity implements NavigationView.O
         cardViewAppointment = findViewById(R.id.cardViewAppointment);
         cardViewEvents = findViewById(R.id.cardViewUpcomingEvents);
         cardViewDonors = findViewById(R.id.cardViewAvailableDonors);
+        nextAppointment = findViewById(R.id.nextAppointment);
+        bloodType = findViewById(R.id.bloodType);
+        liveSaved = findViewById(R.id.liveSaved);
+        rv = findViewById(R.id.rvDashboardEvent);
         mToolbar = findViewById(R.id.toolbar);
         ivLogout = findViewById(R.id.ivLogout);
-        tvSearch = findViewById(R.id.tvSearch);
 
         SharedPreferences prefs = getSharedPreferences(SHARED_PREF, MODE_PRIVATE);
-        String user = prefs.getString(KEY_USER_ID,"");
-        tvSearch.setText(user);
+        user = prefs.getString(KEY_USER_NAME,"");
+        userBloodType = prefs.getString(KEY_USER_BLOOD_TYPE,"");
+        Log.d("TAG", "onCreate: " + user + userBloodType);
+        bloodType.setText(userBloodType);
 
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Home");
+        getSupportActionBar().setTitle("One Blood");
 
         mNavigationView.bringToFront();
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
@@ -116,6 +149,10 @@ public class UserDashBoard extends AppCompatActivity implements NavigationView.O
                 finish();
             }
         });
+
+        loadEventList();
+        retrieveData();
+
 
     }
 
@@ -184,6 +221,104 @@ public class UserDashBoard extends AppCompatActivity implements NavigationView.O
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    private void loadEventList() {
+       mDashboardEvents = new ArrayList<>();
+
+        ProgressDialog dialog = ProgressDialog.show(UserDashBoard.this, "",
+                "Loading. Please wait...", true);   //show loading dialog
+
+        db.collection("events")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            QuerySnapshot result = task.getResult();
+                            if (!result.isEmpty()) {
+                                for (QueryDocumentSnapshot document : result) {
+
+                                    String eventDate = document.get("startDate").toString();
+
+                                       DashboardEvents dashboardEvents = new DashboardEvents(document.get("title").toString(),
+                                               document.getId(),
+                                               document.get("startDate").toString(),
+                                               document.get("startTime").toString());
+                                       mDashboardEvents.add(dashboardEvents);
+
+                                    Log.d("data", eventDate );
+                                }
+                            }
+                        }
+
+                    }
+                });
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                dialog.dismiss();   //remove loading Dialog
+                if (mDashboardEvents.size() == 0) {
+                    Log.d("TAG", "run: error");
+                } else {
+                    rv.hasFixedSize();
+                    rv.setLayoutManager(new LinearLayoutManager(UserDashBoard.this, LinearLayoutManager.HORIZONTAL, true));
+                    mDashboardEventsAdapter = new DashboardEventAdapter(mDashboardEvents, UserDashBoard.this);
+                    rv.setAdapter(mDashboardEventsAdapter);
+
+                    LinearSnapHelper snapHelper = new LinearSnapHelper();
+                    snapHelper.attachToRecyclerView(rv);
+                }
+            }
+        }, 1000);
+    }
+
+    private void retrieveData(){
+        db.collection("completedAppointments")
+                .whereEqualTo("user", user)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        QuerySnapshot result = task.getResult();
+                        if(!result.isEmpty()){
+                            for (QueryDocumentSnapshot document : result) {
+                                userName = document.get("user").toString();
+                                Log.d("TAG", "onComplete: " + userName + user);
+                                if(user.equals(userName)) {
+                                    counter++;
+                                }
+                            }
+                            livesSaved = counter * 3;
+                            livesCounter = Integer.toString(livesSaved);
+                            Log.d("TAG", "onComplete: " + livesCounter);
+                            liveSaved.setText(livesCounter);
+                        }
+                    }
+                });
+
+        db.collection("latestAppointment")
+                .whereEqualTo("user", user)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        QuerySnapshot result = task.getResult();
+                        if(!result.isEmpty()) {
+                            for (QueryDocumentSnapshot document : result) {
+                                nextDate = document.get("date").toString();
+                                status = document.get("status").toString();
+                                if(status.equals("confirmed")){
+                                    nextAppointment.setText(nextDate);
+                                }
+                            }
+                        }
+                    }
+                });
+
+
+    }
+
 
     @Override
     public void onBackPressed() {

@@ -226,4 +226,11 @@ public class UserBloodDonationInfoPage extends AppCompatActivity implements Navi
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent q = new Intent(UserBloodDonationInfoPage.this, UserDashBoard.class);
+        startActivity(q);
+        finish();
+    }
 }

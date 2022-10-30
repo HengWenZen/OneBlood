@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/peach"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <LinearLayout
@@ -38,7 +38,7 @@
                 android:fontFamily="@font/baloo"
                 android:padding="5dp"
                 android:textColor="@color/black"
-                android:text="Events"
+                android:text="Emergency Request"
                 android:textSize="24dp" />
         </LinearLayout>
 
@@ -58,20 +58,21 @@
 
             <Button
                 android:id="@+id/btnViewOwnEmergencyNotice"
-                android:layout_width="200dp"
+                android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_margin="20dp"
                 android:layout_weight="1"
                 android:backgroundTint="@color/red"
                 android:text="View My Request"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:textAlignment="center" />
 
             <Button
                 android:id="@+id/btnNewEmergencyNotice"
-                android:layout_width="200dp"
+                android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_margin="20dp"
                 android:layout_weight="1"
+                android:layout_marginEnd="10dp"
                 android:backgroundTint="@color/red"
                 android:text="New Request" />
 

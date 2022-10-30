@@ -7,10 +7,12 @@ import androidx.core.content.ContextCompat;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -35,6 +37,7 @@ public class UserViewBookingDetails extends AppCompatActivity {
     TextInputLayout etBookingDate, etBookingSlot, etBookingHospital;
     Button btnCancelBooking;
     String bookingId, bookingSlot, userName;
+    ImageView backToOwnAppointmentList;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
@@ -46,6 +49,7 @@ public class UserViewBookingDetails extends AppCompatActivity {
         etBookingSlot = findViewById(R.id.etBookingSlot);
         etBookingHospital = findViewById(R.id.etBookingHospital);
         btnCancelBooking = findViewById(R.id.btnCancelBooking);
+        backToOwnAppointmentList = findViewById(R.id.backToOwnAppointmentList);
 
         Intent intent = getIntent();
         Bundle b = intent.getExtras();
@@ -59,6 +63,13 @@ public class UserViewBookingDetails extends AppCompatActivity {
         etBookingHospital.getEditText().setTextColor(ContextCompat.getColor(this, R.color.black));
         etBookingSlot.getEditText().setText(bookingSlot);
         etBookingSlot.getEditText().setTextColor(ContextCompat.getColor(this, R.color.black));
+
+        backToOwnAppointmentList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         btnCancelBooking.setOnClickListener(new View.OnClickListener() {
             @Override

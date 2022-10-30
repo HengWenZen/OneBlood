@@ -66,4 +66,11 @@ public class UserType extends AppCompatActivity {
                 break;
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent y = new Intent(UserType.this, OnStart.class);
+        startActivity(y);
+        finish();
+    }
 }

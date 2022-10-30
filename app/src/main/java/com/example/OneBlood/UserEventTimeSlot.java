@@ -139,6 +139,13 @@ public class UserEventTimeSlot extends AppCompatActivity implements DatePickerDi
         etEventPostedBy.getEditText().setText(eventPostedBy);
         etEventPostedBy.getEditText().setTextColor(ContextCompat.getColor(this, R.color.black));
 
+        ivBackToList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
         storageReference = FirebaseStorage.getInstance().getReference();
         StorageReference ref
                 = storageReference
@@ -271,7 +278,7 @@ public class UserEventTimeSlot extends AppCompatActivity implements DatePickerDi
                     if (slot == "") {
                         Toast.makeText(UserEventTimeSlot.this, "Please select available slots...", Toast.LENGTH_SHORT).show();
                     } else {
-                        String message = "Confirm Booking at  " + eventLocation + " on " + dateSelected + " " + mEventTimeSlotAdapter.timeSlot(Integer.valueOf(slot));
+                        String message = "Confirm Booking at  " + eventLocation + " on " + dateSelected + " at " + mEventTimeSlotAdapter.timeSlot(Integer.valueOf(slot));
                         AlertDialog.Builder alertDialog = new AlertDialog.Builder(UserEventTimeSlot.this);
                         alertDialog.setTitle("Confirm Booking ");
                         alertDialog.setMessage(message);

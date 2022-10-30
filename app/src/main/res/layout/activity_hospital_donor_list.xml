@@ -29,7 +29,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/baloo"
             android:padding="5dp"
-            android:text="New Request"
+            android:text="Available Donors"
             android:textSize="24dp" />
 
     </LinearLayout>

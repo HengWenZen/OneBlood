@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".UserDashBoard"
     android:id="@+id/drawer_layout"
-    android:orientation="vertical"
     android:background="@color/peach"
     android:fitsSystemWindows="true">
 
@@ -20,321 +19,294 @@
         android:layout_gravity = "start">
     </com.google.android.material.navigation.NavigationView>
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".UserDashBoard"
         android:orientation="vertical"
+        android:layout_weight="0.5"
         android:background="@color/peach">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
-            android:layout_width="59dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/peach"
-            android:elevation="0dp"
+            android:background="@color/red"
+            android:elevation="8dp"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
             app:navigationIcon="@drawable/ic_menu" />
 
-        <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/tvAppName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:text="OneBlood"
-            android:fontFamily="@font/baloo"
-            android:layout_centerHorizontal="true"/>
-
-        <RelativeLayout
-            android:layout_below="@+id/tvAppName"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@color/white"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:elevation="8dp">
+            android:layout_height="wrap_content"
+            android:elevation="7dp"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvSearch"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="20dp"
+                android:background="@color/white">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvDashboardEvent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"
+                    android:orientation="horizontal" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Search"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"/>
+                android:layout_gravity="center"
+                android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_search"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="15dp"/>
-
-        </RelativeLayout>
-    </RelativeLayout>
-
-        <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:layout_width="95dp"
-                android:layout_height="60dp"
-                android:id="@+id/cvLivesSaved"
-                android:background="@drawable/card_view5"
-                android:elevation="8dp"
-                android:layout_margin="10dp">
-
-                <TextView
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0"
-                    android:textAlignment="center"
-                    android:layout_centerInParent="true"
-                    android:textSize="30dp" />
-            </RelativeLayout>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:textSize="12dp"
-                android:lines="2"
-                android:fontFamily="@font/baloo"
-                android:gravity="center_horizontal"
-                android:text="@string/lives_saved"/>
-        </LinearLayout>
+                    android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+                    <RelativeLayout
+                        android:id="@+id/cvLivesSaved"
+                        android:layout_width="95dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/card_view5"
+                        android:elevation="8dp">
 
-            <RelativeLayout
-                android:layout_width="95dp"
-                android:layout_height="60dp"
-                android:id="@+id/cvBloodType"
-                android:background="@drawable/card_view5"
-                android:elevation="8dp"
-                android:layout_margin="10dp">
+                        <TextView
+                            android:id="@+id/liveSaved"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="0"
+                            android:textAlignment="center"
+                            android:textSize="30dp" />
+                    </RelativeLayout>
 
-                <TextView
-                    android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/baloo"
+                        android:gravity="center_horizontal"
+                        android:lines="2"
+                        android:text="@string/lives_saved"
+                        android:textAlignment="center"
+                        android:textSize="12dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="O+"
-                    android:textAlignment="center"
-                    android:layout_centerInParent="true"
-                    android:textSize="30dp" />
-            </RelativeLayout>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:textSize="12dp"
-                android:lines="2"
-                android:fontFamily="@font/baloo"
-                android:gravity="center_horizontal"
-                android:text="@string/blood_type"/>
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/cvBloodType"
+                        android:layout_width="95dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/card_view5"
+                        android:elevation="8dp">
+
+                        <TextView
+                            android:id="@+id/bloodType"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="O+"
+                            android:textAlignment="center"
+                            android:textSize="30dp" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/baloo"
+                        android:gravity="center_horizontal"
+                        android:lines="2"
+                        android:text="@string/blood_type"
+                        android:textAlignment="center"
+                        android:textSize="12dp" />
 
 
-        </LinearLayout>
+                </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:layout_width="95dp"
-                android:layout_height="60dp"
-                android:id="@+id/cvNextDonation"
-                android:background="@drawable/card_view5"
-                android:elevation="8dp"
-                android:layout_margin="10dp">
-
-                <TextView
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="-"
-                    android:textAlignment="center"
-                    android:layout_centerInParent="true"
-                    android:textSize="30dp" />
-            </RelativeLayout>
+                    android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
+                    <RelativeLayout
+                        android:id="@+id/cvNextDonation"
+                        android:layout_width="95dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/card_view5"
+                        android:elevation="8dp">
+
+                        <TextView
+                            android:id="@+id/nextAppointment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="-"
+                            android:textAlignment="center"
+                            android:textSize="15dp" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/baloo"
+                        android:gravity="center_horizontal"
+                        android:lines="2"
+                        android:text="@string/next_donation"
+                        android:textAlignment="center"
+                        android:textSize="12dp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:textSize="12dp"
-                android:fontFamily="@font/baloo"
-                android:lines="2"
-                android:gravity="center_horizontal"
-                android:text="@string/next_donation"/>
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/cardViewAppointment"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/card_view"
+                        android:elevation="8dp">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/ic_appointment" />
+
+                    </RelativeLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:lines="2"
+                        android:text="@string/make_appointments"
+                        android:textAlignment="center"
+                        android:textSize="12dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/cardViewBloodRequest"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/card_view2"
+                        android:elevation="8dp">
+
+                        <ImageView
+                            android:id="@+id/ivLogout"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/ic_blood_request" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:lines="2"
+                        android:text="@string/blood_request"
+                        android:textAlignment="center"
+                        android:textSize="12dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/cardViewAvailableDonors"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/card_view3"
+                        android:elevation="8dp">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/ic_available_donors" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:lines="2"
+                        android:text="@string/available_donors"
+                        android:textAlignment="center"
+                        android:textSize="12dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/cardViewUpcomingEvents"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/card_view4"
+                        android:elevation="8dp">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/ic_upcoming_events" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:lines="2"
+                        android:text="@string/upcoming_events"
+                        android:textAlignment="center"
+                        android:textSize="12dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
-
     </LinearLayout>
-
-        <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:id="@+id/rvNotice"
-            android:layout_marginRight="20dp"
-            android:layout_height="240dp"
-            android:orientation="horizontal"/>
-
-    </RelativeLayout>
-
-        <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:id="@+id/cardViewAppointment"
-                android:background="@drawable/card_view"
-                android:elevation="8dp"
-                android:layout_margin="10dp">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_appointment"
-                    android:layout_centerInParent="true"/>
-
-            </RelativeLayout>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:textSize="12dp"
-                android:lines="2"
-                android:gravity="center_horizontal"
-                android:text="@string/make_appointments"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:id="@+id/cardViewBloodRequest"
-                android:background="@drawable/card_view2"
-                android:elevation="8dp"
-                android:layout_margin="10dp">
-
-                <ImageView
-                    android:id="@+id/ivLogout"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_blood_request"
-                    android:layout_centerInParent="true"/>
-            </RelativeLayout>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:textSize="12dp"
-                android:lines="2"
-                android:gravity="center_horizontal"
-                android:text="@string/blood_request"/>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:id="@+id/cardViewAvailableDonors"
-                android:background="@drawable/card_view3"
-                android:elevation="8dp"
-                android:layout_margin="10dp">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_available_donors"
-                    android:layout_centerInParent="true"/>
-            </RelativeLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:textSize="12dp"
-                android:lines="2"
-                android:gravity="center_horizontal"
-                android:text="@string/available_donors"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:id="@+id/cardViewUpcomingEvents"
-                android:background="@drawable/card_view4"
-                android:elevation="8dp"
-                android:layout_margin="10dp">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_upcoming_events"
-                    android:layout_centerInParent="true"/>
-            </RelativeLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:textSize="12dp"
-                android:lines="2"
-                android:gravity="center_horizontal"
-                android:text="@string/upcoming_events"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-        </LinearLayout>
-
 </androidx.drawerlayout.widget.DrawerLayout>

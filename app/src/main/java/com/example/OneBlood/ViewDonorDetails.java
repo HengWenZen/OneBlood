@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.example.OneBlood.Labs.DonorLab;
 import com.example.OneBlood.Models.Donor;
@@ -26,6 +27,7 @@ public class ViewDonorDetails extends AppCompatActivity {
     private List<Donor> mDonorList = new ArrayList<>();
 
     TextInputLayout etNameOfDonor, etDonorContact, etDonorEmail, etDonorBloodType;
+    ImageView ivBackToDonorList;
     String userContact;
     Button btnCallDonor;
 
@@ -42,6 +44,7 @@ public class ViewDonorDetails extends AppCompatActivity {
         etDonorContact = findViewById(R.id.etDonorContact);
         etDonorEmail = findViewById(R.id.etDonorEmail);
         btnCallDonor = findViewById(R.id.btnCallDonor);
+        ivBackToDonorList = findViewById(R.id.backToDonorList);
 
         userContact = getIntent().getStringExtra(EXTRA_DONOR_CONTACT);
 
@@ -57,6 +60,13 @@ public class ViewDonorDetails extends AppCompatActivity {
         etDonorBloodType.getEditText().setText((String)b.get(EXTRA_DONOR_BLOOD_TYPE));
         etDonorBloodType.getEditText().setTextColor(ContextCompat.getColor(this, R.color.black));
 
+        ivBackToDonorList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
         btnCallDonor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,5 +75,10 @@ public class ViewDonorDetails extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

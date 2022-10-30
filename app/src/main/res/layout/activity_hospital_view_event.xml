@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/peach"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <LinearLayout
@@ -70,11 +70,9 @@
             android:layout_width="190dp"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/btnPostNewEvent"
-            android:text="My Events"
+            android:text="Appointments"
             android:layout_marginEnd="10dp"
             android:backgroundTint="@color/red"/>
 
     </RelativeLayout>
-
-
 </LinearLayout>

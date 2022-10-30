@@ -10,10 +10,13 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.example.OneBlood.Adapters.ViewEventBookingAdapter;
 import com.example.OneBlood.Models.BookingEvent;
@@ -38,6 +41,7 @@ public class UserViewEventBooking extends AppCompatActivity {
 
     private ViewEventBookingAdapter mViewEventBookingAdapter;
     private RecyclerView rv;
+    ImageView ivBackToEventList;
     Button btnCancelAppointment;
 
     List<String> date;
@@ -56,7 +60,14 @@ public class UserViewEventBooking extends AppCompatActivity {
 
         rv = findViewById(R.id.rvViewEventBooking);
         btnCancelAppointment = findViewById(R.id.btn_view_event_booking);
+        ivBackToEventList= findViewById(R.id.backToEventList);
 
+        ivBackToEventList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         loadExistingAppointment(user);
     }
 

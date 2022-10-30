@@ -63,6 +63,7 @@ public class HospitalViewBookingDetails extends AppCompatActivity {
         bookingId = (String)b.get(EXTRA_BOOKING_ID);
         bookingSlot = (timeSlot(Integer.valueOf((String)b.get(EXTRA_BOOKING_TIME))));
         bookingUser = (String)b.get(EXTRA_USER_NAME);
+        Log.d("TAG", "onCreate: " + bookingUser);
         bookingDate = (String)b.get(EXTRA_BOOKING_DATE);
         bookingHospital = (String)b.get(EXTRA_BOOKING_HOSPITAL);
         etUserBookingDate.getEditText().setText((String)b.get(EXTRA_BOOKING_DATE));
@@ -100,7 +101,7 @@ public class HospitalViewBookingDetails extends AppCompatActivity {
                                     public void onSuccess(Void aVoid) {
                                         Toast.makeText(HospitalViewBookingDetails.this, "Appointment Cancelled Successfully!", Toast.LENGTH_SHORT).show();
                                         Log.d("Document ID", bookingId);
-                                        Intent i = new Intent(HospitalViewBookingDetails.this, UserViewBooking.class);
+                                        Intent i = new Intent(HospitalViewBookingDetails.this, HospitalViewBooking.class);
                                         startActivity(i);
                                         finish();
                                     }
@@ -211,7 +212,6 @@ public class HospitalViewBookingDetails extends AppCompatActivity {
                                 Toast.makeText(HospitalViewBookingDetails.this, "Fail to mark as Complete " + e.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
-
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -246,4 +246,10 @@ public class HospitalViewBookingDetails extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(HospitalViewBookingDetails.this, HospitalViewBooking.class);
+        startActivity(i);
+        finish();
+    }
 }

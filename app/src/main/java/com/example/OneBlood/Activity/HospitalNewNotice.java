@@ -73,9 +73,9 @@ public class HospitalNewNotice extends AppCompatActivity {
 
         //Set the format of the date
         if (day < 10) {
-            tvNoticeDate.setText("Date of Request : " + "0" + day + " " + new DateFormatSymbols().getMonths()[month] + " " + year);
+            tvNoticeDate.setText("Date of Notice : " + "0" + day + " " + new DateFormatSymbols().getMonths()[month] + " " + year);
         } else {
-            tvNoticeDate.setText("Date of Request : " + day + " " + new DateFormatSymbols().getMonths()[month] + " " + year);
+            tvNoticeDate.setText("Date of Notice : " + day + " " + new DateFormatSymbols().getMonths()[month] + " " + year);
         }
 
         etHospitalName.getEditText().setText(hospital);

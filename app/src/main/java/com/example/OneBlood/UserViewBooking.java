@@ -13,7 +13,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.example.OneBlood.Adapters.ViewBookingAdapter;
 import com.example.OneBlood.Models.Booking;
@@ -38,6 +40,7 @@ public class UserViewBooking extends AppCompatActivity {
 
     private ViewBookingAdapter mViewBookingAdapter;
     private RecyclerView rv;
+    ImageView backToDonateLocationList;
     Button btnCancelAppointment;
 
     List<String> date;
@@ -54,6 +57,14 @@ public class UserViewBooking extends AppCompatActivity {
 
         rv = findViewById(R.id.rvViewBooking);
         btnCancelAppointment = findViewById(R.id.btn_view_booking);
+        backToDonateLocationList = findViewById(R.id.backToDonateLocationList);
+
+        backToDonateLocationList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         loadExistingAppointment(user);
     }

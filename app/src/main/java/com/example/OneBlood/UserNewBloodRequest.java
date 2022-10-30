@@ -53,6 +53,7 @@ public class UserNewBloodRequest extends AppCompatActivity {
     AutoCompleteTextView actvRequiredBloodType;
     Button btnSubmit;
     String getRequiredBloodType, recipientName, requestTitle, requestLocation, requestDescription, recipientEmail, recipientContact;
+    String phoneFormat,getUserPhoneNo;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     Firebase database = new Firebase();
 
@@ -136,60 +137,70 @@ public class UserNewBloodRequest extends AppCompatActivity {
             etRecipientName.setError("Please fill in Recipient's Name!");
             etRecipientName.requestFocus();
         } else if (TextUtils.isEmpty(recipientContact)) {
-            etRecipientName.setError("Please fill in Recipient's Contact!");
-            etRecipientName.requestFocus();
+            etRecipientContact.setError("Please fill in Recipient's Contact!");
+            etRecipientContact.requestFocus();
         }else if (TextUtils.isEmpty(recipientEmail)) {
             etRecipientEmail.setError("Please fill in Request Location!");
             etRecipientEmail.requestFocus();
         }else if (getRequiredBloodType == null) {
             etRequiredBloodType.setError("Please Select Required Blood Type!");
             etRequiredBloodType.requestFocus();
-
         }else{
 
-            Map<String, Object> data = new HashMap<>();
-            data.put("location", requestLocation);
-            data.put("date", date);
-            data.put("description", requestDescription);
-            data.put("blood type" , getRequiredBloodType);
-            data.put("postedBy" , recipientName);
-            data.put("contact" , recipientContact);
-            data.put("title",requestTitle);
+            getUserPhoneNo = "+6" + recipientContact;
+            phoneFormat = "(01)[0-46-9]*[0-9]{7,8}$";
+            String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
-            if(getRequiredBloodType.equals("A+")){
-                getRequiredBloodType = "A_Positive";
-            }else if(getRequiredBloodType.equals("B+")) {
-                getRequiredBloodType = "B_Positive";
-            }else if(getRequiredBloodType.equals("AB+")) {
-                getRequiredBloodType = "AB_Positive";
-            }else if(getRequiredBloodType.equals("O+")) {
-                getRequiredBloodType = "O_Positive";
-            }else if(getRequiredBloodType.equals("A-")) {
-                getRequiredBloodType = "A_Negative";
-            }else if(getRequiredBloodType.equals("B-")) {
-                getRequiredBloodType = "B_Negative";
-            }else if(getRequiredBloodType.equals("AB-")) {
-                getRequiredBloodType = "AB_Negative";
-            }else if(getRequiredBloodType.equals("O-")) {
-                getRequiredBloodType = "O_Negative";
+            if (!recipientContact.matches(phoneFormat)) {
+                //Validate phone number
+                Toast.makeText(this, "Invalid Phone Number!", Toast.LENGTH_SHORT).show();
+            }else if(!recipientEmail.matches(emailPattern)){
+                Toast.makeText(this, "Email is badly formatted!", Toast.LENGTH_SHORT).show();
+            }else {
+                Map<String, Object> data = new HashMap<>();
+                data.put("location", requestLocation);
+                data.put("date", date);
+                data.put("description", requestDescription);
+                data.put("blood type", getRequiredBloodType);
+                data.put("postedBy", recipientName);
+                data.put("contact", recipientContact);
+                data.put("title", requestTitle);
+
+                if (getRequiredBloodType.equals("A+")) {
+                    getRequiredBloodType = "A_Positive";
+                } else if (getRequiredBloodType.equals("B+")) {
+                    getRequiredBloodType = "B_Positive";
+                } else if (getRequiredBloodType.equals("AB+")) {
+                    getRequiredBloodType = "AB_Positive";
+                } else if (getRequiredBloodType.equals("O+")) {
+                    getRequiredBloodType = "O_Positive";
+                } else if (getRequiredBloodType.equals("A-")) {
+                    getRequiredBloodType = "A_Negative";
+                } else if (getRequiredBloodType.equals("B-")) {
+                    getRequiredBloodType = "B_Negative";
+                } else if (getRequiredBloodType.equals("AB-")) {
+                    getRequiredBloodType = "AB_Negative";
+                } else if (getRequiredBloodType.equals("O-")) {
+                    getRequiredBloodType = "O_Negative";
+                }
+
+                //Insert data into database
+                db.collection("emergencyRequest").add(data).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Toast.makeText(UserNewBloodRequest.this, "Request Submitted Successfully!", Toast.LENGTH_SHORT).show();
+                        sentPush(requestTitle);
+                        Intent intent = new Intent(UserNewBloodRequest.this, UserViewBloodRequest.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(UserNewBloodRequest.this, "Fail to Submit Request!", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
-
-            //Insert data into database
-            db.collection("emergencyRequest").add(data).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                @Override
-                public void onSuccess(DocumentReference documentReference) {
-                    Toast.makeText(UserNewBloodRequest.this, "Request Submitted Successfully!", Toast.LENGTH_SHORT).show();
-                    sentPush(requestTitle);
-                    Intent intent = new Intent(UserNewBloodRequest.this, UserViewBloodRequest.class);
-                    startActivity(intent);
-                    finish();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(UserNewBloodRequest.this, "Fail to Submit Request!", Toast.LENGTH_SHORT).show();
-                }
-            });
         }
     }
 

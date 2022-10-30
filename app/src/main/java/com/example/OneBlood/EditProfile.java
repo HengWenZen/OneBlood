@@ -47,7 +47,7 @@ public class EditProfile extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     Firebase mFirebase = new Firebase();
     TextView tvName,tvEmail;
-    TextInputLayout etFullName, etEmail , etPhone , etPassword, etRace;
+    TextInputLayout etFullName, etEmail , etPhone , etPassword, etStatus;
     Button btnUpdate;
     String FullName, NewEmail, NewPhone, NewPassword;
     String ExistingName, ExistingPassword, ExistingEmail,ExistingPhone;
@@ -57,21 +57,16 @@ public class EditProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
-        etFullName = findViewById(R.id.etFullName);
+        etFullName = findViewById(R.id.etEditFullName);
         etEmail = findViewById(R.id.etEditEmail);
         etPhone = findViewById(R.id.etEditPhone);
-        etPassword = findViewById(R.id.etEditPassword);
-        etRace = findViewById(R.id.etEditRace);
+        etStatus = findViewById(R.id.etStatus);
         btnUpdate = findViewById(R.id.btnUpdate);
-        tvName = findViewById(R.id.tvName);
 
         SharedPreferences prefs = getSharedPreferences(SHARED_PREF, MODE_PRIVATE);
         String user = prefs.getString(KEY_USER_NAME, "");
         String email = prefs.getString(KEY_USER_EMAIL, "");
 
-        if (user != null) {
-            tvName.setText(user);
-        }
 
         db.collection("users")
                 .whereEqualTo("FullName", user)
@@ -90,7 +85,7 @@ public class EditProfile extends AppCompatActivity {
                                         etFullName.getEditText().setText(user);
                                         etEmail.getEditText().setText(email);
                                         etPhone.getEditText().setText(document.get("phone number").toString());
-                                        etPassword.getEditText().setText(document.get("Password").toString());
+                                        etStatus.getEditText().setText(document.get("status").toString());
 
                                         ExistingName = (document.get("FullName").toString());
                                         ExistingPassword = (document.get("Password").toString());
@@ -107,10 +102,9 @@ public class EditProfile extends AppCompatActivity {
     public void update(View view){
         FullName = etFullName.getEditText().getText().toString();
         NewEmail = etEmail.getEditText().getText().toString();
-        NewPassword = etPassword.getEditText().getText().toString();
         NewPhone = etPhone.getEditText().getText().toString();
 
-        if (isNameChanged() || isPasswordChanged()) {
+        if (isNameChanged()) {
             Toast.makeText(this, "Info Updated Successfully", Toast.LENGTH_SHORT).show();
 
         }else{

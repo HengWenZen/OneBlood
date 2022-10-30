@@ -10,8 +10,11 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.example.OneBlood.Adapters.ViewBloodRequestAdapter;
 import com.example.OneBlood.Models.ViewBloodRequest;
@@ -36,6 +39,7 @@ public class UserViewBloodRequest extends AppCompatActivity {
     List<ViewBloodRequest> mViewBloodRequests;
     ViewBloodRequestAdapter mViewBloodRequestAdapter;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    ImageView backToRequestMenu;
     String postedBy ,user;
 
     @Override
@@ -44,9 +48,17 @@ public class UserViewBloodRequest extends AppCompatActivity {
         setContentView(R.layout.activity_user_view_blood_request);
 
         rv = findViewById(R.id.rvUserRequest);
+        backToRequestMenu = findViewById(R.id.backToRequestMenu);
 
         SharedPreferences prefs = getSharedPreferences("myPreferences", MODE_PRIVATE);
         user = prefs.getString(KEY_USER_NAME, null);
+
+        backToRequestMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         loadRequestList();
 
@@ -99,7 +111,7 @@ public class UserViewBloodRequest extends AppCompatActivity {
                     rv.setAdapter(mViewBloodRequestAdapter);
                 }
             }
-        }, 1000);
+        }, 500);
     }
 
     public void adapterChange(int position){

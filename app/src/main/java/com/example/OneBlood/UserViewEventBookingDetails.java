@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,6 +37,7 @@ public class UserViewEventBookingDetails extends AppCompatActivity {
     TextInputLayout etBookingEventDate, etBookingEventSlot, etBookingEventHospital;
     String bookingId, bookingSlot, userName;
     Button btnCancelBooking;
+    ImageView backToOwnEventAppointmentList;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
@@ -47,6 +49,7 @@ public class UserViewEventBookingDetails extends AppCompatActivity {
         etBookingEventSlot = findViewById(R.id.etBookingEventSlot);
         etBookingEventHospital = findViewById(R.id.etBookingEventHospital);
         btnCancelBooking = findViewById(R.id.btnCancelEventBooking);
+        backToOwnEventAppointmentList = findViewById(R.id.backToOwnEventAppointmentList);
 
 
         Intent intent = getIntent();
@@ -68,6 +71,13 @@ public class UserViewEventBookingDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 cancelBooking();
+            }
+        });
+
+        backToOwnEventAppointmentList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
 

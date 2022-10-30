@@ -122,7 +122,7 @@ public class HospitalViewEventBookingDetails extends AppCompatActivity {
                                     public void onSuccess(Void aVoid) {
                                         Toast.makeText(HospitalViewEventBookingDetails.this, "Appointment Cancelled Successfully!", Toast.LENGTH_SHORT).show();
                                         Log.d("Document ID", eventBookingId);
-                                        Intent i = new Intent(HospitalViewEventBookingDetails.this, HospitalViewEvent.class);
+                                        Intent i = new Intent(HospitalViewEventBookingDetails.this, HospitalViewEventBooking.class);
                                         startActivity(i);
                                         finish();
                                     }
@@ -234,7 +234,7 @@ public class HospitalViewEventBookingDetails extends AppCompatActivity {
                             @Override
                             public void onSuccess(DocumentReference documentReference) {
                                 Toast.makeText(HospitalViewEventBookingDetails.this, "Appointment Completed", Toast.LENGTH_SHORT).show();
-                                Intent i = new Intent(HospitalViewEventBookingDetails.this, HospitalViewEvent.class);
+                                Intent i = new Intent(HospitalViewEventBookingDetails.this, HospitalViewBooking.class);
                                 startActivity(i);
                                 finish();
                             }

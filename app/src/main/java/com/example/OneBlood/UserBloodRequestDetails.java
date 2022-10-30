@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -32,6 +33,7 @@ public class UserBloodRequestDetails extends AppCompatActivity {
     Button btnDeleteRequest;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String requestId;
+    ImageView backToOwnRequestList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class UserBloodRequestDetails extends AppCompatActivity {
         etUserRequestPostedBy = findViewById(R.id.etPostedBy);
         etUserRequestedBloodType = findViewById(R.id.etUserRequestedBloodType);
         btnDeleteRequest = findViewById(R.id.btnDeleteRequest);
+        backToOwnRequestList = findViewById(R.id.backToOwnRequestList);
 
         Intent intent = getIntent();
         Bundle b = intent.getExtras();
@@ -70,6 +73,13 @@ public class UserBloodRequestDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 cancelBooking();
+            }
+        });
+
+        backToOwnRequestList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
     }
