@@ -59,7 +59,7 @@ public class UserDashBoard extends AppCompatActivity implements NavigationView.O
     NavigationView mNavigationView;
     RelativeLayout cardViewRequest, cardViewAppointment, cardViewDonors, cardViewEvents;
     ImageView ivLogout;
-    TextView tvSearch, nextAppointment, bloodType, liveSaved;
+    TextView tvSearch, nextAppointment, bloodType, totalDonors, tvSetUserName;
     Toolbar mToolbar;
     int counter = 0;
     int livesSaved = 0;
@@ -77,9 +77,9 @@ public class UserDashBoard extends AppCompatActivity implements NavigationView.O
         cardViewAppointment = findViewById(R.id.cardViewAppointment);
         cardViewEvents = findViewById(R.id.cardViewUpcomingEvents);
         cardViewDonors = findViewById(R.id.cardViewAvailableDonors);
-        nextAppointment = findViewById(R.id.nextAppointment);
-        bloodType = findViewById(R.id.bloodType);
-        liveSaved = findViewById(R.id.liveSaved);
+        nextAppointment = findViewById(R.id.tvDateOfBooking);
+        tvSetUserName = findViewById(R.id.tvSetUserName);
+        totalDonors = findViewById(R.id.tvTotalDonors);
         rv = findViewById(R.id.rvDashboardEvent);
         mToolbar = findViewById(R.id.toolbar);
         ivLogout = findViewById(R.id.ivLogout);
@@ -88,10 +88,14 @@ public class UserDashBoard extends AppCompatActivity implements NavigationView.O
         user = prefs.getString(KEY_USER_NAME,"");
         userBloodType = prefs.getString(KEY_USER_BLOOD_TYPE,"");
         Log.d("TAG", "onCreate: " + user + userBloodType);
-        bloodType.setText(userBloodType);
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("One Blood");
+        tvSetUserName.setText(user);
+
+        View headerView = mNavigationView.getHeaderView(0);
+        TextView mTvHeaderProfileName = (TextView) headerView.findViewById(R.id.tvUserName);
+        mTvHeaderProfileName.setText(user);
 
         mNavigationView.bringToFront();
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
@@ -274,25 +278,16 @@ public class UserDashBoard extends AppCompatActivity implements NavigationView.O
     }
 
     private void retrieveData(){
-        db.collection("completedAppointments")
-                .whereEqualTo("user", user)
+        db.collection("users")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         QuerySnapshot result = task.getResult();
                         if(!result.isEmpty()){
-                            for (QueryDocumentSnapshot document : result) {
-                                userName = document.get("user").toString();
-                                Log.d("TAG", "onComplete: " + userName + user);
-                                if(user.equals(userName)) {
-                                    counter++;
-                                }
-                            }
-                            livesSaved = counter * 3;
-                            livesCounter = Integer.toString(livesSaved);
-                            Log.d("TAG", "onComplete: " + livesCounter);
-                            liveSaved.setText(livesCounter);
+                            int NoOfDonors = result.size();
+                            String donors = String.valueOf(NoOfDonors);
+                            totalDonors.setText(donors);
                         }
                     }
                 });
@@ -312,6 +307,8 @@ public class UserDashBoard extends AppCompatActivity implements NavigationView.O
                                     nextAppointment.setText(nextDate);
                                 }
                             }
+                        }else if(result.isEmpty()){
+                            nextAppointment.setText("-");
                         }
                     }
                 });

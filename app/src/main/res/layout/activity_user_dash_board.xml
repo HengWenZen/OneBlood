@@ -26,7 +26,7 @@
         tools:context=".UserDashBoard"
         android:orientation="vertical"
         android:layout_weight="0.5"
-        android:background="@color/peach">
+        android:background="@color/white">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -40,8 +40,133 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:orientation="vertical"
+            android:background="@drawable/top_background">
+
+            <TextView
+                android:id="@+id/tvChangePassword"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:textColor="@color/white"
+                android:text="Welcome to the One Blood Community!"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+            <TextView
+                android:id="@+id/tvSetUserName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:textColor="@color/white"
+                android:layout_below="@id/tvChangePassword"
+                android:text="Heng Wen Zen"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Menu" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/white_background"
+            android:elevation="5dp"
+            android:layout_marginTop="-70dp">
+
+            <LinearLayout
+                android:id="@+id/linearLayoutImage1"
+                android:layout_width="150dp"
+                android:layout_height="80dp"
+                android:layout_margin="10dp"
+                android:layout_alignParentLeft="true"
+                android:background="@drawable/blue_background"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/ivTotalUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_available_donors" />
+
+                <TextView
+                    android:id="@+id/tvTotalDonors"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:text="48"
+                    android:textAlignment="center"
+                    android:textColor="#7182ef"
+                    android:textSize="25sp"
+                    android:textStyle="bold|italic" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutImage2"
+                android:layout_width="150dp"
+                android:layout_height="80dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/orange_background"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/ivNextAppointment"
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_calendar" />
+
+                <TextView
+                    android:id="@+id/tvDateOfBooking"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:text="06-11-2022"
+                    android:textAlignment="center"
+                    android:textColor="#7182ef"
+                    android:textSize="16sp"
+                    android:textStyle="bold|italic" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/linearLayoutImage1"
+                android:gravity="center"
+                android:layout_marginTop="1dp"
+                android:layout_marginLeft="50dp"
+                android:fontFamily="@font/baloo"
+                android:text="Total Donors"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/linearLayoutImage2"
+                android:layout_marginTop="1dp"
+                android:fontFamily="@font/baloo"
+                android:layout_marginLeft="190dp"
+                android:text="Next Appointment"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
             android:elevation="7dp"
+            android:layout_marginTop="20dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -56,123 +181,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginEnd="30dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:orientation="horizontal" />
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <RelativeLayout
-                        android:id="@+id/cvLivesSaved"
-                        android:layout_width="95dp"
-                        android:layout_height="60dp"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/card_view5"
-                        android:elevation="8dp">
-
-                        <TextView
-                            android:id="@+id/liveSaved"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:text="0"
-                            android:textAlignment="center"
-                            android:textSize="30dp" />
-                    </RelativeLayout>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/baloo"
-                        android:gravity="center_horizontal"
-                        android:lines="2"
-                        android:text="@string/lives_saved"
-                        android:textAlignment="center"
-                        android:textSize="12dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <RelativeLayout
-                        android:id="@+id/cvBloodType"
-                        android:layout_width="95dp"
-                        android:layout_height="60dp"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/card_view5"
-                        android:elevation="8dp">
-
-                        <TextView
-                            android:id="@+id/bloodType"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:text="O+"
-                            android:textAlignment="center"
-                            android:textSize="30dp" />
-                    </RelativeLayout>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/baloo"
-                        android:gravity="center_horizontal"
-                        android:lines="2"
-                        android:text="@string/blood_type"
-                        android:textAlignment="center"
-                        android:textSize="12dp" />
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <RelativeLayout
-                        android:id="@+id/cvNextDonation"
-                        android:layout_width="95dp"
-                        android:layout_height="60dp"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/card_view5"
-                        android:elevation="8dp">
-
-                        <TextView
-                            android:id="@+id/nextAppointment"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:text="-"
-                            android:textAlignment="center"
-                            android:textSize="15dp" />
-                    </RelativeLayout>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/baloo"
-                        android:gravity="center_horizontal"
-                        android:lines="2"
-                        android:text="@string/next_donation"
-                        android:textAlignment="center"
-                        android:textSize="12dp" />
-
-                </LinearLayout>
-            </LinearLayout>
-
 
             <LinearLayout
                 android:layout_width="wrap_content"

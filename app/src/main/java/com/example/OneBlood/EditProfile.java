@@ -14,8 +14,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 
+import com.example.OneBlood.Activity.HospitalLogin;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
@@ -42,15 +44,20 @@ public class EditProfile extends AppCompatActivity {
     private final String KEY_USER_NAME = "userName";
     private final String KEY_PASSWORD = "password";
     private final String KEY_USER_EMAIL = "userEmail";
+    private final String KEY_USER_BLOOD_TYPE = "userBloodType";
+    private final String KEY_USER_CONTACT = "userContact";
 
     FirebaseUser userData = FirebaseAuth.getInstance().getCurrentUser();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     Firebase mFirebase = new Firebase();
-    TextView tvName,tvEmail;
-    TextInputLayout etFullName, etEmail , etPhone , etPassword, etStatus;
-    Button btnUpdate;
+    TextView tvName,tvEmail, tvLivesSaved, tvUserBloodType;
+    int counter = 0, livesSaved = 0;
+    TextInputLayout etFullName, etEmail , etPhone , etPassword, etStatus, etGender, etDOB;
+    Button btnChangePassword;
     String FullName, NewEmail, NewPhone, NewPassword;
-    String ExistingName, ExistingPassword, ExistingEmail,ExistingPhone;
+    String user, email, userPhone, status, dateOfBirth, gender, userBloodType;
+    String existingName, existingPassword, existingEmail, existingPhone;
+    String livesCounter, userName;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,13 +68,22 @@ public class EditProfile extends AppCompatActivity {
         etEmail = findViewById(R.id.etEditEmail);
         etPhone = findViewById(R.id.etEditPhone);
         etStatus = findViewById(R.id.etStatus);
-        btnUpdate = findViewById(R.id.btnUpdate);
+        tvEmail = findViewById(R.id.tvUserEmail);
+        tvUserBloodType = findViewById(R.id.tvUserBloodType);
+        tvName = findViewById(R.id.tvUserName);
+        etGender = findViewById(R.id.etGender);
+        tvLivesSaved = findViewById(R.id.tvLivesSaved);
+        etDOB = findViewById(R.id.etDOB);
+        btnChangePassword = findViewById(R.id.btnChangePassword);
 
         SharedPreferences prefs = getSharedPreferences(SHARED_PREF, MODE_PRIVATE);
-        String user = prefs.getString(KEY_USER_NAME, "");
-        String email = prefs.getString(KEY_USER_EMAIL, "");
+        user = prefs.getString(KEY_USER_NAME, "");
+        email = prefs.getString(KEY_USER_EMAIL, "");
+        userPhone = prefs.getString(KEY_USER_CONTACT, "");
+        userBloodType = prefs.getString(KEY_USER_BLOOD_TYPE,"");
+        tvUserBloodType.setText(userBloodType);
 
-
+        retrieveData();
         db.collection("users")
                 .whereEqualTo("FullName", user)
                 .get()
@@ -81,22 +97,72 @@ public class EditProfile extends AppCompatActivity {
                                 for (QueryDocumentSnapshot document : result) {
                                     Log.d("Document ID:", document.getId() + " => " + document.getData());
                                     if (document.get("FullName").toString().equals(user)) {
-                                        Map<String, Object> userDetail = new HashMap<>();
-                                        etFullName.getEditText().setText(user);
-                                        etEmail.getEditText().setText(email);
-                                        etPhone.getEditText().setText(document.get("phone number").toString());
-                                        etStatus.getEditText().setText(document.get("status").toString());
+                                        status = document.get("status").toString();
+                                        dateOfBirth = document.get("Date of Birth").toString();
+                                        gender = document.get("Gender").toString();
+                                        etStatus.getEditText().setText(status);
+                                        etStatus.getEditText().setTextColor(ContextCompat.getColor(EditProfile.this, R.color.black));
+                                        etGender.getEditText().setText(gender);
+                                        etGender.getEditText().setTextColor(ContextCompat.getColor(EditProfile.this, R.color.black));
+                                        etDOB.getEditText().setText(dateOfBirth);
+                                        etDOB.getEditText().setTextColor(ContextCompat.getColor(EditProfile.this, R.color.black));
 
-                                        ExistingName = (document.get("FullName").toString());
-                                        ExistingPassword = (document.get("Password").toString());
-                                        ExistingEmail = (document.get("Email").toString());
-                                        ExistingPhone = (document.get("phone number").toString());
+                                        existingName = (document.get("FullName").toString());
+                                        existingPassword = (document.get("Password").toString());
+                                        existingEmail = (document.get("Email").toString());
+                                        existingPhone = (document.get("phone number").toString());
                                     }
                                 }
                             }
                         }
                     }
                 });
+
+        tvName.setText(user);
+        tvEmail.setText(email);
+        etEmail.getEditText().setText(email);
+        etEmail.getEditText().setTextColor(ContextCompat.getColor(this, R.color.black));
+        etFullName.getEditText().setText(user);
+        etFullName.getEditText().setTextColor(ContextCompat.getColor(this, R.color.black));
+        etPhone.getEditText().setText(userPhone);
+        etPhone.getEditText().setTextColor(ContextCompat.getColor(this, R.color.black));
+
+
+        btnChangePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(EditProfile.this, UserUpdatePassword.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
+        etEmail.setEndIconOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(EditProfile.this, UserUpdateEmail.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
+        etFullName.setEndIconOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(EditProfile.this, UserUpdateName.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
+        etPhone.setEndIconOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(EditProfile.this, UserUpdateContact.class);
+                startActivity(i);
+                finish();
+            }
+        });
     }
 
     public void update(View view){
@@ -112,55 +178,11 @@ public class EditProfile extends AppCompatActivity {
         }
     }
 
-    private boolean isPasswordChanged() {
-        SharedPreferences prefs = getSharedPreferences(SHARED_PREF, MODE_PRIVATE);
-        String user = prefs.getString(KEY_USER_NAME,"");
-        String email = prefs.getString(KEY_USER_EMAIL,"");
-
-        if(!ExistingPassword.equals(etPassword.getEditText().getText().toString())) {
-            mFirebase.getData("users", null, new MyCallback() {
-                @Override
-                public void returnData(ArrayList<Map<String, Object>> docList) {
-                    Log.d("firebase example", docList.toString());
-                    ArrayList<String> list = new ArrayList<>();
-
-                    for (Map<String, Object> map : docList) {
-                        if(map.get("FullName").toString().equals(user)) {
-                            Map<String, Object> user = new HashMap<>();
-                            user.put("Password", NewPassword);
-                            mFirebase.updData("users", user, map.get("id").toString());
-
-                            userData.updatePassword(NewPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        Log.d("TAG", "User password updated." + NewPassword);
-                                        Toast.makeText(EditProfile.this, "Password Updated Successfully!", Toast.LENGTH_SHORT).show();
-                                    }else {
-                                        Toast.makeText(EditProfile.this, "Update Fail", Toast.LENGTH_SHORT).show();
-                                        Log.d(TAG, "OnComplete :" + task.getException().getMessage().toString() );
-                                    }
-                                }
-                            });
-
-                            SharedPreferences.Editor editor = UserLogin.mPreferences.edit();
-                            editor.putString(KEY_PASSWORD, NewPassword);
-                            editor.apply();
-                        }
-                    }
-                }
-            });
-
-            return true;
-        }
-        return false;
-    }
-
     private boolean isNameChanged(){
         SharedPreferences prefs = getSharedPreferences(SHARED_PREF, MODE_PRIVATE);
         String user = prefs.getString(KEY_USER_NAME,"");
 
-        if(!FullName.equals(ExistingName)) {
+        if(!FullName.equals(existingName)) {
             mFirebase.getData("users", null, new MyCallback() {
                 @Override
                 public void returnData(ArrayList<Map<String, Object>> docList) {
@@ -183,6 +205,40 @@ public class EditProfile extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    private void retrieveData() {
+        db.collection("completedAppointments")
+                .whereEqualTo("user", user)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        QuerySnapshot result = task.getResult();
+                        if (!result.isEmpty()) {
+                            for (QueryDocumentSnapshot document : result) {
+                                userName = document.get("user").toString();
+                                Log.d("TAG", "onComplete: " + userName + user);
+                                if (user.equals(userName)) {
+                                    counter++;
+                                }
+                            }
+                            livesSaved = counter * 3;
+                            livesCounter = Integer.toString(livesSaved);
+                            Log.d("TAG", "onComplete: " + livesCounter);
+                            tvLivesSaved.setText(livesCounter);
+                        }else if(result.isEmpty()){
+                            tvLivesSaved.setText("0");
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(EditProfile.this, UserDashBoard.class);
+        startActivity(i);
+        finish();
     }
 }
 

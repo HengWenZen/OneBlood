@@ -47,7 +47,8 @@ public class UserLogin extends AppCompatActivity {
     private final String KEY_PASSWORD = "password";
     private final String KEY_USER_EMAIL = "userEmail";
     private final String KEY_USER_STATUS = "userStatus";
-    private final String KEY_USER_BLOOD_TYPE = "userStatus";
+    private final String KEY_USER_BLOOD_TYPE = "userBloodType";
+    private final String KEY_USER_CONTACT = "userContact";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -146,6 +147,7 @@ public class UserLogin extends AppCompatActivity {
                                         userBloodType = map.get("blood type").toString();
                                         bloodType = map.get("blood type").toString();
                                         userStatus = map.get("status").toString();
+                                        userPhone = map.get("phone number").toString();
 
                                         if(userBloodType.equals("A+")){
                                             userBloodType = "A_Positive";
@@ -194,6 +196,7 @@ public class UserLogin extends AppCompatActivity {
                                         editor.putString(KEY_USER_NAME, userName);
                                         editor.putString(KEY_USER_STATUS, userStatus);
                                         editor.putString(KEY_USER_BLOOD_TYPE, bloodType);
+                                        editor.putString(KEY_USER_CONTACT, userPhone);
                                         editor.apply();
                                         editor.commit();
                                     }

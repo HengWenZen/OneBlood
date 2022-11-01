@@ -14,12 +14,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MainActivity">
-        <activity android:name=".Activity.HospitalViewNoticeDetails"
+        <activity android:name=".UserUpdateName"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
-
-        <activity android:name=".Activity.HospitalViewNotice"
+        <activity android:name=".UserUpdateContact"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
-
+        <activity
+            android:name=".UserUpdatePassword"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+        <activity
+            android:name=".UserUpdateEmail"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+        <activity
+            android:name=".Activity.HospitalViewNoticeDetails"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+        <activity
+            android:name=".Activity.HospitalViewNotice"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity
             android:name=".Activity.HospitalDonorList"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
