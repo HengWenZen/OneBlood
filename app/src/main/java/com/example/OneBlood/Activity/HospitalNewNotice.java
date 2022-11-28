@@ -60,7 +60,7 @@ public class HospitalNewNotice extends AppCompatActivity {
         etNoticeDescription = findViewById(R.id.etNoticeDescription);
         etNoticeTitle = findViewById(R.id.etNoticeTitle);
         tvNoticeDate = findViewById(R.id.tvNoticeDate);
-        ivBackToMenu = findViewById(R.id.ivBackToMenu);
+        ivBackToMenu = findViewById(R.id.ivBackToNoticeMenu1);
         btnHospitalSubmitNotice = findViewById(R.id.btnHospitalPostNotice);
         etHospitalName = findViewById(R.id.etHospitalName);
 
@@ -84,6 +84,13 @@ public class HospitalNewNotice extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 submitNotice();
+            }
+        });
+
+        ivBackToMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
 
@@ -117,6 +124,7 @@ public class HospitalNewNotice extends AppCompatActivity {
             data.put("date", date);
             data.put("hospitalName", hospital);
 
+            //Insert data into database
             db.collection("notice")
                     .add(data)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {

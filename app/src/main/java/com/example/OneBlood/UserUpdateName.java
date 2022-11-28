@@ -49,6 +49,7 @@ public class UserUpdateName extends AppCompatActivity {
         etUpdateContact = findViewById(R.id.etUpdateContact);
         etUpdateDOB = findViewById(R.id.etUpdateDOB);
         etUpdateName = findViewById(R.id.etUpdateName);
+        btnCancelUpdate = findViewById(R.id.btnCancelUpdate);
         btnSaveDetailsChanges = findViewById(R.id.btnSaveDetailsChanges);
 
         etUpdateDOB.setVisibility(View.GONE);
@@ -191,6 +192,13 @@ public class UserUpdateName extends AppCompatActivity {
                         }
                     });
                 }
+            }
+        });
+
+        btnCancelUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
     }

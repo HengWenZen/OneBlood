@@ -47,7 +47,7 @@ public class HospitalViewEventDetails extends AppCompatActivity {
 
     TextInputLayout etHospitalViewTitle, etHospitalViewDescription, etHospitalViewLocation, etHospitalViewStartDate, etHospitalViewEndDate, etHospitalViewStartTime,etHospitalViewEndTime, etHospitalViewPostedBy;
     Button btnDeleteEvent;
-    ImageView ivHospitalViewEventPic;
+    ImageView ivHospitalViewEventPic, ivBackToEventList;
     StorageReference storageReference;
     String  eventTitle, eventLocation, eventStartDate, eventEndDate, eventStartTime, eventEndTime, eventPostedBy, eventDescription, eventId, eventImageId;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -66,6 +66,7 @@ public class HospitalViewEventDetails extends AppCompatActivity {
         etHospitalViewEndTime = findViewById(R.id.etHospitalViewEndTime);
         etHospitalViewPostedBy = findViewById(R.id.etHospitalViewPostedBy);
         ivHospitalViewEventPic = findViewById(R.id.ivHospitalViewEventPic);
+        ivBackToEventList = findViewById(R.id.ivBackToEventList);
         btnDeleteEvent = findViewById(R.id.btnDeleteEvent);
 
         eventEndDate = getIntent().getStringExtra(EXTRA_EVENT_END_DATE);
@@ -129,6 +130,12 @@ public class HospitalViewEventDetails extends AppCompatActivity {
             }
         });
 
+        ivBackToEventList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     private void deleteEvent() {
@@ -138,6 +145,7 @@ public class HospitalViewEventDetails extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
+                        //Delete all User's Booking
                         db.collection("userEventBooking")
                                 .whereEqualTo("title", eventTitle)
                                 .get()
@@ -173,6 +181,7 @@ public class HospitalViewEventDetails extends AppCompatActivity {
                                     }
                                 });
 
+                        //Delete the Image in Firebase Storage
                         storageReference = FirebaseStorage.getInstance().getReference();
                         StorageReference ref
                                 = storageReference
@@ -181,6 +190,7 @@ public class HospitalViewEventDetails extends AppCompatActivity {
                                                 + eventImageId);
                         ref.delete();
 
+                        //Delete the Event in FireStore Database
                         db.collection("events").document(eventId).delete()
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override

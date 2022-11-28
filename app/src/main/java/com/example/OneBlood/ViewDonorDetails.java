@@ -60,6 +60,7 @@ public class ViewDonorDetails extends AppCompatActivity {
         etDonorBloodType.getEditText().setText((String)b.get(EXTRA_DONOR_BLOOD_TYPE));
         etDonorBloodType.getEditText().setTextColor(ContextCompat.getColor(this, R.color.black));
 
+
         ivBackToDonorList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

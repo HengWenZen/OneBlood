@@ -24,6 +24,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.api.LogDescriptor;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -43,6 +45,8 @@ public class UserRegister3 extends AppCompatActivity {
     String userPhoneNo, getUserPhoneNo, getSelectedBloodType, userName;
     Firebase db = new Firebase();
     FirebaseFirestore mFirebase = FirebaseFirestore.getInstance();
+    FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+    FirebaseUser user = mFirebaseAuth.getCurrentUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +61,8 @@ public class UserRegister3 extends AppCompatActivity {
         final String[] bloodType = getResources().getStringArray(R.array.bloodType);
 
         userName = getIntent().getStringExtra(EXTRA_USER_NAME);
-        Log.d("TAG", "onCreate: " + userName);
+        String userEmail = user.getEmail();
+        Log.d("TAG", "onCreate: " + userName + userEmail);
 
         ArrayAdapter<String> hospitalAdapter = new ArrayAdapter<>(
                 UserRegister3.this,
@@ -90,27 +95,7 @@ public class UserRegister3 extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
 
-                                mFirebase.collection("users")
-                                        .whereEqualTo("FullName", userName)
-                                        .get()
-                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                QuerySnapshot queryDocumentSnapshots = task.getResult();
-                                                if (!queryDocumentSnapshots.isEmpty()) {
-                                                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                                                        Log.d("Document ID:", document.getId() + " => " + document.getData());
-                                                        Map<String, Object> users = new HashMap<>();
-                                                        mFirebase.collection("users").document(document.getId()).delete();
-
-                                                    }
-                                                }
-                                            }
-                                        });
-
-                                Intent intent = new Intent(UserRegister3.this, UserRegister.class);
-                                startActivity(intent);
-                                finish();
+                                onBackPressed();
                             }
                         }).setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
@@ -251,32 +236,48 @@ public class UserRegister3 extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
-                        mFirebase.collection("users")
-                                .whereEqualTo("FullName", userName)
-                                .get()
-                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        QuerySnapshot queryDocumentSnapshots = task.getResult();
-                                        if (!queryDocumentSnapshots.isEmpty()) {
-                                            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                                                Log.d("Document ID:", document.getId() + " => " + document.getData());
-                                                Map<String, Object> users = new HashMap<>();
-                                                mFirebase.collection("users").document(document.getId()).delete();
+                        user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Log.d("TAG", "User account deleted.");
 
-                                            }
-                                        }
-                                    }
-                                });
+                                    mFirebase.collection("users")
+                                            .whereEqualTo("FullName", userName)
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    QuerySnapshot queryDocumentSnapshots = task.getResult();
+                                                    if (!queryDocumentSnapshots.isEmpty()) {
+                                                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                                                            Log.d("Document ID:", document.getId() + " => " + document.getData());
+                                                            mFirebase.collection("users").document(document.getId()).delete();
+
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                } else{
+                                    Log.d("TAG", "Fail To Delete.");
+                                }
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("TAG", "Fail To Delete." + e.getMessage());
+                            }
+                        });
 
                         Intent intent = new Intent(UserRegister3.this, UserRegister.class);
                         startActivity(intent);
                         finish();
-                    }
+                        }
                 }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
-        }).create().show();
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    }
+                }).create().show();
     }
 }

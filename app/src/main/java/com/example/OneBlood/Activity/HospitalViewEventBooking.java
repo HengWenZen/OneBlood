@@ -13,6 +13,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.example.OneBlood.Adapters.ViewEventBookingAdapter;
 import com.example.OneBlood.Models.BookingEvent;
@@ -43,6 +45,7 @@ public class HospitalViewEventBooking extends AppCompatActivity {
 
     List<String> date;
     List<BookingEvent> mBookings;
+    ImageView ivBackToBookingList;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
@@ -52,11 +55,19 @@ public class HospitalViewEventBooking extends AppCompatActivity {
         setContentView(R.layout.activity_hospital_view_event_booking);
 
         rv = findViewById(R.id.rvHospitalViewEventBooking);
+        ivBackToBookingList = findViewById(R.id.ivBackToBookingList);
 
         SharedPreferences prefs = getSharedPreferences(SHARED_PREFERENCE, MODE_PRIVATE);
         hospital = prefs.getString(KEY_HOSPITAL_NAME, "");
 
         loadExistingAppointment();
+
+        ivBackToBookingList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     private void loadExistingAppointment() {
@@ -109,6 +120,7 @@ public class HospitalViewEventBooking extends AppCompatActivity {
     }
 
     private void alertDataEmpty() {
+        //Initialize alert dialog if the data is empty
         new AlertDialog.Builder(this)
                 .setMessage("No Existing Appointment Made..")
                 .setPositiveButton("Return", new DialogInterface.OnClickListener() {

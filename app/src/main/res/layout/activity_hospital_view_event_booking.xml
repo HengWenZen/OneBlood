@@ -13,7 +13,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/ivBackToEventList"
+            android:id="@+id/ivBackToBookingList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_back"
@@ -43,17 +43,4 @@
         android:layout_height="578dp"
         android:layout_marginBottom="10dp" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    <Button
-        android:id="@+id/btnViewEventDetails"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Post New Event"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:backgroundTint = "@color/red"/>
-
-    </RelativeLayout>
 </LinearLayout>

@@ -30,6 +30,7 @@
         android:textSize="15dp" />
 
     <TextView
+        android:id="@+id/tvUserMenuEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/tvUserName"

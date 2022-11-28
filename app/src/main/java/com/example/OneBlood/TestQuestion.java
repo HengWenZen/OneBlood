@@ -35,6 +35,7 @@ public class TestQuestion extends AppCompatActivity {
 
     private QuestionList[] mQuestionLists = new QuestionList[]
             {
+                    //Questions for Self Evaluation Test
                     new QuestionList(R.string.question_age,false),
                     new QuestionList(R.string.question_donate_permanent,false),
                     new QuestionList(R.string.question_uk,false),

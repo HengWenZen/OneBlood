@@ -152,6 +152,13 @@ public class UserUpdatePassword extends AppCompatActivity {
                 }
             }
         });
+
+        btnCancelEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     @Override

@@ -45,7 +45,7 @@ public class HospitalViewNoticeDetails extends AppCompatActivity {
         etViewNoticeTitle = findViewById(R.id.etHospitalViewNoticeTitle);
         etNoticeDate = findViewById(R.id.etHospitalViewNoticeDate);
         btnDeleteNotice = findViewById(R.id.btnDeleteNotice);
-        backToHospitalMenu =findViewById(R.id.backToHospitalMenu);
+        backToHospitalMenu =findViewById(R.id.ivBackToNoticeMenu);
         noticeID = getIntent().getStringExtra(EXTRA_NOTICE_ID);
         Log.d("TAG", "onCreate: " + noticeID);
 
@@ -74,15 +74,23 @@ public class HospitalViewNoticeDetails extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+        backToHospitalMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     private void deleteRequest() {
         new AlertDialog.Builder(HospitalViewNoticeDetails.this)
-                .setMessage("Confirm Appointment Cancellation?")
+                .setMessage("Confirm Deletion of Notice?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
+                        //Delete Notice in the FireStore Database
                         db.collection("notice").document(noticeID).delete()
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override

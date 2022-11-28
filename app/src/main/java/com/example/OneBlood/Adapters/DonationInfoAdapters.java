@@ -70,7 +70,6 @@ public class DonationInfoAdapters extends RecyclerView.Adapter<DonationInfoAdapt
                     DonationInfo donationInfo = mDonationInfo.get(getAdapterPosition());
                     donationInfo.setExpandable(!donationInfo.isExpandable());
                     notifyItemChanged(getAdapterPosition());
-
                 }
             });
 

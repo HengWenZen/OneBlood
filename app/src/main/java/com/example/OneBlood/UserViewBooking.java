@@ -90,12 +90,9 @@ public class UserViewBooking extends AppCompatActivity {
                                                 document.get("slot").toString(),
                                                 document.get("user").toString());
                                         mBookings.add(b);
-                                    }else {
-
-
                                     }
+                                    Log.d("data", mBookings.toString());
                                 }
-                                Log.d("data", mBookings.toString());
                             }
                         }
                     }
@@ -115,7 +112,6 @@ public class UserViewBooking extends AppCompatActivity {
                 }
             }
         }, 1000);
-
     }
 
     private void alertDataEmpty() {

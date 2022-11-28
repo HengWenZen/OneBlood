@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.OneBlood.Adapters.BloodRequestAdapters;
@@ -37,6 +38,7 @@ public class HospitalBloodRequestMenu extends AppCompatActivity {
     BloodRequestAdapters mBloodRequestAdapters;
     Button btnViewOwnEmergencyNotice, btnNewEmergencyNotice;
     List<EmergencyNotice> mEmergencyNotices;
+    ImageView ivBackToHospitalHome;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String postedBy, hospital;
 
@@ -51,6 +53,7 @@ public class HospitalBloodRequestMenu extends AppCompatActivity {
         rv = findViewById(R.id.rvEmergencyNoticeList);
         btnViewOwnEmergencyNotice = findViewById(R.id.btnViewOwnEmergencyNotice);
         btnNewEmergencyNotice = findViewById(R.id.btnNewEmergencyNotice);
+        ivBackToHospitalHome = findViewById(R.id.ivBackToHospitalHome);
 
         loadEmergencyNoticeList();
 
@@ -72,13 +75,21 @@ public class HospitalBloodRequestMenu extends AppCompatActivity {
             }
         });
 
+        ivBackToHospitalHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
     }
 
     private void loadEmergencyNoticeList() {
         mEmergencyNotices = new ArrayList<>();
 
+        //show loading dialog
         ProgressDialog dialog = ProgressDialog.show(HospitalBloodRequestMenu.this, "",
-                "Loading. Please wait...", true);   //show loading dialog
+                "Loading. Please wait...", true);
 
         db.collection("emergencyRequest")
                 .get()

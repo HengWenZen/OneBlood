@@ -38,7 +38,7 @@ public class PushNotification extends FirebaseMessagingService {
         Notification.Builder notification = new Notification.Builder(this, CHANNEL_ID)
                 .setContentTitle(title)
                 .setContentText(body)
-                .setSmallIcon(R.drawable.ic_menu)
+                .setSmallIcon(R.drawable.ic_blood_type)
                 .setVibrate(new long[] { 1000, 1000})
                 .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
                 .setAutoCancel(true);

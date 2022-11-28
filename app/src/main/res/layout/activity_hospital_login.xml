@@ -64,13 +64,13 @@
             android:text="Log In" />
 
         <TextView
-            android:id="@+id/tvAdminLogin"
+            android:id="@+id/tvHospitalUserLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
             android:inputType="textPersonName"
-            android:text="Login as Admin" />
+            android:text="Login as User" />
 
     </LinearLayout>
 </LinearLayout>

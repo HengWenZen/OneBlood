@@ -165,48 +165,6 @@ public class EditProfile extends AppCompatActivity {
         });
     }
 
-    public void update(View view){
-        FullName = etFullName.getEditText().getText().toString();
-        NewEmail = etEmail.getEditText().getText().toString();
-        NewPhone = etPhone.getEditText().getText().toString();
-
-        if (isNameChanged()) {
-            Toast.makeText(this, "Info Updated Successfully", Toast.LENGTH_SHORT).show();
-
-        }else{
-            Toast.makeText(this, "No Info Changed !", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private boolean isNameChanged(){
-        SharedPreferences prefs = getSharedPreferences(SHARED_PREF, MODE_PRIVATE);
-        String user = prefs.getString(KEY_USER_NAME,"");
-
-        if(!FullName.equals(existingName)) {
-            mFirebase.getData("users", null, new MyCallback() {
-                @Override
-                public void returnData(ArrayList<Map<String, Object>> docList) {
-                    Log.d("firebase example", docList.toString());
-                    ArrayList<String> list = new ArrayList<>();
-
-                    for (Map<String, Object> map : docList) {
-                        if (map.get("FullName").toString().equals(user)) {
-                            Map<String, Object> user = new HashMap<>();
-                            user.put("FullName", FullName);
-                            mFirebase.updData("users", user, map.get("id").toString());
-                            SharedPreferences.Editor editor = UserLogin.mPreferences.edit();
-                            editor.putString(KEY_USER_NAME, FullName);
-                            editor.apply();
-                        }
-                    }
-                }
-            });
-
-            return true;
-        }
-        return false;
-    }
-
     private void retrieveData() {
         db.collection("completedAppointments")
                 .whereEqualTo("user", user)

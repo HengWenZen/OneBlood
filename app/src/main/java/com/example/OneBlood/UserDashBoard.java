@@ -63,7 +63,7 @@ public class UserDashBoard extends AppCompatActivity implements NavigationView.O
     Toolbar mToolbar;
     int counter = 0;
     int livesSaved = 0;
-    String user, userName, userBloodType, livesCounter, nextDate,status;
+    String user, userName, userBloodType, livesCounter, nextDate,status, email;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
@@ -82,12 +82,12 @@ public class UserDashBoard extends AppCompatActivity implements NavigationView.O
         totalDonors = findViewById(R.id.tvTotalDonors);
         rv = findViewById(R.id.rvDashboardEvent);
         mToolbar = findViewById(R.id.toolbar);
-        ivLogout = findViewById(R.id.ivLogout);
 
         SharedPreferences prefs = getSharedPreferences(SHARED_PREF, MODE_PRIVATE);
         user = prefs.getString(KEY_USER_NAME,"");
+        email = prefs.getString(KEY_USER_EMAIL,"");
         userBloodType = prefs.getString(KEY_USER_BLOOD_TYPE,"");
-        Log.d("TAG", "onCreate: " + user + userBloodType);
+        Log.d("TAG", "onCreate: " + user + userBloodType + email);
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("One Blood");
@@ -96,6 +96,8 @@ public class UserDashBoard extends AppCompatActivity implements NavigationView.O
         View headerView = mNavigationView.getHeaderView(0);
         TextView mTvHeaderProfileName = (TextView) headerView.findViewById(R.id.tvUserName);
         mTvHeaderProfileName.setText(user);
+        TextView mTvHeaderEmail = (TextView) headerView.findViewById(R.id.tvUserMenuEmail);
+        mTvHeaderEmail.setText(email);
 
         mNavigationView.bringToFront();
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
@@ -105,18 +107,6 @@ public class UserDashBoard extends AppCompatActivity implements NavigationView.O
         mNavigationView.setNavigationItemSelectedListener(this);
 
         mNavigationView.setCheckedItem(R.id.nav_home);
-
-        ivLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences.Editor Editor = UserLogin.mPreferences.edit();
-                Editor.clear();
-                Editor.apply();
-                Intent i = new Intent(UserDashBoard.this, UserLogin.class);
-                startActivity(i);
-                finish();
-            }
-        });
 
         cardViewAppointment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,8 +138,8 @@ public class UserDashBoard extends AppCompatActivity implements NavigationView.O
         cardViewRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(UserDashBoard.this, UserBloodRequestMainMenu.class);
-                startActivity(i);
+                Intent a = new Intent(UserDashBoard.this, UserBloodRequestMainMenu.class);
+                startActivity(a);
                 finish();
             }
         });
@@ -305,6 +295,8 @@ public class UserDashBoard extends AppCompatActivity implements NavigationView.O
                                 status = document.get("status").toString();
                                 if(status.equals("confirmed")){
                                     nextAppointment.setText(nextDate);
+                                }else if(status.equals("available")){
+                                    nextAppointment.setText("-");
                                 }
                             }
                         }else if(result.isEmpty()){
@@ -312,8 +304,6 @@ public class UserDashBoard extends AppCompatActivity implements NavigationView.O
                         }
                     }
                 });
-
-
     }
 
 

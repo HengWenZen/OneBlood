@@ -97,7 +97,7 @@ public class UserMainMenu extends AppCompatActivity implements OnMapReadyCallbac
     Toolbar mToolbar;
     StorageReference storageReference;
     ImageView mPopupImage;
-    String imageId, locationTitle, locationAddress, locationContact,locationOperationHrs, locationLongitude, locationLatitude, token;
+    String imageId, locationTitle, locationAddress, locationContact,locationOperationHrs, locationLongitude, locationLatitude, token, user,email;
     private List<DonateLocation> mDonateLocations = new ArrayList<>();
 
 
@@ -116,6 +116,8 @@ public class UserMainMenu extends AppCompatActivity implements OnMapReadyCallbac
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
         mPreferences = getSharedPreferences("myPreferences", MODE_PRIVATE);
+        user = mPreferences.getString(KEY_USER_NAME,"");
+        email = mPreferences.getString(KEY_USER_EMAIL,"");
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Map View");
@@ -124,6 +126,12 @@ public class UserMainMenu extends AppCompatActivity implements OnMapReadyCallbac
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
+        View headerView = mNavigationView.getHeaderView(0);
+        TextView mTvHeaderProfileName = (TextView) headerView.findViewById(R.id.tvUserName);
+        mTvHeaderProfileName.setText(user);
+        TextView mTvHeaderEmail = (TextView) headerView.findViewById(R.id.tvUserMenuEmail);
+        mTvHeaderEmail.setText(email);
 
         mNavigationView.setNavigationItemSelectedListener(this);
 
@@ -250,7 +258,7 @@ public class UserMainMenu extends AppCompatActivity implements OnMapReadyCallbac
                 popupWindow.setHeight(height/2-100);
                 popupWindow.setFocusable(true);
 
-                popupWindow.showAtLocation(popWindow, Gravity.BOTTOM, 0, 150);
+                popupWindow.showAtLocation(popWindow, Gravity.BOTTOM, 0, 145);
 
                 //Close Popup Window once touched
                 popWindow.setOnTouchListener(new View.OnTouchListener()
@@ -351,7 +359,6 @@ public class UserMainMenu extends AppCompatActivity implements OnMapReadyCallbac
                 }
 
                 LatLng latLng = new LatLng(marker.getPosition().latitude, marker.getPosition().longitude);
-
                 CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 18);
                 mGoogleMap.moveCamera(cameraUpdate);
                 return true;

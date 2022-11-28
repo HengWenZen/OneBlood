@@ -15,6 +15,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.example.OneBlood.Adapters.NoticeAdapter;
 import com.example.OneBlood.Labs.NoticeLab;
@@ -44,6 +45,7 @@ public class HospitalNoticeMenu extends AppCompatActivity {
     RecyclerView rv;
     NoticeAdapter mNoticeAdapter;
     Button btnNewNotice, btnMyNotice;
+    ImageView ivBackToMenu;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String hospital;
 
@@ -57,6 +59,7 @@ public class HospitalNoticeMenu extends AppCompatActivity {
         rv = findViewById(R.id.rvHospitalNoticeList);
         btnNewNotice = findViewById(R.id.btnNewNotice);
         btnMyNotice = findViewById(R.id.btnMyNotice);
+        ivBackToMenu = findViewById(R.id.ivBackToMenu);
 
         SharedPreferences prefs = getSharedPreferences(SHARED_PREFERENCE, MODE_PRIVATE);
         hospital = prefs.getString(KEY_HOSPITAL_NAME, "");
@@ -80,6 +83,13 @@ public class HospitalNoticeMenu extends AppCompatActivity {
                 finish();
             }
         });
+
+        ivBackToMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     private void loadNotices()
@@ -88,6 +98,7 @@ public class HospitalNoticeMenu extends AppCompatActivity {
         ProgressDialog dialog = ProgressDialog.show(HospitalNoticeMenu.this, "",
                 "Loading....", true);
 
+        //Retrieve Data from Database
         db.collection("notice")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -116,6 +127,7 @@ public class HospitalNoticeMenu extends AppCompatActivity {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
+                //Dismiss dialog
                 dialog.dismiss();
                     mNoticeAdapter = new NoticeAdapter(mNotices, HospitalNoticeMenu.this, false);
                     rv.setLayoutManager(new LinearLayoutManager(HospitalNoticeMenu.this));

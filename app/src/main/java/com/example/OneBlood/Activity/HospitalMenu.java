@@ -1,5 +1,7 @@
 package com.example.OneBlood.Activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,10 +13,19 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.OneBlood.R;
+import com.example.OneBlood.UserDashBoard;
+import com.example.OneBlood.UserLogin;
 
 public class HospitalMenu extends AppCompatActivity {
-    TextView tvTextView;
+
+    public static SharedPreferences hospitalPreferences;
+    private final String SHARED_PREFERENCE = "hospitalPreferences";
+    private final String KEY_HOSPITAL_NAME = "hospitalName";
+    private final String KEY_HOSPITAL_CONTACT = "hospitalContact";
+
+    TextView tvHospitalName;
     Button btnHospitalNotice, btnHospitalEmergency, btnHospitalEvents, btnHospitalAppointments, btnLogOut, btnAvailableDonor;
+    String hospital;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -27,6 +38,12 @@ public class HospitalMenu extends AppCompatActivity {
         btnHospitalEvents = findViewById(R.id.btnHospitalNewNotice);
         btnAvailableDonor = findViewById(R.id.btnAvailableDonors);
         btnLogOut = findViewById(R.id.btnHospitalLogOut);
+        tvHospitalName = findViewById(R.id.tvHospitalName);
+
+        hospitalPreferences = getSharedPreferences(SHARED_PREFERENCE, MODE_PRIVATE);
+        hospital = hospitalPreferences.getString(KEY_HOSPITAL_NAME, "");
+
+        tvHospitalName.setText(hospital);
 
         btnHospitalEvents.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,5 +102,24 @@ public class HospitalMenu extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        new AlertDialog.Builder(this)
+                .setMessage("Log Out?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent = new Intent(HospitalMenu.this, HospitalLogin.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        }).create().show();
     }
 }

@@ -13,6 +13,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.example.OneBlood.Adapters.EventsAdapter;
 import com.example.OneBlood.Models.Events;
@@ -38,6 +39,7 @@ public class HospitalViewEvent extends AppCompatActivity {
     EventsAdapter mEventsAdapter;
     Button btnPostNewEvent, btnMyEvents;
     List<Events> mEventsList;
+    ImageView ivBackToHome;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String hospitalName;
 
@@ -48,6 +50,7 @@ public class HospitalViewEvent extends AppCompatActivity {
         rv = findViewById(R.id.rvMyEventList);
         btnMyEvents = findViewById(R.id.btnMyEvents);
         btnPostNewEvent = findViewById(R.id.btnPostNewEvent);
+        ivBackToHome = findViewById(R.id.ivBackToHome);
 
         SharedPreferences prefs = getSharedPreferences(SHARED_PREFERENCE, MODE_PRIVATE);
         hospitalName = prefs.getString(KEY_HOSPITAL_NAME, "");
@@ -69,6 +72,13 @@ public class HospitalViewEvent extends AppCompatActivity {
                 Intent intent = new Intent(HospitalViewEvent.this, HospitalViewEventBooking.class);
                 startActivity(intent);
                 finish();
+            }
+        });
+
+        ivBackToHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
     }

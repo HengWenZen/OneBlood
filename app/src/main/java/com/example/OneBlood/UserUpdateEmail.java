@@ -139,7 +139,7 @@ public class UserUpdateEmail extends AppCompatActivity {
                                             Intent intent = new Intent(UserUpdateEmail.this, EditProfile.class);
                                             startActivity(intent);
                                             finish();
-                                            Toast.makeText(UserUpdateEmail.this, "Password " +
+                                            Toast.makeText(UserUpdateEmail.this, "Email " +
                                                     " updated successfully!", Toast.LENGTH_LONG).show();
                                         }else{
                                             Toast.makeText(UserUpdateEmail.this, "Failed to update password!", Toast.LENGTH_LONG).show();
@@ -155,6 +155,13 @@ public class UserUpdateEmail extends AppCompatActivity {
                         }
                     });
                 }
+            }
+        });
+
+        btnCancelEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
     }

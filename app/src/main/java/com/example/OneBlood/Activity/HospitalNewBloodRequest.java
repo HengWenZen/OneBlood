@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -47,6 +48,7 @@ public class HospitalNewBloodRequest extends AppCompatActivity {
     AutoCompleteTextView actvEmergencyBloodType;
     String requiredBloodType, title, description, date, nameOfHospital, hospitalContact, bloodType;
     Button btnHospitalPostEmergency;
+    ImageView ivBackToHospitalRequestMenu2;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
@@ -59,6 +61,7 @@ public class HospitalNewBloodRequest extends AppCompatActivity {
         actvEmergencyBloodType = findViewById(R.id.actvEmergencyBloodType);
         etEmergencyDescription = findViewById(R.id.etEmergencyDescription);
         etEmergencyTitle = findViewById(R.id.etEmergencyTitle);
+        ivBackToHospitalRequestMenu2 = findViewById(R.id.ivBackToHospitalRequestMenu2);
         etNameOfHospital = findViewById(R.id.etNameOfHospital);
         btnHospitalPostEmergency = findViewById(R.id.btnHospitalPostEmergency);
 
@@ -98,6 +101,13 @@ public class HospitalNewBloodRequest extends AppCompatActivity {
                 submitEmergencyBloodRequest();
             }
         });
+
+        ivBackToHospitalRequestMenu2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     private void submitEmergencyBloodRequest() {
@@ -111,6 +121,7 @@ public class HospitalNewBloodRequest extends AppCompatActivity {
         nameOfHospital = etNameOfHospital.getEditText().getText().toString();
         requiredBloodType = ((AutoCompleteTextView) etEmergencyBloodType.getEditText()).getText().toString();
 
+        //Validate user input
         if (TextUtils.isEmpty(title)) {
             etEmergencyTitle.setError("Please fill in Request Title!");
             etEmergencyTitle.requestFocus();
@@ -210,6 +221,7 @@ public class HospitalNewBloodRequest extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        //Initialize alert dialog
         new AlertDialog.Builder(this)
                 .setMessage("Cancel Blood Request Posting?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {

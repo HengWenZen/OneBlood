@@ -91,7 +91,6 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.Bookin
             itemView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view) {
-//                    Toast.makeText(context, slot.getSlot()+"clicked", Toast.LENGTH_SHORT).show();
                     for(CardView cardView:mCardViewList)
                     {
                         if(cardView.getTag() == null){

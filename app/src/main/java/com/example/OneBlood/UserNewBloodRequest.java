@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +52,7 @@ public class UserNewBloodRequest extends AppCompatActivity {
     TextView tvRequestDate;
     TextInputLayout etRecipientName, etDescription, etLocation, etTitle, etRequiredBloodType, etRecipientContact, etRecipientEmail;
     AutoCompleteTextView actvRequiredBloodType;
+    ImageView ivBackToRequestMenu;
     Button btnSubmit;
     String getRequiredBloodType, recipientName, requestTitle, requestLocation, requestDescription, recipientEmail, recipientContact;
     String phoneFormat,getUserPhoneNo;
@@ -72,6 +74,7 @@ public class UserNewBloodRequest extends AppCompatActivity {
         etRequiredBloodType = findViewById(R.id.etRequiredBloodType);
         actvRequiredBloodType = findViewById(R.id.actvRequiredBloodType);
         btnSubmit = findViewById(R.id.btnSubmit);
+        ivBackToRequestMenu = findViewById(R.id.ivBackToRequestMenu);
 
         SharedPreferences prefs = getSharedPreferences("myPreferences", MODE_PRIVATE);
         recipientName = prefs.getString(KEY_USER_NAME, null);
@@ -112,6 +115,13 @@ public class UserNewBloodRequest extends AppCompatActivity {
                 submitBloodRequest();
             }
         });
+
+        ivBackToRequestMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     private void submitBloodRequest() {
@@ -140,8 +150,11 @@ public class UserNewBloodRequest extends AppCompatActivity {
             etRecipientContact.setError("Please fill in Recipient's Contact!");
             etRecipientContact.requestFocus();
         }else if (TextUtils.isEmpty(recipientEmail)) {
-            etRecipientEmail.setError("Please fill in Request Location!");
+            etRecipientEmail.setError("Please fill in Recipient's Email!");
             etRecipientEmail.requestFocus();
+        }else if (TextUtils.isEmpty(requestLocation)) {
+            etLocation.setError("Please fill in Location!");
+            etLocation.requestFocus();
         }else if (getRequiredBloodType == null) {
             etRequiredBloodType.setError("Please Select Required Blood Type!");
             etRequiredBloodType.requestFocus();

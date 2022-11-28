@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ public class HospitalDonorList extends AppCompatActivity {
     Button btnFilter;
     DonorListAdapter mDonorListAdapter;
     Spinner spinnerBloodType;
+    ImageView backToHospitalHome;
     String selectedBloodType, user, userStatus;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     List<Donor> mDonors = new ArrayList<>();
@@ -50,6 +52,7 @@ public class HospitalDonorList extends AppCompatActivity {
         rvDonorList = findViewById(R.id.rvHospitalDonorList);
         spinnerBloodType = findViewById(R.id.spinnerHospitalFilterBloodType);
         btnFilter = findViewById(R.id.btnHospitalFilter);
+        backToHospitalHome = findViewById(R.id.backToHospitalHome);
 
         loadBloodTypeList();
         loadDonorList();
@@ -57,12 +60,16 @@ public class HospitalDonorList extends AppCompatActivity {
         btnFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 donors.clear();
+                //get selected item
                 selectedBloodType = spinnerBloodType.getSelectedItem().toString();
                 Log.d("TAG", "onClick: " + selectedBloodType);
+
                 if(selectedBloodType.equals("All")){
                     donors.addAll(allDonorList);
                 }else{
+                    //filter the users based on the selected blood type
                     for(Donor donor : allDonorList){
                         if(donor.getBloodType().equals(selectedBloodType) && donor.getUserStatus().equals("active")){
                             donors.add(donor);
@@ -70,9 +77,17 @@ public class HospitalDonorList extends AppCompatActivity {
                     }
                 }
                 mDonorListAdapter.notifyDataSetChanged();
+                //toast message if there is no user with the selected blood type
                 if (donors.size() == 0){
                     Toast.makeText(HospitalDonorList.this, "No User found" , Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        backToHospitalHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
 
@@ -102,6 +117,7 @@ public class HospitalDonorList extends AppCompatActivity {
                                     String userName = document.get("FullName").toString();
                                     String status = document.get("status").toString();
 
+                                    //get user details
                                     if(status.equals("active")) {
                                         Donor donor = new Donor(document.getId(),
                                                 document.get("FullName").toString(),

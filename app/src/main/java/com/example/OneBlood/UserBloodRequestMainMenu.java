@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.OneBlood.Activity.HospitalViewOwnBloodRequest;
@@ -42,13 +43,14 @@ public class UserBloodRequestMainMenu extends AppCompatActivity implements Navig
     private final String SHARED_PREF = "myPreferences";
     private final String KEY_USER = "user";
     private final String KEY_USER_NAME = "userName";
+    private final String KEY_USER_EMAIL = "userEmail";
 
     Button btnViewYourRequest, btnNewRequest;
     RecyclerView rv;
     BloodRequestAdapters mBloodRequestAdapters;
     List<EmergencyNotice> mEmergencyNotices;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    String postedBy ,user,token;
+    String postedBy ,user,token, email;
     DrawerLayout mDrawerLayout;
     NavigationView mNavigationView;
     Toolbar mToolbar;
@@ -66,6 +68,10 @@ public class UserBloodRequestMainMenu extends AppCompatActivity implements Navig
         mNavigationView = findViewById(R.id.blood_request_navigation_view);
         mToolbar = (Toolbar) findViewById(R.id.blood_request_toolbar);
 
+        SharedPreferences prefs = getSharedPreferences("myPreferences", MODE_PRIVATE);
+        user = prefs.getString(KEY_USER_NAME, null);
+        email = prefs.getString(KEY_USER_EMAIL,"");
+
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Blood Request");
 
@@ -74,12 +80,15 @@ public class UserBloodRequestMainMenu extends AppCompatActivity implements Navig
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+        View headerView = mNavigationView.getHeaderView(0);
+        TextView mTvHeaderProfileName = (TextView) headerView.findViewById(R.id.tvUserName);
+        mTvHeaderProfileName.setText(user);
+        TextView mTvHeaderEmail = (TextView) headerView.findViewById(R.id.tvUserMenuEmail);
+        mTvHeaderEmail.setText(email);
+
         mNavigationView.setNavigationItemSelectedListener(this);
 
         mNavigationView.setCheckedItem(R.id.nav_request);
-
-        SharedPreferences prefs = getSharedPreferences("myPreferences", MODE_PRIVATE);
-        user = prefs.getString(KEY_USER_NAME, null);
 
         loadRequestList();
 

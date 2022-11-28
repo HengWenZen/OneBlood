@@ -14,10 +14,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.OneBlood.Adapters.EventsAdapter;
 import com.example.OneBlood.Models.Events;
@@ -31,18 +33,26 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class UserEvent extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static SharedPreferences mPreferences;
+    private final String SHARED_PREF = "myPreferences";
+    private final String KEY_USER_NAME = "userName";
+    private final String KEY_USER_EMAIL = "userEmail";
 
     Button btnViewEventAppointment;
     RecyclerView rv;
     DrawerLayout mDrawerLayout;
     NavigationView mNavigationView;
     Toolbar mToolbar;
-    String token;
+    String token,user, email;
+    Date mEndDate, mCurrentDate;
     EventsAdapter mEventsAdapter;
     List<Events> mEventsList;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -58,6 +68,10 @@ public class UserEvent extends AppCompatActivity implements NavigationView.OnNav
         mNavigationView = findViewById(R.id.events_navigation_view);
         mToolbar = (Toolbar) findViewById(R.id.events_toolbar);
 
+        SharedPreferences prefs = getSharedPreferences("myPreferences", MODE_PRIVATE);
+        user = prefs.getString(KEY_USER_NAME, null);
+        email = prefs.getString(KEY_USER_EMAIL,"");
+
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Events");
 
@@ -65,6 +79,12 @@ public class UserEvent extends AppCompatActivity implements NavigationView.OnNav
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
+        View headerView = mNavigationView.getHeaderView(0);
+        TextView mTvHeaderProfileName = (TextView) headerView.findViewById(R.id.tvUserName);
+        mTvHeaderProfileName.setText(user);
+        TextView mTvHeaderEmail = (TextView) headerView.findViewById(R.id.tvUserMenuEmail);
+        mTvHeaderEmail.setText(email);
 
         mNavigationView.setNavigationItemSelectedListener(this);
 
@@ -96,17 +116,33 @@ public class UserEvent extends AppCompatActivity implements NavigationView.OnNav
                                 Log.d("Data Retrieved", result.toString());
                                 for (QueryDocumentSnapshot document : result) {
                                     Log.d("Document ID:", document.getId() + " => " + document.getData());
-                                    Events events = new Events(document.get("startDate").toString(),
-                                            document.get("endDate").toString(),
-                                            document.get("location").toString(),
-                                            document.get("imageUri").toString(),
-                                            document.getId(),
-                                            document.get("title").toString(),
-                                            document.get("description").toString(),
-                                            document.get("startTime").toString(),
-                                            document.get("endTime").toString(),
-                                            document.get("postedBy").toString());
-                                    mEventsList.add(events);
+                                    SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+                                    String currentDate = df.format(new Date());
+
+                                    try {
+                                        mEndDate = df.parse(document.get("endDate").toString());
+                                        mCurrentDate = df.parse(currentDate);
+
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    long diff = mCurrentDate.getTime() - mEndDate.getTime();
+                                    int numberOfDays = (int) diff;
+
+                                    if(numberOfDays < 0) {
+                                        Events events = new Events(document.get("startDate").toString(),
+                                                document.get("endDate").toString(),
+                                                document.get("location").toString(),
+                                                document.get("imageUri").toString(),
+                                                document.getId(),
+                                                document.get("title").toString(),
+                                                document.get("description").toString(),
+                                                document.get("startTime").toString(),
+                                                document.get("endTime").toString(),
+                                                document.get("postedBy").toString());
+                                        mEventsList.add(events);
+                                    }
                                 }
                             }
                         }
@@ -133,6 +169,7 @@ public class UserEvent extends AppCompatActivity implements NavigationView.OnNav
         startActivity(intent);
         finish();
     }
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

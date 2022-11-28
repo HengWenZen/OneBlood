@@ -90,7 +90,7 @@ public class HospitalNewEvent extends AppCompatActivity {
         etEndTime = findViewById(R.id.endTime);
         btnPostEvent = findViewById(R.id.btnPostEvent);
         btnChoosePic = findViewById(R.id.btnChoosePic);
-        ivBackToHome = findViewById(R.id.ivBackToHome);
+        ivBackToHome = findViewById(R.id.ivBackToEventHome);
         ivEventPic= findViewById(R.id.ivEventPic);
 
         SharedPreferences prefs = getSharedPreferences(SHARED_PREFERENCE, MODE_PRIVATE);
@@ -192,6 +192,13 @@ public class HospitalNewEvent extends AppCompatActivity {
                 timePickerDialog.show();
             }
         });
+
+        ivBackToHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     private void setListener() {
@@ -217,9 +224,16 @@ public class HospitalNewEvent extends AppCompatActivity {
         eventEndDate = etEndDate.getText().toString().trim();
 
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a");
+
+
         try {
+            //Parse String using Simple Date Format
             mStartDate = df.parse(eventStartDate);
             mEndDate = df.parse(eventEndDate);
+            startTime = simpleDateFormat.parse(eventStartTime);
+            endTime = simpleDateFormat.parse(eventEndTime);
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -259,14 +273,25 @@ public class HospitalNewEvent extends AppCompatActivity {
             } else {
 
                 long diff = mEndDate.getTime() - mStartDate.getTime();
+                long time = endTime.getTime() - startTime.getTime();
+                int daysDiff = (int) (time / (1000*60*60*24));
+                int hours = (int) ((time - (1000 * 60 * 60 * 24 * daysDiff)) / (1000 * 60 * 60));
                 long days = TimeUnit.MILLISECONDS.toDays(diff);
                 int numberOfDays = (int) days;
 
-                if (numberOfDays < 1) {
+
+                if (numberOfDays < 0) {
                     //Check if End Date is greater than Start Date
-                    Toast.makeText(this, "End Date cannot be greater than or equal to Start Date!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "End Date cannot be greater than Start Date!", Toast.LENGTH_SHORT).show();
                     etHospitalEventStartDate.requestFocus();
                     etHospitalEventEndDate.requestFocus();
+
+                }else if(hours < 6){
+                    //Check if End Time is greater than Start Time
+                    Toast.makeText(this, "The event must have at least a duration of 6 hours", Toast.LENGTH_SHORT).show();
+                    etHospitalEventStartTime.requestFocus();
+                    etHospitalEventEndTime.requestFocus();
+
                 } else {
                     uploadPicture();
                     Map<String, Object> event = new HashMap<>();

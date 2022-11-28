@@ -200,6 +200,7 @@ public class TimeSlotBooking extends AppCompatActivity implements DatePickerDial
                                                     if (map.get("user").toString().equals(user)) {
                                                         Map<String, Object> user = new HashMap<>();
                                                         user.put("userStatus", "active");
+                                                        user.put("status", "available");
                                                         mFirebase.updData("latestAppointment", user, map.get("id").toString());
                                                         Log.d("TAG", "returnData: User Status Changed to Active");
                                                     }

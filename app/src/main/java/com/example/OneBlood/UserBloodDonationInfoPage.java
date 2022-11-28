@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.OneBlood.Adapters.DonationInfoAdapters;
 import com.example.OneBlood.Models.DonationInfo;
@@ -30,13 +31,18 @@ import java.util.List;
 
 public class UserBloodDonationInfoPage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static SharedPreferences mPreferences;
+    private final String SHARED_PREF = "myPreferences";
+    private final String KEY_USER_NAME = "userName";
+    private final String KEY_USER_EMAIL = "userEmail";
+
     RecyclerView rv;
     List<DonationInfo> mDonationInfo;
     Button btnEvaluation;
     DrawerLayout mDrawerLayout;
     NavigationView mNavigationView;
     Toolbar mToolbar;
-    String token;
+    String token, user, email;
 
 
     @Override
@@ -50,6 +56,10 @@ public class UserBloodDonationInfoPage extends AppCompatActivity implements Navi
         mNavigationView = findViewById(R.id.info_navigation_view);
         mToolbar = (Toolbar) findViewById(R.id.info_toolbar);
 
+        SharedPreferences prefs = getSharedPreferences("myPreferences", MODE_PRIVATE);
+        user = prefs.getString(KEY_USER_NAME, null);
+        email = prefs.getString(KEY_USER_EMAIL,"");
+
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Info Page");
 
@@ -57,6 +67,12 @@ public class UserBloodDonationInfoPage extends AppCompatActivity implements Navi
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
+        View headerView = mNavigationView.getHeaderView(0);
+        TextView mTvHeaderProfileName = (TextView) headerView.findViewById(R.id.tvUserName);
+        mTvHeaderProfileName.setText(user);
+        TextView mTvHeaderEmail = (TextView) headerView.findViewById(R.id.tvUserMenuEmail);
+        mTvHeaderEmail.setText(email);
 
         mNavigationView.setNavigationItemSelectedListener(this);
 

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -44,13 +45,14 @@ public class UserAvailableDonorMainMenu extends AppCompatActivity implements Nav
     private final String SHARED_PREF = "myPreferences";
     private final String KEY_USER = "user";
     private final String KEY_USER_NAME = "userName";
+    private final String KEY_USER_EMAIL = "userEmail";
     private final String KEY_USER_STATUS = "userStatus";
 
     RecyclerView rvDonorList;
     Button btnFilter;
     DonorListAdapter mDonorListAdapter;
     Spinner spinnerBloodType;
-    String selectedBloodType, user, userStatus;
+    String selectedBloodType, user, email;
     DrawerLayout mDrawerLayout;
     NavigationView mNavigationView;
     Toolbar mToolbar;
@@ -74,6 +76,7 @@ public class UserAvailableDonorMainMenu extends AppCompatActivity implements Nav
 
         SharedPreferences prefs = getSharedPreferences("myPreferences", MODE_PRIVATE);
         user = prefs.getString(KEY_USER_NAME, null);
+        email = prefs.getString(KEY_USER_EMAIL,"");
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Available Donors");
@@ -82,6 +85,12 @@ public class UserAvailableDonorMainMenu extends AppCompatActivity implements Nav
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
+        View headerView = mNavigationView.getHeaderView(0);
+        TextView mTvHeaderProfileName = (TextView) headerView.findViewById(R.id.tvUserName);
+        mTvHeaderProfileName.setText(user);
+        TextView mTvHeaderEmail = (TextView) headerView.findViewById(R.id.tvUserMenuEmail);
+        mTvHeaderEmail.setText(email);
 
         mNavigationView.setNavigationItemSelectedListener(this);
 
@@ -142,8 +151,9 @@ public class UserAvailableDonorMainMenu extends AppCompatActivity implements Nav
                                 for (QueryDocumentSnapshot document : result) {
                                     String userName = document.get("FullName").toString();
                                     String status = document.get("status").toString();
+                                    String userBloodType = document.get("blood type").toString();
 
-                                    if(!user.equals(userName) && status.equals("active")) {
+                                    if(!user.equals(userName) && status.equals("active") && !userBloodType.equals("rh null")) {
                                         Donor donor = new Donor(document.getId(),
                                                 document.get("FullName").toString(),
                                                 document.get("phone number").toString(),

@@ -51,6 +51,7 @@ public class UserUpdateContact extends AppCompatActivity {
         etUpdateDOB = findViewById(R.id.etUpdateDOB);
         etUpdateName = findViewById(R.id.etUpdateName);
         btnSaveDetailsChanges = findViewById(R.id.btnSaveDetailsChanges);
+        btnCancelUpdate = findViewById(R.id.btnCancelUpdate);
 
         SharedPreferences prefs = getSharedPreferences(SHARED_PREF, MODE_PRIVATE);
         user = prefs.getString(KEY_USER_NAME, "");
@@ -111,6 +112,13 @@ public class UserUpdateContact extends AppCompatActivity {
                         }
                     });
                 }
+            }
+        });
+
+        btnCancelUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
     }

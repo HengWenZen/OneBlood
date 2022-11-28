@@ -4,29 +4,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="340dp"
-            android:layout_marginBottom="10dp"
-            android:elevation="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            android:layout_height="324dp">
 
             <ImageView
                 android:id="@+id/imageView2"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
                 app:srcCompat="@drawable/top_background" />
 
             <ImageView
@@ -34,7 +32,7 @@
                 android:layout_width="82dp"
                 android:layout_height="86dp"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="50dp"
                 android:background="@color/white"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/imageView2"
@@ -68,105 +66,109 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="140dp"
+                android:layout_height="125dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
                 android:background="@drawable/white_background"
                 android:elevation="5dp"
+                android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView2"
                 app:layout_constraintVertical_bias="0.347">
 
+
                 <!-- Blood Type -->
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="80dp"
-                    android:layout_margin="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/green_background"
                     android:orientation="vertical">
 
-                    <ImageView
-                        android:id="@+id/ivBloodType"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="35dp"
-                        android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        app:srcCompat="@drawable/_759444" />
+                        android:layout_height="80dp"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/green_background"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/ivBloodType"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/_759444" />
+
+                        <TextView
+                            android:id="@+id/tvUserBloodType"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:layout_weight="1"
+                            android:text="O+"
+                            android:textAlignment="center"
+                            android:textColor="#7182ef"
+                            android:textSize="25sp"
+                            android:textStyle="bold|italic" />
+
+                    </LinearLayout>
 
                     <TextView
-                        android:id="@+id/tvUserBloodType"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:layout_weight="1"
-                        android:text="O+"
-                        android:textAlignment="center"
-                        android:textColor="#7182ef"
-                        android:textSize="25sp"
-                        android:textStyle="bold|italic" />
-
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="1dp"
+                        android:fontFamily="@font/baloo"
+                        android:gravity="center_horizontal"
+                        android:text="Blood Type" />
                 </LinearLayout>
 
-
+                <!-- Lives Saved -->
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="80dp"
-                    android:layout_margin="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/blue_background"
                     android:orientation="vertical">
 
-                    <ImageView
-                        android:id="@+id/ivLiveSaved"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="35dp"
-                        android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        app:srcCompat="@drawable/livesaved" />
+                        android:layout_height="80dp"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/blue_background"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/ivLiveSaved"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/livesaved" />
+
+                        <TextView
+                            android:id="@+id/tvLivesSaved"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:layout_weight="1"
+                            android:text="48"
+                            android:textAlignment="center"
+                            android:textColor="#7182ef"
+                            android:textSize="25sp"
+                            android:textStyle="bold|italic" />
+                    </LinearLayout>
 
                     <TextView
-                        android:id="@+id/tvLivesSaved"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:layout_weight="1"
-                        android:text="48"
-                        android:textAlignment="center"
-                        android:textColor="#7182ef"
-                        android:textSize="25sp"
-                        android:textStyle="bold|italic" />
-                </LinearLayout>
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="1dp"
+                        android:fontFamily="@font/baloo"
+                        android:gravity="center_horizontal"
+                        android:text="Lives Saved" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="80dp"
-                    android:layout_margin="10dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/orange_background"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:id="@+id/ivNextAppointment"
-                        android:layout_width="match_parent"
-                        android:layout_height="24dp"
-                        android:layout_margin="8dp"
-                        android:layout_weight="1"
-                        app:srcCompat="@drawable/ic_calendar" />
-
-                    <TextView
-                        android:id="@+id/tvDateOfBooking"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:layout_weight="1"
-                        android:text="06-11-2022"
-                        android:textAlignment="center"
-                        android:textColor="#7182ef"
-                        android:textSize="16sp"
-                        android:textStyle="bold|italic" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

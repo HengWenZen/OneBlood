@@ -14,9 +14,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MainActivity">
-        <activity android:name=".UserUpdateName"
+        <activity
+            android:name=".Activity.HospitalViewBloodRequestDetails"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
-        <activity android:name=".UserUpdateContact"
+        <activity
+            android:name=".UserUpdateName"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+        <activity
+            android:name=".UserUpdateContact"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity
             android:name=".UserUpdatePassword"
@@ -115,9 +120,6 @@
             android:name=".Activity.HospitalNewEvent"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity
-            android:name=".UserChatBox"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
-        <activity
             android:name=".ViewDonorDetails"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity
@@ -133,16 +135,10 @@
             android:name=".UserBloodRequestMainMenu"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity
-            android:name=".Activity.AdminMenu"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
-        <activity
             android:name=".UserRegister3"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity
             android:name=".UserRegister2"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
-        <activity
-            android:name=".MyProfile"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity
             android:name=".OnStart"
@@ -186,9 +182,6 @@
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity
             android:name=".UserType"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
-        <activity
-            android:name=".AdminLogin"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity
             android:name=".EditProfile"

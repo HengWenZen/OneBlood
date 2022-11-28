@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.OneBlood.Activity.HospitalViewBloodRequestDetails;
 import com.example.OneBlood.Models.EmergencyNotice;
 import com.example.OneBlood.R;
 import com.example.OneBlood.ViewBloodRequestDetails;
@@ -83,16 +84,31 @@ public class BloodRequestAdapters extends RecyclerView.Adapter<BloodRequestAdapt
             btnViewEmergencyNotice.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(mContext, ViewBloodRequestDetails.class);
-                    i.putExtra(EXTRA_EMERGENCY_NOTICE_TITLE, mEmergencyNotice.getTitle());
-                    i.putExtra(EXTRA_EMERGENCY_NOTICE_DATE, mEmergencyNotice.getDate());
-                    i.putExtra(EXTRA_EMERGENCY_NOTICE_DESCRIPTION, mEmergencyNotice.getDescription());
-                    i.putExtra(EXTRA_EMERGENCY_NOTICE_LOCATION, mEmergencyNotice.getLocation());
-                    i.putExtra(EXTRA_EMERGENCY_NOTICE_ID, mEmergencyNotice.getId());
-                    i.putExtra(EXTRA_REQUEST_BLOOD_TYPE, mEmergencyNotice.getRequiredBloodType());
-                    i.putExtra(EXTRA_EMERGENCY_NOTICE_NAME, mEmergencyNotice.getPostedBy());
-                    i.putExtra(EXTRA_EMERGENCY_NOTICE_CONTACT, mEmergencyNotice.getContact());
-                    mContext.startActivity(i);
+                    if (isHospital = true) {
+                        //Redirect to Hospital View Request Page if boolean is true
+                        Intent i = new Intent(mContext, HospitalViewBloodRequestDetails.class);
+                        i.putExtra(EXTRA_EMERGENCY_NOTICE_TITLE, mEmergencyNotice.getTitle());
+                        i.putExtra(EXTRA_EMERGENCY_NOTICE_DATE, mEmergencyNotice.getDate());
+                        i.putExtra(EXTRA_EMERGENCY_NOTICE_DESCRIPTION, mEmergencyNotice.getDescription());
+                        i.putExtra(EXTRA_EMERGENCY_NOTICE_LOCATION, mEmergencyNotice.getLocation());
+                        i.putExtra(EXTRA_EMERGENCY_NOTICE_ID, mEmergencyNotice.getId());
+                        i.putExtra(EXTRA_REQUEST_BLOOD_TYPE, mEmergencyNotice.getRequiredBloodType());
+                        i.putExtra(EXTRA_EMERGENCY_NOTICE_NAME, mEmergencyNotice.getPostedBy());
+                        i.putExtra(EXTRA_EMERGENCY_NOTICE_CONTACT, mEmergencyNotice.getContact());
+                        mContext.startActivity(i);
+                    }else{
+                        //Redirect to User View Request Page if boolean is false
+                        Intent i = new Intent(mContext, ViewBloodRequestDetails.class);
+                        i.putExtra(EXTRA_EMERGENCY_NOTICE_TITLE, mEmergencyNotice.getTitle());
+                        i.putExtra(EXTRA_EMERGENCY_NOTICE_DATE, mEmergencyNotice.getDate());
+                        i.putExtra(EXTRA_EMERGENCY_NOTICE_DESCRIPTION, mEmergencyNotice.getDescription());
+                        i.putExtra(EXTRA_EMERGENCY_NOTICE_LOCATION, mEmergencyNotice.getLocation());
+                        i.putExtra(EXTRA_EMERGENCY_NOTICE_ID, mEmergencyNotice.getId());
+                        i.putExtra(EXTRA_REQUEST_BLOOD_TYPE, mEmergencyNotice.getRequiredBloodType());
+                        i.putExtra(EXTRA_EMERGENCY_NOTICE_NAME, mEmergencyNotice.getPostedBy());
+                        i.putExtra(EXTRA_EMERGENCY_NOTICE_CONTACT, mEmergencyNotice.getContact());
+                        mContext.startActivity(i);
+                    }
                 }
             });
         }

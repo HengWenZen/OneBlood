@@ -29,7 +29,6 @@ public class UserType extends AppCompatActivity {
         mRadioGroup = findViewById(R.id.mRadioGroup);
         rbUser = findViewById(R.id.rbUser);
         rbHospital = findViewById(R.id.rbHospital);
-        rbAdmin = findViewById(R.id.rbAdmin);
         btnProceed = findViewById(R.id.btnProceed);
 
         btnProceed.setOnClickListener(new View.OnClickListener() {
@@ -56,12 +55,6 @@ public class UserType extends AppCompatActivity {
             case R.id.rbHospital:
                 Intent x = new Intent(UserType.this, HospitalLogin.class);
                 startActivity(x);
-                finish();
-                break;
-
-            case R.id.rbAdmin:
-                Intent y = new Intent(UserType.this, AdminLogin.class);
-                startActivity(y);
                 finish();
                 break;
         }

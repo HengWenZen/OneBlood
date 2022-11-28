@@ -12,6 +12,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.example.OneBlood.Adapters.ViewBloodRequestAdapter;
 import com.example.OneBlood.Models.ViewBloodRequest;
@@ -37,6 +39,7 @@ public class HospitalViewOwnBloodRequest extends AppCompatActivity {
     List<ViewBloodRequest> mViewBloodRequests;
     ViewBloodRequestAdapter mViewBloodRequestAdapter;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    ImageView backToRequestHospital;
     String postedBy , hospital;
 
     @Override
@@ -44,11 +47,19 @@ public class HospitalViewOwnBloodRequest extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hospital_view_blood_request);
         rv = findViewById(R.id.rvHospitalRequest);
+        backToRequestHospital = findViewById(R.id.backToRequestHospital);
 
         SharedPreferences prefs = getSharedPreferences(SHARED_PREFERENCE, MODE_PRIVATE);
         hospital = prefs.getString(KEY_HOSPITAL_NAME, "");
 
         loadRequestList();
+
+        backToRequestHospital.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
     }
 
@@ -112,7 +123,7 @@ public class HospitalViewOwnBloodRequest extends AppCompatActivity {
 
     private void alertDataEmpty() {
         new AlertDialog.Builder(this)
-                .setMessage("No Existing Request Made..")
+                .setMessage("No Existing Notice Made..")
                 .setPositiveButton("Return", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

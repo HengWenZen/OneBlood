@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.OneBlood.R;
@@ -34,6 +35,7 @@ public class HospitalViewOwnBloodRequestDetails extends AppCompatActivity {
     Button btnHospitalDeleteRequest;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String requestId;
+    ImageView backToOwnRequestList1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,7 @@ public class HospitalViewOwnBloodRequestDetails extends AppCompatActivity {
         etHospitalRequestPostedBy = findViewById(R.id.etHospitalRequestPostedBy);
         etHospitalRequestedBloodType = findViewById(R.id.etHospitalRequestedBloodType);
         btnHospitalDeleteRequest = findViewById(R.id.btnHospitalDeleteRequest);
+        backToOwnRequestList1 = findViewById(R.id.backToOwnRequestList1);
 
         Intent intent = getIntent();
         Bundle b = intent.getExtras();
@@ -73,6 +76,13 @@ public class HospitalViewOwnBloodRequestDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 deleteRequest();
+            }
+        });
+
+        backToOwnRequestList1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
     }

@@ -11,6 +11,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.example.OneBlood.Adapters.ViewBookingAdapter;
 import com.example.OneBlood.Models.Booking;
@@ -30,6 +32,7 @@ import java.util.List;
 public class HospitalViewBooking extends AppCompatActivity {
     private ViewBookingAdapter mViewBookingAdapter;
     private RecyclerView rv;
+    ImageView ivBackToHospitalMenu1;
 
     List<String> list = new ArrayList<>();
     List<Booking> mBookings;
@@ -41,6 +44,14 @@ public class HospitalViewBooking extends AppCompatActivity {
         setContentView(R.layout.activity_hospital_view_booking);
 
         rv = findViewById(R.id.rv_AdminViewBooking);
+        ivBackToHospitalMenu1 = findViewById(R.id.ivBackToHospitalMenu1);
+
+        ivBackToHospitalMenu1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         loadBookingList();
     }
@@ -62,7 +73,6 @@ public class HospitalViewBooking extends AppCompatActivity {
                         for (QueryDocumentSnapshot document : result) {
                             boolean check = checkDate(document.get("date").toString(),document.get("slot").toString());
                             if(check) {
-//                            Log.d("data",document.getData().toString());
                                 Booking b = new Booking(document.getId(),
                                         document.get("location").toString(),
                                         document.get("date").toString(),
@@ -95,14 +105,18 @@ public class HospitalViewBooking extends AppCompatActivity {
     private boolean checkDate(String result, String slot) {
 
         slot = timeSlot(Integer.valueOf(slot));
+        //concatenate two strings
         result = result.concat(" " + slot);
+
         Date strDate = null;
         try {
+            //parse string into date format
             strDate = new SimpleDateFormat("dd-MM-yyyy HH:mm").parse(result);
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
+        //Check if the current date is greater than date of appointment
         if (new Date().getTime() > strDate.getTime()) {
             return false;
         }
@@ -138,6 +152,7 @@ public class HospitalViewBooking extends AppCompatActivity {
     }
 
     private void alertDataEmpty() {
+        //Initialize alert dialog if there is no data
         new AlertDialog.Builder(this)
                 .setMessage("No Booking Existing!")
                 .setPositiveButton("Return", new DialogInterface.OnClickListener() {

@@ -10,9 +10,12 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.example.OneBlood.Adapters.NoticeAdapter;
 import com.example.OneBlood.Adapters.ViewEventBookingAdapter;
@@ -48,6 +51,7 @@ public class HospitalViewNotice extends AppCompatActivity {
 
     List<String> date;
     List<Notice> mNotices;
+    ImageView ivBackToNoticeList;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
@@ -56,6 +60,7 @@ public class HospitalViewNotice extends AppCompatActivity {
         setContentView(R.layout.activity_hospital_view_notice);
 
         rv = findViewById(R.id.rvHospitalViewNotice);
+        ivBackToNoticeList = findViewById(R.id.ivBackToNoticeList);
 
         noticeId = getIntent().getStringExtra(EXTRA_NOTICE_ID);
         noticeTitle = getIntent().getStringExtra(EXTRA_NOTICE_TITLE);
@@ -66,6 +71,13 @@ public class HospitalViewNotice extends AppCompatActivity {
         hospital = prefs.getString(KEY_HOSPITAL_NAME, "");
 
         loadNotice();
+
+        ivBackToNoticeList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     private void loadNotice(){
@@ -133,5 +145,12 @@ public class HospitalViewNotice extends AppCompatActivity {
         if(mNotices.size() == 0) {
             finish();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent y = new Intent(HospitalViewNotice.this, HospitalNoticeMenu.class);
+        startActivity(y);
+        finish();
     }
 }

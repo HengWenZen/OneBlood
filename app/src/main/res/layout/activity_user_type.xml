@@ -80,18 +80,6 @@
             android:button="@android:color/transparent"
             android:background="@drawable/radio_selector"/>
 
-        <RadioButton
-            android:id="@+id/rbAdmin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:padding="16dp"
-            android:text="Admin"
-            android:textAlignment="center"
-            android:ems="15"
-            android:button="@android:color/transparent"
-            android:background="@drawable/radio_selector"/>
-
     </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

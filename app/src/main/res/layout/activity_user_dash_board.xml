@@ -78,12 +78,18 @@
             android:elevation="5dp"
             android:layout_marginTop="-70dp">
 
+            <!--Total Donors-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_alignParentLeft="true">
+
             <LinearLayout
                 android:id="@+id/linearLayoutImage1"
                 android:layout_width="150dp"
                 android:layout_height="80dp"
                 android:layout_margin="10dp"
-                android:layout_alignParentLeft="true"
                 android:background="@drawable/blue_background"
                 android:orientation="vertical">
 
@@ -108,56 +114,61 @@
                     android:textStyle="bold|italic" />
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/linearLayoutImage2"
-                android:layout_width="150dp"
-                android:layout_height="80dp"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                android:layout_alignParentEnd="true"
-                android:background="@drawable/orange_background"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/ivNextAppointment"
-                    android:layout_width="match_parent"
-                    android:layout_height="24dp"
-                    android:layout_margin="8dp"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_calendar" />
-
                 <TextView
-                    android:id="@+id/tvDateOfBooking"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_weight="1"
-                    android:text="06-11-2022"
-                    android:textAlignment="center"
-                    android:textColor="#7182ef"
-                    android:textSize="16sp"
-                    android:textStyle="bold|italic" />
-
+                    android:layout_marginTop="1dp"
+                    android:fontFamily="@font/baloo"
+                   android:layout_gravity="center_horizontal"
+                    android:text="Total Donors" />
             </LinearLayout>
 
-            <TextView
+            <!--Next Appointment-->
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/linearLayoutImage1"
-                android:gravity="center"
-                android:layout_marginTop="1dp"
-                android:layout_marginLeft="50dp"
-                android:fontFamily="@font/baloo"
-                android:text="Total Donors"/>
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_alignParentEnd="true">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/linearLayoutImage2"
-                android:layout_marginTop="1dp"
-                android:fontFamily="@font/baloo"
-                android:layout_marginLeft="190dp"
-                android:text="Next Appointment"/>
+                <LinearLayout
+                    android:id="@+id/linearLayoutImage2"
+                    android:layout_width="150dp"
+                    android:layout_height="80dp"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/orange_background"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/ivNextAppointment"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/ic_calendar" />
+
+                    <TextView
+                        android:id="@+id/tvDateOfBooking"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_weight="1"
+                        android:text="-"
+                        android:textAlignment="center"
+                        android:textColor="#7182ef"
+                        android:textSize="18sp"
+                        android:textStyle="bold|italic" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:fontFamily="@font/baloo"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Next Appointment"/>
+            </LinearLayout>
+
         </RelativeLayout>
 
         <LinearLayout
@@ -237,7 +248,6 @@
                         android:elevation="8dp">
 
                         <ImageView
-                            android:id="@+id/ivLogout"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_centerInParent="true"

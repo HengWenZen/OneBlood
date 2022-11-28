@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,8 +34,8 @@ public class UserLogin extends AppCompatActivity {
     TextInputLayout etPassword;
     Button btnLogin;
     Button btnRegister;
-    TextView tvAdminLogin;
     TextView tvHospitalLogin;
+    ImageView ivBackToBoardingScreen;
     String userName, userEmail, userPhone, userPassword, userId, userBloodType, token, userStatus, bloodType;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     Firebase firebase = new Firebase();
@@ -59,8 +60,8 @@ public class UserLogin extends AppCompatActivity {
         btnRegister = findViewById(R.id.btnRegister);
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
-        tvAdminLogin = findViewById(R.id.tvAdminLogin);
         tvHospitalLogin = findViewById(R.id.tvHospitalLogin);
+        ivBackToBoardingScreen = findViewById(R.id.ivBackToBoardingScreen);
 
         mPreferences = getSharedPreferences("myPreferences", MODE_PRIVATE);
 
@@ -87,14 +88,6 @@ public class UserLogin extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        tvAdminLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(UserLogin.this, AdminLogin.class);
-                startActivity(i);
-                finish();
-            }
-        });
 
         tvHospitalLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,6 +109,15 @@ public class UserLogin extends AppCompatActivity {
 
         btnLogin.setOnClickListener(view -> {
             loginUser();
+        });
+
+        ivBackToBoardingScreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(UserLogin.this, UserType.class);
+                startActivity(i);
+                finish();
+            }
         });
     }
 
@@ -182,8 +184,6 @@ public class UserLogin extends AppCompatActivity {
                                                 });
 
                                         FirebaseMessaging.getInstance().subscribeToTopic("user");
-                                        Toast.makeText(UserLogin.this, userBloodType + token, Toast.LENGTH_SHORT).show();
-
                                         Toast.makeText(UserLogin.this, "Logged in Successfully!", Toast.LENGTH_SHORT).show();
                                         Intent i = new Intent(UserLogin.this, UserDashBoard.class);
                                         startActivity(i);
@@ -209,5 +209,12 @@ public class UserLogin extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(UserLogin.this, UserType.class);
+        startActivity(i);
+        finish();
     }
 }

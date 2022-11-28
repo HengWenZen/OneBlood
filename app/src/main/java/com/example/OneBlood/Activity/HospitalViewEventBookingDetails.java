@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.OneBlood.Firebase;
@@ -39,6 +40,7 @@ public class HospitalViewEventBookingDetails extends AppCompatActivity {
     TextInputLayout etEventBookingSlot, etEventBookingDate, etEventBookingUser, etEventBookingLocation;
     Button btnMarkAsComplete, btnHospitalCancelEventBooking;
     String eventBookingId, eventBookingSlot, eventBookingUser, eventBookingDate, eventBookingHospital;
+    ImageView ivBackToEventList2;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     Firebase mFirebase = new Firebase();
 
@@ -51,6 +53,7 @@ public class HospitalViewEventBookingDetails extends AppCompatActivity {
         etEventBookingUser = findViewById(R.id.etEventBookingUser);
         etEventBookingLocation = findViewById(R.id.etEventBookingLocation);
         btnHospitalCancelEventBooking = findViewById(R.id.btnCancelEventBooking);
+        ivBackToEventList2 = findViewById(R.id.ivBackToEventList2);
         btnMarkAsComplete = findViewById(R.id.btnMarkAsComplete);
 
         Intent intent = getIntent();
@@ -84,6 +87,13 @@ public class HospitalViewEventBookingDetails extends AppCompatActivity {
                 completeBooking();
             }
         });
+
+        ivBackToEventList2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     private void cancelBooking() {
@@ -102,6 +112,8 @@ public class HospitalViewEventBookingDetails extends AppCompatActivity {
                                         Map<String, Object> latest = new HashMap<>();
                                         latest.put("userStatus", "active");
                                         latest.put("status", "available");
+                                        latest.put("date", "-");
+                                        latest.put("slot", "-");
 
                                         if (task.isSuccessful()) {
                                             QuerySnapshot result = task.getResult();
@@ -254,4 +266,10 @@ public class HospitalViewEventBookingDetails extends AppCompatActivity {
                 }).create().show();
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(HospitalViewEventBookingDetails.this, HospitalViewBooking.class);
+        startActivity(i);
+        finish();
+    }
 }

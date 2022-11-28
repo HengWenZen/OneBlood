@@ -137,21 +137,28 @@ public class UserRegister extends AppCompatActivity {
                         user.put("Password", userPassword);
                         user.put("Token", token);
 
-                        db.collection("users")
-                                .add(user)
-                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                    @Override
-                                    public void onSuccess(DocumentReference documentReference) {
-                                        Intent i = new Intent(UserRegister.this, UserRegister2.class);
-                                        i.putExtra(EXTRA_USER_NAME, userName);
-                                        startActivity(i);
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
+                        mAuth.signInWithEmailAndPassword(userEmail, userPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>(){
                             @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(UserRegister.this, "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                Log.d("TAG", "User account created.");
+                                db.collection("users")
+                                        .add(user)
+                                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                            @Override
+                                            public void onSuccess(DocumentReference documentReference) {
+                                                Intent i = new Intent(UserRegister.this, UserRegister2.class);
+                                                i.putExtra(EXTRA_USER_NAME, userName);
+                                                startActivity(i);
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(UserRegister.this, "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             }
                         });
+
                     } else {
                         Toast.makeText(UserRegister.this, "Error " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }

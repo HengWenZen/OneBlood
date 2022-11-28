@@ -15,6 +15,7 @@
         android:id="@+id/linearLayoutAppointment">
 
         <ImageView
+            android:id="@+id/ivBackToHospitalMenu1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_back"
@@ -29,7 +30,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/baloo"
             android:padding="5dp"
-            android:text="Appointment Details"
+            android:text="Appointments"
             android:textSize="24dp" />
     </LinearLayout>
 

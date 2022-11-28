@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,13 +35,22 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import java.util.List;
 
 public class UserAppointmentsMenu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    public static SharedPreferences mPreferences;
+    private final String SHARED_PREF = "myPreferences";
+    private final String KEY_USER_ID = "userID";
+    private final String KEY_USER_NAME = "userName";
+    private final String KEY_PASSWORD = "password";
+    private final String KEY_USER_EMAIL = "userEmail";
+    private final String KEY_USER_BLOOD_TYPE = "userStatus";
+
     Button btnViewAppointment;
     RecyclerView mRecyclerView;
     LocationAdapter mAdapter;
     DrawerLayout mDrawerLayout;
     NavigationView mNavigationView;
     Toolbar mToolbar;
-    String token;
+    String token, user, email;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +63,10 @@ public class UserAppointmentsMenu extends AppCompatActivity implements Navigatio
         mNavigationView = findViewById(R.id.appointments_navigation_view);
         mToolbar = (Toolbar) findViewById(R.id.appointments_toolbar);
 
+        SharedPreferences prefs = getSharedPreferences(SHARED_PREF, MODE_PRIVATE);
+        user = prefs.getString(KEY_USER_NAME,"");
+        email = prefs.getString(KEY_USER_EMAIL,"");
+
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Available Donation Location");
 
@@ -60,6 +74,12 @@ public class UserAppointmentsMenu extends AppCompatActivity implements Navigatio
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
+        View headerView = mNavigationView.getHeaderView(0);
+        TextView mTvHeaderProfileName = (TextView) headerView.findViewById(R.id.tvUserName);
+        mTvHeaderProfileName.setText(user);
+        TextView mTvHeaderEmail = (TextView) headerView.findViewById(R.id.tvUserMenuEmail);
+        mTvHeaderEmail.setText(email);
 
         mNavigationView.setNavigationItemSelectedListener(this);
 

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.OneBlood.Firebase;
@@ -44,6 +45,7 @@ public class HospitalViewBookingDetails extends AppCompatActivity {
     TextInputLayout etUserBookingSlot, etUserBookingDate, etBookingUser;
     Button btnCancelAppointment, btnCompleteAppointment;
     String bookingId, bookingSlot, bookingUser, bookingDate, bookingHospital;
+    ImageView ivBackToHospitalRequestMenu;
 
 
     @Override
@@ -56,6 +58,7 @@ public class HospitalViewBookingDetails extends AppCompatActivity {
         etBookingUser = findViewById(R.id.etBookingUser);
         btnCancelAppointment = findViewById(R.id.btnHospitalCancelBooking);
         btnCompleteAppointment = findViewById(R.id.btnCompleteAppointment);
+        ivBackToHospitalRequestMenu = findViewById(R.id.ivBackToHospitalRequestMenu);
 
         Intent intent = getIntent();
         Bundle b = intent.getExtras();
@@ -86,6 +89,13 @@ public class HospitalViewBookingDetails extends AppCompatActivity {
                 completeBooking();
             }
         });
+
+        ivBackToHospitalRequestMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     private void cancelBooking() {
@@ -95,6 +105,7 @@ public class HospitalViewBookingDetails extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
+                        //Delete Data from Database
                         db.collection("userBooking").document(bookingId).delete()
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
@@ -112,6 +123,35 @@ public class HospitalViewBookingDetails extends AppCompatActivity {
                                         Toast.makeText(HospitalViewBookingDetails.this, "Fail to Cancel Appointment! " + e.getMessage() , Toast.LENGTH_SHORT).show();
                                     }
                                 });
+
+                        //Edit the status of latest appointment collection in FireStore
+                        db.collection("latestAppointment")
+                                .whereEqualTo("user", bookingUser)
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        Map<String, Object> latest = new HashMap<>();
+                                        latest.put("slot", "-");
+                                        latest.put("user", bookingUser);
+                                        latest.put("date", "-");
+                                        latest.put("userStatus", "active");
+                                        latest.put("location", bookingHospital);
+                                        latest.put("status", "available");
+
+                                        if (task.isSuccessful()) {
+                                            QuerySnapshot result = task.getResult();
+                                            if (!result.isEmpty()) {
+                                                Log.d("Data Retrieved", result.toString());
+                                                for (QueryDocumentSnapshot document : result) {
+                                                    Log.d("Document ID:", document.getId() + " => " + document.getData());
+                                                    db.collection("latestAppointment").document(document.getId()).update(latest);
+                                                }
+                                            }
+                                        }
+                                    }
+                                });
+
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -148,7 +188,7 @@ public class HospitalViewBookingDetails extends AppCompatActivity {
                             }
                         });
 
-                        //Delete Appointment from activeAppointment document in Firebase
+                        //Delete Appointment from active Appointment document in Firebase
                         db.collection("userBooking").document(bookingId).delete()
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
