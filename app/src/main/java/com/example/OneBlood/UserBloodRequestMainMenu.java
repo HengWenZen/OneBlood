@@ -154,7 +154,7 @@ public class UserBloodRequestMainMenu extends AppCompatActivity implements Navig
                     Toast.makeText(UserBloodRequestMainMenu.this, "No Requests Found.", Toast.LENGTH_SHORT).show();
                 }
                 rv.setLayoutManager(new LinearLayoutManager(UserBloodRequestMainMenu.this));
-                mBloodRequestAdapters = new BloodRequestAdapters(mEmergencyNotices, UserBloodRequestMainMenu.this, true, postedBy);
+                mBloodRequestAdapters = new BloodRequestAdapters(mEmergencyNotices, UserBloodRequestMainMenu.this, false, postedBy);
                 rv.setAdapter(mBloodRequestAdapters);
             }
         }, 1000);

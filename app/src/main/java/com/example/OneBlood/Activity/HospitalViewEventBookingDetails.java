@@ -112,8 +112,8 @@ public class HospitalViewEventBookingDetails extends AppCompatActivity {
                                         Map<String, Object> latest = new HashMap<>();
                                         latest.put("userStatus", "active");
                                         latest.put("status", "available");
-                                        latest.put("date", "-");
-                                        latest.put("slot", "-");
+                                        latest.put("date", eventBookingDate);
+                                        latest.put("slot", eventBookingSlot);
 
                                         if (task.isSuccessful()) {
                                             QuerySnapshot result = task.getResult();

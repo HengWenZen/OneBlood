@@ -122,7 +122,7 @@ public class UserRegister3 extends AppCompatActivity {
     private boolean validatePhoneNumber() {
         userPhoneNo = etUserPhone.getEditText().getText().toString().trim();
         getUserPhoneNo = "+6" + userPhoneNo;
-        String phoneFormat = "(01)[0-46-9]*[0-9]{7,8}$";
+        String phoneFormat = "(01)[0-46-9]*[0-9]{8}$";
 
         if (TextUtils.isEmpty(userPhoneNo)) {
             //Check if phone number is empty

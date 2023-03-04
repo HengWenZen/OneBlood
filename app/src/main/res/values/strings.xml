@@ -2,7 +2,8 @@
     <string name="app_name">One Blood</string>
     <string-array name="hospital">
         <item>Pantai Hospital</item>
-        <item>Loh Guan Lye Hospital</item>
+        <item>Adventist Hospital</item>
+        <item>BP HealthCare</item>
         <item>Island Hospital</item>
     </string-array>
 
@@ -29,6 +30,7 @@
         <item>O-</item>
         <item>AB+</item>
         <item>AB-</item>
+        <item>Rh null</item>
     </string-array>
 
     <string-array name="requiredBloodType">

@@ -84,7 +84,9 @@ public class BloodRequestAdapters extends RecyclerView.Adapter<BloodRequestAdapt
             btnViewEmergencyNotice.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (isHospital = true) {
+
+                    if (isHospital == true) {
+
                         //Redirect to Hospital View Request Page if boolean is true
                         Intent i = new Intent(mContext, HospitalViewBloodRequestDetails.class);
                         i.putExtra(EXTRA_EMERGENCY_NOTICE_TITLE, mEmergencyNotice.getTitle());
@@ -96,18 +98,20 @@ public class BloodRequestAdapters extends RecyclerView.Adapter<BloodRequestAdapt
                         i.putExtra(EXTRA_EMERGENCY_NOTICE_NAME, mEmergencyNotice.getPostedBy());
                         i.putExtra(EXTRA_EMERGENCY_NOTICE_CONTACT, mEmergencyNotice.getContact());
                         mContext.startActivity(i);
+
                     }else{
+
                         //Redirect to User View Request Page if boolean is false
-                        Intent i = new Intent(mContext, ViewBloodRequestDetails.class);
-                        i.putExtra(EXTRA_EMERGENCY_NOTICE_TITLE, mEmergencyNotice.getTitle());
-                        i.putExtra(EXTRA_EMERGENCY_NOTICE_DATE, mEmergencyNotice.getDate());
-                        i.putExtra(EXTRA_EMERGENCY_NOTICE_DESCRIPTION, mEmergencyNotice.getDescription());
-                        i.putExtra(EXTRA_EMERGENCY_NOTICE_LOCATION, mEmergencyNotice.getLocation());
-                        i.putExtra(EXTRA_EMERGENCY_NOTICE_ID, mEmergencyNotice.getId());
-                        i.putExtra(EXTRA_REQUEST_BLOOD_TYPE, mEmergencyNotice.getRequiredBloodType());
-                        i.putExtra(EXTRA_EMERGENCY_NOTICE_NAME, mEmergencyNotice.getPostedBy());
-                        i.putExtra(EXTRA_EMERGENCY_NOTICE_CONTACT, mEmergencyNotice.getContact());
-                        mContext.startActivity(i);
+                        Intent y = new Intent(mContext, ViewBloodRequestDetails.class);
+                        y.putExtra(EXTRA_EMERGENCY_NOTICE_TITLE, mEmergencyNotice.getTitle());
+                        y.putExtra(EXTRA_EMERGENCY_NOTICE_DATE, mEmergencyNotice.getDate());
+                        y.putExtra(EXTRA_EMERGENCY_NOTICE_DESCRIPTION, mEmergencyNotice.getDescription());
+                        y.putExtra(EXTRA_EMERGENCY_NOTICE_LOCATION, mEmergencyNotice.getLocation());
+                        y.putExtra(EXTRA_EMERGENCY_NOTICE_ID, mEmergencyNotice.getId());
+                        y.putExtra(EXTRA_REQUEST_BLOOD_TYPE, mEmergencyNotice.getRequiredBloodType());
+                        y.putExtra(EXTRA_EMERGENCY_NOTICE_NAME, mEmergencyNotice.getPostedBy());
+                        y.putExtra(EXTRA_EMERGENCY_NOTICE_CONTACT, mEmergencyNotice.getContact());
+                        mContext.startActivity(y);
                     }
                 }
             });

@@ -37,7 +37,7 @@ public class UserUpdateName extends AppCompatActivity {
 
     TextInputLayout etUpdateDOB, etUpdateContact, etUpdateName;
     Button btnSaveDetailsChanges, btnCancelUpdate;
-    String user, userName;
+    String user, userName, name;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
@@ -66,131 +66,155 @@ public class UserUpdateName extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 userName = etUpdateName.getEditText().getText().toString();
+
                 if(TextUtils.isEmpty(userName)){
+
                     Toast.makeText(UserUpdateName.this, "Please input new Name to make changes.", Toast.LENGTH_SHORT).show();
 
-                }else if(userName.equals(user)){
+                }else if(userName.equals(user)) {
+
                     Toast.makeText(UserUpdateName.this, "Please input another new Name to make changes.", Toast.LENGTH_SHORT).show();
 
                 }else{
-                    db.collection("latestAppointment")
-                            .whereEqualTo("user", user)
-                            .get()
-                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    QuerySnapshot result = task.getResult();
-                                    if(!result.isEmpty()){
-                                        for(QueryDocumentSnapshot document :result) {
-                                            Map<String, Object> userDetail = new HashMap<>();
-                                            userDetail.put("user", userName);
-                                            db.collection("latestAppointment").document(document.getId()).update(userDetail);
-                                            Log.d("TAG", "onComplete: Data Updated Successfully!");
-                                        }
-                                    }
-                                }
-                            });
-
-                    db.collection("completedAppointments")
-                            .whereEqualTo("user", user)
-                            .get()
-                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    QuerySnapshot result = task.getResult();
-                                    if(!result.isEmpty()){
-                                        for(QueryDocumentSnapshot document :result) {
-                                            Map<String, Object> userDetail = new HashMap<>();
-                                            userDetail.put("user", userName);
-                                            db.collection("completedAppointments").document(document.getId()).update(userDetail);
-                                            Log.d("TAG", "onComplete: Data Updated Successfully!");
-                                        }
-                                    }
-                                }
-                            });
-
-                    db.collection("userEventBooking")
-                            .whereEqualTo("user", user)
-                            .get()
-                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    QuerySnapshot result = task.getResult();
-                                    if(!result.isEmpty()){
-                                        for(QueryDocumentSnapshot document :result) {
-                                            Map<String, Object> userDetail = new HashMap<>();
-                                            userDetail.put("user", userName);
-                                            db.collection("userEventBooking").document(document.getId()).update(userDetail);
-                                            Log.d("TAG", "onComplete: Data Updated Successfully!");
-                                        }
-                                    }
-                                }
-                            });
-
-                    db.collection("emergencyRequest")
-                            .whereEqualTo("user", user)
-                            .get()
-                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    QuerySnapshot result = task.getResult();
-                                    if(!result.isEmpty()){
-                                        for(QueryDocumentSnapshot document :result) {
-                                            Map<String, Object> userDetail = new HashMap<>();
-                                            userDetail.put("postedBy", userName);
-                                            db.collection("emergencyRequest").document(document.getId()).update(userDetail);
-                                            Log.d("TAG", "onComplete: Data Updated Successfully!");
-                                        }
-                                    }
-                                }
-                            });
-
-                    db.collection("userBooking")
-                            .whereEqualTo("user", user)
-                            .get()
-                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    QuerySnapshot result = task.getResult();
-                                    if(!result.isEmpty()){
-                                        for(QueryDocumentSnapshot document :result) {
-                                            Map<String, Object> userDetail = new HashMap<>();
-                                            userDetail.put("user", userName);
-                                            db.collection("userBooking").document(document.getId()).update(userDetail);
-                                            Log.d("TAG", "onComplete: Data Updated Successfully!");
-                                        }
-                                    }
-                                }
-                            });
-
                     db.collection("users")
-                            .whereEqualTo("FullName", user)
+                            .whereEqualTo("FullName", userName)
                             .get()
                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     QuerySnapshot result = task.getResult();
                                     if(!result.isEmpty()){
-                                        for(QueryDocumentSnapshot document :result){
-                                            Map<String, Object> userDetail = new HashMap<>();
-                                            userDetail.put("FullName", userName);
-                                            db.collection("users").document(document.getId()).update(userDetail);
-                                            Intent intent = new Intent(UserUpdateName.this, EditProfile.class);
-                                            startActivity(intent);
-                                            SharedPreferences.Editor editor = UserLogin.mPreferences.edit();
-                                            editor.putString(KEY_USER_NAME, userName);
-                                            editor.apply();
-                                            finish();
-                                            Toast.makeText(UserUpdateName.this, "Name Updated Successfully! ", Toast.LENGTH_LONG).show();
+                                        for(QueryDocumentSnapshot document :result) {
+                                            name = document.get("FullName").toString();
                                         }
+                                        Log.d("TAG", "onComplete: " + userName + name);
                                     }
                                 }
-                            }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(UserUpdateName.this, "Fail to Update Name" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                            });
+
+                    //Validate if the name is taken in the database
+                    if(userName.equals(name)){
+                        Toast.makeText(UserUpdateName.this, "Name is Taken. Please input another name!", Toast.LENGTH_SHORT).show();
+                    }else {
+                        db.collection("latestAppointment")
+                                .whereEqualTo("user", user)
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        QuerySnapshot result = task.getResult();
+                                        if (!result.isEmpty()) {
+                                            for (QueryDocumentSnapshot document : result) {
+                                                Map<String, Object> userDetail = new HashMap<>();
+                                                userDetail.put("user", userName);
+                                                db.collection("latestAppointment").document(document.getId()).update(userDetail);
+                                                Log.d("TAG", "onComplete: Data Updated Successfully!");
+                                            }
+                                        }
+                                    }
+                                });
+
+                        db.collection("completedAppointments")
+                                .whereEqualTo("user", user)
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        QuerySnapshot result = task.getResult();
+                                        if (!result.isEmpty()) {
+                                            for (QueryDocumentSnapshot document : result) {
+                                                Map<String, Object> userDetail = new HashMap<>();
+                                                userDetail.put("user", userName);
+                                                db.collection("completedAppointments").document(document.getId()).update(userDetail);
+                                                Log.d("TAG", "onComplete: Data Updated Successfully!");
+                                            }
+                                        }
+                                    }
+                                });
+
+                        db.collection("userEventBooking")
+                                .whereEqualTo("user", user)
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        QuerySnapshot result = task.getResult();
+                                        if (!result.isEmpty()) {
+                                            for (QueryDocumentSnapshot document : result) {
+                                                Map<String, Object> userDetail = new HashMap<>();
+                                                userDetail.put("user", userName);
+                                                db.collection("userEventBooking").document(document.getId()).update(userDetail);
+                                                Log.d("TAG", "onComplete: Data Updated Successfully!");
+                                            }
+                                        }
+                                    }
+                                });
+
+                        db.collection("emergencyRequest")
+                                .whereEqualTo("user", user)
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        QuerySnapshot result = task.getResult();
+                                        if (!result.isEmpty()) {
+                                            for (QueryDocumentSnapshot document : result) {
+                                                Map<String, Object> userDetail = new HashMap<>();
+                                                userDetail.put("postedBy", userName);
+                                                db.collection("emergencyRequest").document(document.getId()).update(userDetail);
+                                                Log.d("TAG", "onComplete: Data Updated Successfully!");
+                                            }
+                                        }
+                                    }
+                                });
+
+                        db.collection("userBooking")
+                                .whereEqualTo("user", user)
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        QuerySnapshot result = task.getResult();
+                                        if (!result.isEmpty()) {
+                                            for (QueryDocumentSnapshot document : result) {
+                                                Map<String, Object> userDetail = new HashMap<>();
+                                                userDetail.put("user", userName);
+                                                db.collection("userBooking").document(document.getId()).update(userDetail);
+                                                Log.d("TAG", "onComplete: Data Updated Successfully!");
+                                            }
+                                        }
+                                    }
+                                });
+
+                        db.collection("users")
+                                .whereEqualTo("FullName", user)
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        QuerySnapshot result = task.getResult();
+                                        if (!result.isEmpty()) {
+                                            for (QueryDocumentSnapshot document : result) {
+                                                Map<String, Object> userDetail = new HashMap<>();
+                                                userDetail.put("FullName", userName);
+                                                db.collection("users").document(document.getId()).update(userDetail);
+                                                Intent intent = new Intent(UserUpdateName.this, EditProfile.class);
+                                                startActivity(intent);
+                                                SharedPreferences.Editor editor = UserLogin.mPreferences.edit();
+                                                editor.putString(KEY_USER_NAME, userName);
+                                                editor.apply();
+                                                finish();
+                                                Toast.makeText(UserUpdateName.this, "Name Updated Successfully! ", Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(UserUpdateName.this, "Fail to Update Name" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
                 }
             }
         });
@@ -198,7 +222,9 @@ public class UserUpdateName extends AppCompatActivity {
         btnCancelUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                Intent intent = new Intent(UserUpdateName.this, EditProfile.class);
+                startActivity(intent);
+                finish();
             }
         });
     }

@@ -123,7 +123,7 @@ public class HospitalViewOwnBloodRequest extends AppCompatActivity {
 
     private void alertDataEmpty() {
         new AlertDialog.Builder(this)
-                .setMessage("No Existing Notice Made..")
+                .setMessage("No Existing Request Made..")
                 .setPositiveButton("Return", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

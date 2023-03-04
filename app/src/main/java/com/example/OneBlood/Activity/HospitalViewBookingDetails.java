@@ -132,9 +132,9 @@ public class HospitalViewBookingDetails extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                         Map<String, Object> latest = new HashMap<>();
-                                        latest.put("slot", "-");
+                                        latest.put("slot", bookingSlot);
                                         latest.put("user", bookingUser);
-                                        latest.put("date", "-");
+                                        latest.put("date", bookingDate);
                                         latest.put("userStatus", "active");
                                         latest.put("location", bookingHospital);
                                         latest.put("status", "available");

@@ -75,12 +75,6 @@ public class HospitalViewNoticeDetails extends AppCompatActivity {
             }
         });
 
-        backToHospitalMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
     }
 
     private void deleteRequest() {
